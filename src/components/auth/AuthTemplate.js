@@ -14,6 +14,8 @@ const AuthTemplateBlock = styled.div`
     justify-content: center;
     align-items: center;
     background: ${palette.violet[4]};
+    gap: 1rem;
+    font-size: 1.5rem;
 `;
 
 const WhiteBox = styled.div`
@@ -26,7 +28,7 @@ const WhiteBox = styled.div`
     border: 1px solid #dbdbdb;
     padding: 2rem;
     width: 40%;
-    height: 50%;
+    min-height: 50%;
     background: white;
     border-radius: 5px;
     display: flex;
@@ -34,7 +36,20 @@ const WhiteBox = styled.div`
     gap: 2rem;
 `;
 
-const AuthTemplate = ({ children }) => {
+const SmallWhiteBox = styled.div`
+    padding: 2rem;
+    border: 1px solid #dbdbdb;
+    width: 40%;
+    background: white;
+    border-radius: 5px;
+    text-align: center;
+`;
+
+const StyledLink = styled(Link)`
+    color: ${palette.blue[5]};
+`
+
+const AuthTemplate = ({ type, children }) => {
     return (
         <AuthTemplateBlock>
             <WhiteBox>
@@ -43,6 +58,20 @@ const AuthTemplate = ({ children }) => {
                 </div>
                 { children }
             </WhiteBox>
+            <SmallWhiteBox>
+                {type === 'login' && (
+                    <>
+                        <span>계정이 없으신가요?</span>
+                        <StyledLink to="/register">가입하기</StyledLink>
+                    </>
+                )}
+                {type === 'register' && (
+                    <>
+                        <span>계정이 있으신가요?</span>
+                        <StyledLink to="/login">로그인</StyledLink>
+                    </>
+                )}
+            </SmallWhiteBox>
         </AuthTemplateBlock>
     );
 };

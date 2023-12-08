@@ -17,11 +17,20 @@ const StyledButton = styled.button`
         background: ${palette.gray[6]};
     }
     
-    ${
-        props =>
+    ${props =>
         props.fullWidth &&
         css`
             width: 100%;
+        `
+    }
+
+    ${props =>
+        props.cyan &&
+        css`
+            background: ${palette.cyan[5]};
+            &:hover {
+                background: ${palette.cyan[4]};
+            }
         `
     }
 `;

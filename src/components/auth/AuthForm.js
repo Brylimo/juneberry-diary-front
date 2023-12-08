@@ -31,13 +31,60 @@ const StyledInput = styled.input`
     }
 `;
 
-const AuthForm = () => {
+const textMap = {
+    login: '로그인',
+    register: '회원가입'
+}
+
+const AuthForm = ({ type, form, onChange, onSubmit }) => {
+    const text = textMap[type];
     return (
         <AuthFormBlock>
-            <form>
-                <StyledInput name="username" placeholder='아이디' />
-                <StyledInput type="password" name="password" placeholder='비밀번호' />
-                <Button>login</Button>
+            <form onSubmit={onSubmit}>
+                {type === 'register' && (
+                    <>
+                        <StyledInput 
+                            name="name" 
+                            placeholder='성명' 
+                            onChange={onChange}
+                            value={form.name}
+                            required 
+                        />
+                        <StyledInput 
+                            name="username" 
+                            placeholder='사용자 이름'
+                            onChange={onChange}
+                            value={form.username} 
+                            required 
+                        />
+                    </>
+                )}
+                <StyledInput 
+                    name="id" 
+                    placeholder='아이디'
+                    onChange={onChange}
+                    value={form.id} 
+                    required 
+                />
+                <StyledInput 
+                    type="password" 
+                    name="password" 
+                    placeholder='비밀번호'
+                    onChange={onChange}
+                    value={form.password}
+                    required 
+                />
+                {type === 'register' && (
+                    <StyledInput 
+                        type="password" 
+                        name="passwordConfirm" 
+                        placeholder='비밀번호 확인'
+                        onChange={onChange}
+                        value={form.passwordConfirm} 
+                        required 
+                    />
+                )}
+                <Button cyan fullWidth>{ text }</Button>
             </form>
         </AuthFormBlock>
     )
