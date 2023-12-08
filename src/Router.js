@@ -2,13 +2,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { 
     MapPage,
     PublishPage,
-    CalendarPage
+    CalendarPage,
+    LoginPage
 } from './pages'
 
 function Router() {
     return (
         <BrowserRouter>
             <Routes>
+                <Route path="login" element={<LoginPage/>} />
                 <Route path="/geo/*">
                     <Route path="map" element={<MapPage/>} />
                 </Route>
