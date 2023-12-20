@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
+import palette from '../../lib/styles/palette';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
@@ -20,7 +21,11 @@ const StyledMenuWrapper = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    line-height: 2.5rem;
+    line-height: 1.5rem;
+
+    &:hover {
+        color: green;
+    }
 `;
 
 const MenuLi = styled.li`
@@ -47,9 +52,9 @@ const MenuLink = styled(Link)`
     position: relative;
 `;
 
-const Menu = ({ children }) => {
+const Menu = ({ children, to }) => {
     return (
-        <MenuLink to="/">
+        <MenuLink to={to}>
             <StyledMenuWrapper>
                 {children}
             </StyledMenuWrapper>
@@ -57,36 +62,40 @@ const Menu = ({ children }) => {
     );
 }
 
+const MenuSpan = styled.span`
+    color: green;
+`;
+
 const SideBar = () => {
     return (
         <StyledSideBar>
             <ul style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
                 <div>
                     <MenuLi logo>
-                        <Menu><img src="/logo.svg" style={{width:'6rem', height:'6rem'}}></img></Menu>
+                        <Menu to='/'><img src="/logo.svg" style={{width:'6rem', height:'6rem'}}></img></Menu>
                     </MenuLi>
                     <MenuLi>
-                        <Menu>
+                        <Menu to='/'>
                             <AddLocationAltIcon style={{width:'4rem', height:'4rem' }} />
-                            <span style={{color: 'purple'}}>REGISTER</span>
+                            <MenuSpan>REGISTER</MenuSpan>
                         </Menu>
                     </MenuLi>
                     <MenuLi>
-                        <Menu>
+                        <Menu to='/'>
                             <FormatListBulletedIcon style={{width:'4rem', height:'4rem'}} />
-                            <span style={{color: 'purple'}}>LIST</span>
+                            <MenuSpan>LIST</MenuSpan>
                         </Menu>
                     </MenuLi>
                     <MenuLi>
-                        <Menu>
+                        <Menu to='/'>
                             <DirectionsBusIcon style={{width:'4rem', height:'4rem'}} />
-                            <span style={{color: 'purple'}}>BUS</span>
+                            <MenuSpan>BUS</MenuSpan>
                         </Menu>
                     </MenuLi>
                 </div>
                 <MenuLi>
-                    <Menu>
-                        <KeyboardBackspaceIcon style={{width:'4rem', height:'4rem'}} />
+                    <Menu to='/login'>
+                        <KeyboardBackspaceIcon style={{width:'4rem', height:'4rem'}}/>
                     </Menu>
                 </MenuLi>
             </ul>
