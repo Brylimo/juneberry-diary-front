@@ -6,7 +6,7 @@ import { Tile } from 'ol/layer';
 import Button from '../components/common/Button';
 import { XYZ } from 'ol/source';
 import TileLayer from '../../node_modules/ol/layer/Tile';
-import SideBar from '../components/common/SideBar';
+import SideBar from '../components/geo/SideBar';
 
 const MapPage = () => {
     const [mapObj, setMapObj] = useState({});

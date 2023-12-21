@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import palette from '../../lib/styles/palette';
+import MapIcon from '@mui/icons-material/Map';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
@@ -14,6 +15,7 @@ const StyledSideBar = styled.aside`
     width: 7rem;
     background-color: white;
     height: 100%; 
+    border-right: solid grey 1px;
 `;
 
 const StyledMenuWrapper = styled.div`
@@ -76,8 +78,14 @@ const SideBar = () => {
                     </MenuLi>
                     <MenuLi>
                         <Menu to='/'>
+                            <MapIcon style={{width:'4rem', height:'4rem' }} />
+                            <MenuSpan>HOME</MenuSpan>
+                        </Menu>
+                    </MenuLi>
+                    <MenuLi>
+                        <Menu to='/'>
                             <AddLocationAltIcon style={{width:'4rem', height:'4rem' }} />
-                            <MenuSpan>REGISTER</MenuSpan>
+                            <MenuSpan>ADD</MenuSpan>
                         </Menu>
                     </MenuLi>
                     <MenuLi>
