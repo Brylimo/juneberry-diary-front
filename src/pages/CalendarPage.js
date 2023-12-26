@@ -6,14 +6,16 @@ import { addMonths, subMonths } from "date-fns";
 
 const Frame = styled.div`
     width: 100%;
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 4.8rem
+    margin-top: 4.8rem;
 `;
 
 const CalendarFrame = styled.div`
-    width: 55%;
+    width: 100%;
+    height: 100%;
     background-color: rgba(255, 235, 255, 0.7);
     padding: 1rem 2rem;
 `;

@@ -1,20 +1,18 @@
-import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 const HeaderFrame = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 1.5rem;
 `;
 
 const LeftSideSpan = styled.span`
     color: ${(props) => props.color || '#b95de2'};
     font-weight: bold;
     font-size: 25px;
-    margin-left: 7px;
-    margin-right: 7px;
+    margin-left: 0.7rem;
+    margin-right: 0.7rem;
 `;
 
 const YearSpan = styled.span`
@@ -47,7 +45,7 @@ const CalendarHeader = ({ currentMonth, prevMonth, nextMonth }) => {
            <LeftWrapper>
                 <FontWrapper>
                     <IconSpan onClick={prevMonth}>
-                        <FontAwesomeIcon icon={faCaretLeft} size="lg" style={{color:"#b95de2"}} />
+                        
                     </IconSpan>
                 </FontWrapper>
                 <div>
@@ -55,7 +53,7 @@ const CalendarHeader = ({ currentMonth, prevMonth, nextMonth }) => {
                 </div>
                 <FontWrapper>
                     <IconSpan onClick={nextMonth}>
-                        <FontAwesomeIcon icon={faCaretRight} size="lg" style={{color:"#b95de2"}} />
+            
                     </IconSpan>
                 </FontWrapper>
             </LeftWrapper> 
