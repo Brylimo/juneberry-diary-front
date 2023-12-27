@@ -60,7 +60,7 @@ const AuthForm = ({ type, form, onChange, onSubmit }) => {
                     </>
                 )}
                 <StyledInput 
-                    name="id" 
+                    name="username" 
                     placeholder='아이디'
                     onChange={onChange}
                     value={form.id} 
