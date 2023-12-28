@@ -43,17 +43,19 @@ const LoginForm = () => {
             return;
         }
         if (auth) {
-            console.log('로그인 성공');
-            dispatch(check());
+            if (auth.data.token) {
+                localStorage.setItem("ACCESS_TOKEN", auth.data.token);
+            }
+            navigate('/geo/map');
+            //dispatch(check());
         }
-    }, [auth, authError, dispatch]);
+    }, [auth, authError, dispatch, navigate]);
 
-    useEffect(() => {
+    /*useEffect(() => {
         if (user) {
             navigate('/geo/map');
         }
-    }, [navigate, user]);
-
+    }, [navigate, user]);*/
 
     return (
         <AuthForm

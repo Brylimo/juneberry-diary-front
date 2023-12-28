@@ -7,6 +7,16 @@ const client = axios.create({
     }
 });
 
+client.interceptors.request.use(config => {
+    const accessToken = localStorage.getItem("ACCESS_TOKEN");
+    if (accessToken && accessToken !== null) {
+         config.headers.Authorization = `${accessToken}`;
+    }
+    return config;
+}, error => {
+    return Promise.reject(error);
+})
+
 client.interceptors.response.use(response => {
     return response;
 }, error => {
