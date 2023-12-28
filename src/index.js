@@ -6,9 +6,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import createSagaMiddleware from 'redux-saga';
 import rootReducer, { rootSaga } from './modules';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { createLogger } from 'redux-logger';
 
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
+const logger = createLogger();
+
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(logger, sagaMiddleware))
+);
 
 sagaMiddleware.run(rootSaga);
 

@@ -51,19 +51,19 @@ const AuthForm = ({ type, form, onChange, onSubmit }) => {
                             required 
                         />
                         <StyledInput 
-                            name="username" 
-                            placeholder='사용자 이름'
+                            name="email" 
+                            placeholder='이메일'
                             onChange={onChange}
-                            value={form.username} 
+                            value={form.email} 
                             required 
                         />
                     </>
                 )}
                 <StyledInput 
                     name="username" 
-                    placeholder='아이디'
+                    placeholder='사용자 이름'
                     onChange={onChange}
-                    value={form.id} 
+                    value={form.username} 
                     required 
                 />
                 <StyledInput 
