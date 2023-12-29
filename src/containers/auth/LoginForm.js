@@ -2,18 +2,16 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { changeField, initializeForm, login } from "../../modules/auth";
 import AuthForm from "../../components/auth/AuthForm";
-import { check } from "../../modules/user";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const { form, auth, authError, user } = useSelector(({ auth, user }) => ({
+    const { form, auth, authError } = useSelector(({ auth }) => ({
         form: auth.login,
         auth: auth.auth,
-        authError: auth.authError,
-        user: user.user
+        authError: auth.authError
     }));
 
     const onChange = e => {
@@ -45,17 +43,10 @@ const LoginForm = () => {
         if (auth) {
             if (auth.data.token) {
                 localStorage.setItem("ACCESS_TOKEN", auth.data.token);
+                navigate('/geo/map');
             }
-            navigate('/geo/map');
-            //dispatch(check());
         }
     }, [auth, authError, dispatch, navigate]);
-
-    /*useEffect(() => {
-        if (user) {
-            navigate('/geo/map');
-        }
-    }, [navigate, user]);*/
 
     return (
         <AuthForm

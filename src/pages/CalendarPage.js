@@ -3,6 +3,7 @@ import styled from "styled-components";
 import CalendarHeader from "../components/cal/CalendarHeader";
 import CalendarBody from "../components/cal/CalendarBody";
 import { addMonths, subMonths } from "date-fns";
+import MainSideBar from "../components/common/MainSideBar";
 
 const Frame = styled.div`
     width: 100%;
@@ -32,13 +33,15 @@ const CalendarPage = () => {
     }, [currentMonth]);
 
     return (
-        <Frame>
-            <CalendarFrame>
-                <CalendarHeader currentMonth={currentMonth} prevMonth={prevMonth} nextMonth={nextMonth} />
-                <CalendarBody currentMonth={currentMonth} selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-            </CalendarFrame>
-
-        </Frame>
+        <div style={{ position: 'relative', height: '100%' }}>
+            <MainSideBar></MainSideBar>
+            <Frame>
+                <CalendarFrame>
+                    <CalendarHeader currentMonth={currentMonth} prevMonth={prevMonth} nextMonth={nextMonth} />
+                    <CalendarBody currentMonth={currentMonth} selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+                </CalendarFrame>
+            </Frame>
+        </div>
     );
 }
 

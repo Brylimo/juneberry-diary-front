@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { changeField, initializeForm, register } from "../../modules/auth";
-import { check } from "../../modules/user";
 import AuthForm from "../../components/auth/AuthForm";
 import { useNavigate } from "react-router-dom";
 
@@ -57,15 +56,9 @@ const RegisterForm = () => {
             return;
         }
         if (auth) {
-            dispatch(check());
+            navigate("/login");
         }
-    }, [auth, authError, dispatch]);
-
-    useEffect(() => {
-        if (user) {
-            navigate('/geo/map');
-        }
-    }, [navigate, user]);
+    }, [auth, authError, dispatch, navigate]);
 
     return (
         <AuthForm

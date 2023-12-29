@@ -8,6 +8,7 @@ import {
 } from './pages'
 
 function Router() {
+    const token = localStorage.getItem("ACCESS_TOKEN");
     return (
         <BrowserRouter>
             <Routes>
