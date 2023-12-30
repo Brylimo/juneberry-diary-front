@@ -4,11 +4,11 @@ import {
     PublishPage,
     CalendarPage,
     LoginPage,
-    RegisterPage
+    RegisterPage,
+    NotFoundPage
 } from './pages'
 
 function Router() {
-    const token = localStorage.getItem("ACCESS_TOKEN");
     return (
         <BrowserRouter>
             <Routes>
@@ -23,6 +23,7 @@ function Router() {
                 <Route path="/post/*">
                     <Route path="publish" element={<PublishPage/>} />
                 </Route>
+                <Route path="*" element={<NotFoundPage />} />
             </Routes>
         </BrowserRouter>
     );

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
-import { changeField, initializeForm, register } from "../../modules/auth";
+import { changeField, initializeAuth, initializeForm, register } from "../../modules/auth";
 import AuthForm from "../../components/auth/AuthForm";
 import { useNavigate } from "react-router-dom";
 
@@ -8,11 +8,10 @@ const RegisterForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const { form, auth, authError, user } = useSelector(({ auth, user }) => ({
+    const { form, auth, authError } = useSelector(({ auth }) => ({
         form: auth.register,
         auth: auth.auth,
-        authError: auth.authError,
-        user: user.user
+        authError: auth.authError
     }));
 
     const onChange = e => {
@@ -56,6 +55,8 @@ const RegisterForm = () => {
             return;
         }
         if (auth) {
+            alert("가입이 완료되었습니다!");
+            dispatch(initializeAuth());
             navigate("/login");
         }
     }, [auth, authError, dispatch, navigate]);

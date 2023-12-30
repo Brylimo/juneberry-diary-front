@@ -6,6 +6,7 @@ import * as authAPI from '../lib/api/auth';
 
 const CHANGE_FIELD = 'auth/CHANGE_FIELD';
 const INITIALIZE_FORM = 'auth/INITIALIZE_FORM';
+const INITIALIZE_AUTH = 'auth/INITIALIZE_AUTH';
 
 const [REGISTER, REGISTER_SUCCESS, REGISTER_FAILURE] = createRequestActionTypes(
     'auth/REGISTER'
@@ -24,6 +25,7 @@ export const changeField = createAction(
     })
 );
 export const initializeForm = createAction(INITIALIZE_FORM, form => form);
+export const initializeAuth = createAction(INITIALIZE_AUTH);
 export const register = createAction(REGISTER, ({ name, email, username, password}) => ({
     name,
     email,
@@ -56,6 +58,7 @@ const initialState = {
     },
     auth: null,
     authError: null,
+    token: null
 };
 
 const auth = handleActions(
@@ -67,8 +70,11 @@ const auth = handleActions(
         [INITIALIZE_FORM]: (state, { payload: form }) => ({
             ...state,
             [form]: initialState[form],
-            auth: null,
             authError: null
+        }),
+        [INITIALIZE_AUTH]: (state, { payload: form }) => ({
+            ...state,
+            auth: null
         }),
         [REGISTER_SUCCESS]: (state, { payload: auth }) => ({
             ...state,
@@ -82,7 +88,8 @@ const auth = handleActions(
         [LOGIN_SUCCESS]: (state, { payload: auth }) => ({
             ...state,
             authError: null,
-            auth
+            auth,
+            token: auth.data.accessToken
         }),
         [LOGIN_FAILURE]: (state, { payload: error }) => ({
             ...state,

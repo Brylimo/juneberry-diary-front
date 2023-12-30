@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { changeField, initializeForm, login } from "../../modules/auth";
 import AuthForm from "../../components/auth/AuthForm";
 import { useNavigate } from "react-router-dom";
+import client from "../../lib/api/client";
 
 const LoginForm = () => {
     const dispatch = useDispatch();
@@ -41,8 +42,9 @@ const LoginForm = () => {
             return;
         }
         if (auth) {
-            if (auth.data.token) {
-                localStorage.setItem("ACCESS_TOKEN", auth.data.token);
+            if (auth.data) {
+                client.defaults.headers.common['Authorization'] = auth.data.accessToken;
+                localStorage.setItem("REFRESH_TOKEN", auth.data.refreshToken);
                 navigate('/geo/map');
             }
         }

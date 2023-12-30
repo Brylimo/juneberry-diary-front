@@ -102,7 +102,7 @@ const SideBar = () => {
                     </MenuLi>
                 </div>
                 <MenuLi>
-                    <Menu to='/login'>
+                    <Menu to='/register'>
                         <KeyboardBackspaceIcon style={{width:'4rem', height:'4rem'}}/>
                     </Menu>
                 </MenuLi>

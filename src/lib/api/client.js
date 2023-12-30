@@ -8,10 +8,13 @@ const client = axios.create({
 });
 
 client.interceptors.request.use(config => {
-    const accessToken = localStorage.getItem("ACCESS_TOKEN");
-    if (accessToken && accessToken !== null) {
-         config.headers.Authorization = `${accessToken}`;
-    }
+    /*const { token } = useSelector(({ auth }) => ({
+        token: auth.token
+    }));
+
+    if (token && token !== null) {
+         config.headers.Authorization = `${token}`;
+    }*/
     return config;
 }, error => {
     return Promise.reject(error);
@@ -22,10 +25,10 @@ client.interceptors.response.use(response => {
 }, error => {
     if (axios.isAxiosError(error) && error.response) {
         if (error.response.status === 401) {
-            window.location.href = "/login";
+            //window.location.href = "/login";
         }
     } else {
-        window.location.href = "/login";
+        //window.location.href = "/login";
     }
 
     return Promise.reject(error);
