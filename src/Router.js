@@ -7,7 +7,8 @@ import {
     RegisterPage,
     NotFoundPage
 } from './pages'
-import { ProtectedRoute } from "./containers/route/ProtectedRoute";
+import { ProtectedRoute } from "./components/route/ProtectedRoute";
+import { AuthRoute } from "./components/route/AuthRoute";
 
 function Router() {
     return (

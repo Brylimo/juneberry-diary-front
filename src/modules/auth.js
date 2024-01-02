@@ -45,7 +45,6 @@ export function* authSaga() {
     yield takeLatest(LOGIN, loginSaga);
 }
 
-
 const initialState = {
     register: {
         name: '',
