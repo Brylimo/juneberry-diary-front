@@ -7,6 +7,7 @@ import {
     RegisterPage,
     NotFoundPage
 } from './pages'
+import { ProtectedRoute } from "./containers/route/ProtectedRoute";
 
 function Router() {
     return (
@@ -14,14 +15,16 @@ function Router() {
             <Routes>
                 <Route path="login" element={<LoginPage/>} />
                 <Route path="register" element={<RegisterPage/>} />
-                <Route path="/geo/*">
-                    <Route path="map" element={<MapPage/>} />
-                </Route>
-                <Route path="/cal/*">
-                    <Route path="calendar" element={<CalendarPage/>} />
-                </Route>
-                <Route path="/post/*">
-                    <Route path="publish" element={<PublishPage/>} />
+                <Route element={<ProtectedRoute />}>
+                    <Route path="/geo/*">
+                        <Route path="map" element={<MapPage/>} />
+                    </Route>
+                    <Route path="/cal/*">
+                        <Route path="calendar" element={<CalendarPage/>} />
+                    </Route>
+                    <Route path="/post/*">
+                        <Route path="publish" element={<PublishPage/>} />
+                    </Route>
                 </Route>
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>

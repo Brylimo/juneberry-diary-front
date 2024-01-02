@@ -3,33 +3,33 @@ import { takeLatest } from 'redux-saga/effects';
 import * as authAPI from '../lib/api/auth';
 import createRequestSaga, { createRequestActionTypes } from '../lib/createRequestSaga';
 
-const [CHECK, CHECK_SUCCESS, CHECK_FAILURE] = createRequestActionTypes(
-    'user/CHECK',
+const [VALIDATE, VALIDATE_SUCCESS, VALIDATE_FAILURE] = createRequestActionTypes(
+    'user/VALIDATE',
 );
 
-export const check = createAction(CHECK);
+export const validate = createAction(VALIDATE);
 
-const checkSaga = createRequestSaga(CHECK, authAPI.check);
+const validateSaga = createRequestSaga(VALIDATE, authAPI.validate);
 export function* userSaga() {
-    yield takeLatest(CHECK, checkSaga);
+    yield takeLatest(VALIDATE, validateSaga);
 }
 
 const initialState = {
     user: null,
-    checkError: null,
+    validateError: null,
 };
 
 export default handleActions(
     {
-        [CHECK_SUCCESS]: (state, { payload: user }) => ({
+        [VALIDATE_SUCCESS]: (state, { payload: user }) => ({
             ...state,
             user,
-            checkError: null,
+            validateError: null,
         }),
-        [CHECK_FAILURE]: (state, { payload: error }) => ({
+        [VALIDATE_FAILURE]: (state, { payload: error }) => ({
             ...state,
             user: null,
-            checkError: error,
+            validateError: error,
         }),
     },
     initialState,
