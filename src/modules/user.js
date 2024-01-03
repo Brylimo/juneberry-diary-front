@@ -1,35 +1,24 @@
 import { createAction, handleActions } from 'redux-actions';
-import { takeLatest } from 'redux-saga/effects';
-import * as authAPI from '../lib/api/auth';
-import createRequestSaga, { createRequestActionTypes } from '../lib/createRequestSaga';
 
-const [VALIDATE, VALIDATE_SUCCESS, VALIDATE_FAILURE] = createRequestActionTypes(
-    'user/VALIDATE',
-);
+const SIGNIN = 'user/SIGNIN';
+const SIGNOUT = 'user/SIGNOUT';
 
-export const validate = createAction(VALIDATE);
-
-const validateSaga = createRequestSaga(VALIDATE, authAPI.validate);
-export function* userSaga() {
-    yield takeLatest(VALIDATE, validateSaga);
-}
+export const signin = createAction(SIGNIN);
+export const signout = createAction(SIGNOUT);
 
 const initialState = {
-    user: null,
-    validateError: null,
+    user: null
 };
 
 export default handleActions(
     {
-        [VALIDATE_SUCCESS]: (state, { payload: user }) => ({
+        [SIGNIN]: (state, { payload: user }) => ({
             ...state,
-            user,
-            validateError: null,
+            user
         }),
-        [VALIDATE_FAILURE]: (state, { payload: error }) => ({
+        [SIGNOUT]: (state, action) => ({
             ...state,
-            user: null,
-            validateError: error,
+            user: null
         }),
     },
     initialState,

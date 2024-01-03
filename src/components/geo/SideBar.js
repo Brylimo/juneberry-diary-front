@@ -83,7 +83,7 @@ const SideBar = () => {
                         </Menu>
                     </MenuLi>
                     <MenuLi>
-                        <Menu to='/'>
+                        <Menu to='/cal/calendar'>
                             <AddLocationAltIcon style={{width:'4rem', height:'4rem' }} />
                             <MenuSpan>ADD</MenuSpan>
                         </Menu>

@@ -7,15 +7,17 @@ import {
     RegisterPage,
     NotFoundPage
 } from './pages'
-import { ProtectedRoute } from "./components/route/ProtectedRoute";
-import { AuthRoute } from "./components/route/AuthRoute";
+import { ProtectedRoute } from "./containers/route/ProtectedRoute";
+import { AuthRoute } from "./containers/route/AuthRoute";
 
 function Router() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="login" element={<LoginPage/>} />
-                <Route path="register" element={<RegisterPage/>} />
+                <Route element={<AuthRoute />}>
+                    <Route path="login" element={<LoginPage/>} />
+                    <Route path="register" element={<RegisterPage/>} />
+                </Route>
                 <Route element={<ProtectedRoute />}>
                     <Route path="/geo/*">
                         <Route path="map" element={<MapPage/>} />
@@ -26,8 +28,8 @@ function Router() {
                     <Route path="/post/*">
                         <Route path="publish" element={<PublishPage/>} />
                     </Route>
+                    <Route path="*" element={<NotFoundPage />} />
                 </Route>
-                <Route path="*" element={<NotFoundPage />} />
             </Routes>
         </BrowserRouter>
     );
