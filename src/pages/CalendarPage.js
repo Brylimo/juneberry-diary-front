@@ -10,7 +10,6 @@ const Frame = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 4.8rem;
 `;
 
 const CalendarFrame = styled.div`

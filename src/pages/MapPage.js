@@ -38,7 +38,7 @@ const MapPage = () => {
     return (
         <div style={{ position: 'relative', height: '100%' }}>
             <SideBar></SideBar>
-            <div id="vmap" style={{ width: '100%', height: '100vh' }}></div>
+            <div id="vmap" style={{ width: '100%', height: 'calc(100vh - 8rem)', position: 'absolute', top: '8rem' }}></div>
         </div>        
     );
 }

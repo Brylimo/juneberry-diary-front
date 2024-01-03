@@ -9,6 +9,7 @@ import {
 } from './pages'
 import { ProtectedRoute } from "./containers/route/ProtectedRoute";
 import { AuthRoute } from "./containers/route/AuthRoute";
+import Layout from "./components/common/Layout";
 
 function Router() {
     return (
@@ -19,13 +20,13 @@ function Router() {
                     <Route path="register" element={<RegisterPage/>} />
                 </Route>
                 <Route element={<ProtectedRoute />}>
-                    <Route path="/geo/*">
+                    <Route path="/geo/*" element={<Layout />}>
                         <Route path="map" element={<MapPage/>} />
                     </Route>
-                    <Route path="/cal/*">
+                    <Route path="/cal/*" element={<Layout />}>
                         <Route path="calendar" element={<CalendarPage/>} />
                     </Route>
-                    <Route path="/post/*">
+                    <Route path="/post/*" element={<Layout />}>
                         <Route path="publish" element={<PublishPage/>} />
                     </Route>
                     <Route path="*" element={<NotFoundPage />} />
