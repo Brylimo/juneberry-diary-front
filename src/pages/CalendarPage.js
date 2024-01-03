@@ -3,7 +3,6 @@ import styled from "styled-components";
 import CalendarHeader from "../components/cal/CalendarHeader";
 import CalendarBody from "../components/cal/CalendarBody";
 import { addMonths, subMonths } from "date-fns";
-import MainSideBar from "../components/common/MainSideBar";
 
 const Frame = styled.div`
     width: 100%;
@@ -34,7 +33,6 @@ const CalendarPage = () => {
 
     return (
         <div style={{ position: 'relative', height: '100%' }}>
-            <MainSideBar></MainSideBar>
             <Frame>
                 <CalendarFrame>
                     <CalendarHeader currentMonth={currentMonth} prevMonth={prevMonth} nextMonth={nextMonth} />

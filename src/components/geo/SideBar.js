@@ -1,7 +1,8 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
-import palette from '../../lib/styles/palette';
+import Slider from "react-draggable-slider";
+
 import MapIcon from '@mui/icons-material/Map';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';

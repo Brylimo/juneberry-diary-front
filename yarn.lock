@@ -8298,6 +8298,11 @@ react-dom@^18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
+react-draggable-slider@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/react-draggable-slider/-/react-draggable-slider-0.1.6.tgz#a52730b2aebd74377f66ef635e3eb34c197f5684"
+  integrity sha512-yRZ/CosKhbEIbOP4Zx36JoWuXu7RRyRy9asADkFzMfY8n+hI4D9+RhPV+Q093s8I4DgpWOEZ3Ulzk/x+mVzdxQ==
+
 react-error-overlay@^6.0.11:
   version "6.0.11"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.11.tgz#92835de5841c5cf08ba00ddd2d677b6d17ff9adb"
