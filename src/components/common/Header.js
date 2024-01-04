@@ -1,7 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useRef, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import styled, { css } from 'styled-components';
 import Menu from './Menu';
 import { useNavigate, useLocation } from 'react-router-dom';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { signout } from './../../modules/user';
 
 const HeaderBlock = styled.div`
     position: fixed;
@@ -36,6 +39,13 @@ const FlagTopBlock = styled.div`
     align-items: center;
 `;
 
+const FlagTopLeftBlock = styled.div`
+    display: flex;
+    align-items: center;
+    margin-right: 2rem;
+    position: relative;
+`;
+
 const FlagBottomBlock = styled.div`
     flex: 1;
 `;
@@ -52,7 +62,6 @@ const AvatarBlock = styled.div`
     height: 3.7rem;
     background-color: black;
     border-radius: 50%;
-    margin-right: 2rem;
     align-self: end;
     cursor: pointer;
 `;
@@ -83,21 +92,87 @@ const FlagLi = styled.li`
     }
 `;
 
+const DropdownBlock = styled.div`
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 1rem;
+`;
+
+const DropdownMenuBlock = styled.div`
+    position: relative;
+    z-index: 32;
+    width: 20rem;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px;
+`;
+
+const DropdownMenu = styled.div`
+    padding: 1rem 1.2rem;
+    line-height: 1.5;
+    font-weight: 500;
+    font-size: 1.6rem;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #F8F9FA;
+        color: red;
+    }
+`;
+
+const ArrowDropDownIconWrapper = styled(ArrowDropDownIcon)`
+    width: 2em;
+    height: 2em;
+    color: #868e96;
+    cursor: pointer;
+
+    ${props =>
+        props.isActive &&
+        css`
+            color: black;
+        `
+    }
+`;
+
 const Header = () => {
     const { pathname } = useLocation();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const onMapClick = useCallback(e => {
+    const [view, setView] = useState(false);
+    const dropdownElement = useRef(null);
+
+    const onClickMapFlag = useCallback(e => {
         navigate('/geo/map');
     }, [navigate]);
 
-    const onCalendarClick = useCallback(e => {
+    const onClickCalendarFlag = useCallback(e => {
         navigate('/cal/calendar');
     }, [navigate]);
 
-    const onPostClick = useCallback(e => {
+    const onClickPostFlag = useCallback(e => {
         navigate('/post/publish');
     }, [navigate]);
+
+    const onClickAvatar = useCallback(e => {
+        e.stopPropagation();
+        setView(!view);
+    }, [view]);
+
+    const onClickLogout = useCallback(e => {
+        dispatch(signout());
+    }, [dispatch]);
+
+    const handleCloseDropdown = useCallback(e => {
+        if (view && (dropdownElement.current && !dropdownElement.current.contains(e.target))) setView(false);
+    }, [view, dropdownElement]);
+
+    useEffect(() => {
+        window.addEventListener('click', handleCloseDropdown);
+        return () => {
+            window.removeEventListener('click', handleCloseDropdown);
+        }
+    }, [handleCloseDropdown]);
 
     return (
         <HeaderBlock>
@@ -107,14 +182,25 @@ const Header = () => {
             <HeaderFlagBlock>
                 <FlagTopBlock>
                     <TitleSpan>JUNEBERRY DIARY</TitleSpan>
-                    <AvatarBlock></AvatarBlock>
+                    <FlagTopLeftBlock>
+                        <AvatarBlock onClick={onClickAvatar}></AvatarBlock>
+                        <ArrowDropDownIconWrapper onClick={onClickAvatar} isActive={view}/>
+                        {view && <div ref={dropdownElement}>
+                            <DropdownBlock>
+                                <DropdownMenuBlock>
+                                    <DropdownMenu>마이페이지</DropdownMenu>
+                                    <DropdownMenu onClick={onClickLogout}>로그아웃</DropdownMenu>
+                                </DropdownMenuBlock>
+                            </DropdownBlock>
+                        </div>}
+                    </FlagTopLeftBlock>
                 </FlagTopBlock>
                 <FlagBottomBlock>
                     <FlagBottomNav>
                         <FlagBottomUl>
-                            <FlagLi isActive={pathname === "/geo/map"} onClick={onMapClick}>map</FlagLi>
-                            <FlagLi isActive={pathname === "/cal/calendar"} onClick={onCalendarClick}>calendar</FlagLi>
-                            <FlagLi isActive={pathname === "/post/publish"} onClick={onPostClick}>post</FlagLi>
+                            <FlagLi isActive={pathname === "/geo/map"} onClick={onClickMapFlag}>map</FlagLi>
+                            <FlagLi isActive={pathname === "/cal/calendar"} onClick={onClickCalendarFlag}>calendar</FlagLi>
+                            <FlagLi isActive={pathname === "/post/publish"} onClick={onClickPostFlag}>post</FlagLi>
                         </FlagBottomUl>
                     </FlagBottomNav>
                 </FlagBottomBlock>

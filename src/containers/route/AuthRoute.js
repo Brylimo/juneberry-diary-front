@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate, Outlet } from "react-router-dom";
-import { validate } from '../../lib/api/auth';
+import { validate } from '../../lib/api/authAPI';
 import { signin } from '../../modules/user';
 
 export const AuthRoute = () => {

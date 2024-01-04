@@ -4,15 +4,16 @@ import styled, {css} from "styled-components";
 
 const CalendarBodyFrame = styled.div`
     width: 100%;
+    height: calc(100% - 8rem);
     display: grid;
-    grid-template-columns: repeat(7, 14.28571%);  
+    grid-template-columns: repeat(7, 1fr);  
 `;
 
 const Day = styled.div`
     width: 100%;
-    font-size: 18px;
-    border-radius: 6px;
-    padding: 1px 6px;
+    font-size: 1.8rem;
+    border-radius: 0.6;
+    padding: 0.1rem 0.6rem;
     background-color: rgba(204, 204, 255, 0.5);
     text-align: center;
 `;
@@ -22,9 +23,12 @@ const Cell = styled.div`
     position: relative;
     padding: 0.3rem;
     font-size: 16px;
-    border-radius: 6px;
+    border-radius: 0.6rem;
     color: ${(props) => props.color || '#21252a'};
     background-color: ${(props) => props.bgColor || 'transparent'};
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 
     &:after {
         content: "";
@@ -60,7 +64,7 @@ const CellInner = styled.div`
 `;
 
 const CellBox = ({dayx, setSelectedDate, color, bgColor, flag }) => {
-    const onSelect = useCallback(() => setSelectedDate(dayx), [dayx]);
+    const onSelect = useCallback(() => setSelectedDate(dayx), [dayx, setSelectedDate]);
     
     return (
         <Cell color={color} bgColor={bgColor} flag={flag} onClick={onSelect}>

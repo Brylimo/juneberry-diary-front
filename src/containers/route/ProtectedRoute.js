@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate, Outlet } from "react-router-dom";
-import { validate } from '../../lib/api/auth';
+import { validate } from '../../lib/api/authAPI';
 import { signin } from '../../modules/user';
 
 export const ProtectedRoute = () => {
@@ -15,11 +15,13 @@ export const ProtectedRoute = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        console.log("asdfasdfasdfasd", user);
         if (!user) {
             const fetchData = async () => {
                 setLoading(true);
                 try {
                     const response = await validate();
+                    console.log("ttt", response.status)
                     if (response.status === 403) {
                         navigate("/login");
                     } else if (response.status === 200) {

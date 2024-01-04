@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 const HeaderFrame = styled.div`
     display: flex;
@@ -18,7 +20,7 @@ const LeftSideSpan = styled.span`
 const YearSpan = styled.span`
     color: var(--main-color);
     font-weight: bold;
-    font-size: 20px;
+    font-size: 2rem;
 `;
 
 const LeftWrapper = styled.div`
@@ -45,7 +47,7 @@ const CalendarHeader = ({ currentMonth, prevMonth, nextMonth }) => {
            <LeftWrapper>
                 <FontWrapper>
                     <IconSpan onClick={prevMonth}>
-                        
+                        <ArrowLeftIcon></ArrowLeftIcon>
                     </IconSpan>
                 </FontWrapper>
                 <div>
@@ -53,7 +55,7 @@ const CalendarHeader = ({ currentMonth, prevMonth, nextMonth }) => {
                 </div>
                 <FontWrapper>
                     <IconSpan onClick={nextMonth}>
-            
+                        <ArrowRightIcon></ArrowRightIcon>
                     </IconSpan>
                 </FontWrapper>
             </LeftWrapper> 

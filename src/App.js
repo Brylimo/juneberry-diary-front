@@ -1,12 +1,13 @@
 import GlobalStyle from "./GlobalStyle";
 import Router from "./Router";
+import { StyledEngineProvider } from '@mui/styled-engine';
 
 function App() {
   return (
-    <>
-      <GlobalStyle />
-      <Router />
-    </>
+    <StyledEngineProvider injectFirst>
+        <GlobalStyle />
+        <Router />
+    </StyledEngineProvider>
   );
 }
 

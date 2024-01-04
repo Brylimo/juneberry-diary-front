@@ -2,9 +2,19 @@ import { useCallback, useState } from "react";
 import styled from "styled-components";
 import CalendarHeader from "../components/cal/CalendarHeader";
 import CalendarBody from "../components/cal/CalendarBody";
+import Todo from "../components/todo/Todo";
 import { addMonths, subMonths } from "date-fns";
 
-const Frame = styled.div`
+const FrameWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: calc(100vh - 8rem);
+    position: absolute;
+    top: 8rem;
+`;
+
+const CFrame = styled.div`
     width: 100%;
     flex: 1;
     display: flex;
@@ -15,8 +25,12 @@ const Frame = styled.div`
 const CalendarFrame = styled.div`
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 235, 255, 0.7);
     padding: 1rem 2rem;
+`;
+
+const TFrame = styled.div`
+    flex: 1;
+    padding: 3rem;
 `;
 
 const CalendarPage = () => {
@@ -32,12 +46,17 @@ const CalendarPage = () => {
 
     return (
         <div style={{ position: 'relative', height: '100%' }}>
-            <Frame>
-                <CalendarFrame>
-                    <CalendarHeader currentMonth={currentMonth} prevMonth={prevMonth} nextMonth={nextMonth} />
-                    <CalendarBody currentMonth={currentMonth} selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-                </CalendarFrame>
-            </Frame>
+            <FrameWrapper>
+                <CFrame>
+                    <CalendarFrame>
+                        <CalendarHeader currentMonth={currentMonth} prevMonth={prevMonth} nextMonth={nextMonth} />
+                        <CalendarBody currentMonth={currentMonth} selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+                    </CalendarFrame>
+                </CFrame>
+                <TFrame>
+                    <Todo selectedDate={selectedDate} />
+                </TFrame>
+            </FrameWrapper>
         </div>
     );
 }
