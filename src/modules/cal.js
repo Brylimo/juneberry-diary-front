@@ -3,34 +3,34 @@ import { takeLatest } from 'redux-saga/effects';
 import createRequestSaga, { createRequestActionTypes } from '../lib/createRequestSaga';
 import * as calAPI from '../lib/api/calAPI';
 
-const [GET_TAGS, GET_TAGS_SUCCESS, GET_TAGS_FAILURE] = createRequestActionTypes(
-    'cal/GET_TAGS'
+const [GET_TAGS_BY_MONTH, GET_TAGS_BY_MONTH_SUCCESS, GET_TAGS_BY_MONTH_FAILURE] = createRequestActionTypes(
+    'cal/GET_TAGS_BY_MONTH'
 );
 
-export const getTags = createAction(GET_TAGS, ({ year, month}) => ({
+export const getTagsByMonth = createAction(GET_TAGS_BY_MONTH, ({ year, month }) => {
+    return ({
     year,
-    month
-}));
+    month    
+})});
 
-const getTagsSaga = createRequestSaga(GET_TAGS, calAPI.getTags);
+const getTagsByMonthSaga = createRequestSaga(GET_TAGS_BY_MONTH, calAPI.getTagsByMonth);
 
 export function* calSaga() {
-    yield takeLatest(GET_TAGS, getTagsSaga);
+    yield takeLatest(GET_TAGS_BY_MONTH, getTagsByMonthSaga);
 }
 
 const initialState = {
-    tags: null
+    tagList: null
 };
 
 const cal = handleActions(
     {
-        [GET_TAGS_SUCCESS]: (state, { payload: tags }) => ({
+        [GET_TAGS_BY_MONTH_SUCCESS]: (state, { payload: data }) => ({
             ...state,
-            tags
+            tagList: data.data
         }),
-        [GET_TAGS_FAILURE]: (state, { payload: tags }) => ({
-            ...state,
-            tags
+        [GET_TAGS_BY_MONTH_FAILURE]: (state, { payload }) => ({
+            ...state
         }),
     },
     initialState

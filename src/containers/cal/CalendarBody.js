@@ -1,6 +1,6 @@
 import React, { useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getTags } from './../../modules/cal';
+import { getTagsByMonth } from './../../modules/cal';
 import CalendarGrid from "../../components/cal/CalendarGrid";
 
 const CalendarBody = ({ currentMonth, selectedDate, setSelectedDate }) => {
@@ -11,7 +11,7 @@ const CalendarBody = ({ currentMonth, selectedDate, setSelectedDate }) => {
     }));
 
     useEffect(() => {
-        dispatch(getTags(currentMonth.getFullYear(), currentMonth.getMonth()));
+        dispatch(getTagsByMonth({ year: currentMonth.getFullYear(), month: currentMonth.getMonth() + 1 }));
     }, [currentMonth, dispatch]);
 
     useEffect(() => {
