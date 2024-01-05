@@ -58,8 +58,8 @@ const TitleSpan = styled.span`
 `;
 
 const AvatarBlock = styled.div`
-    width: 3.7rem;
-    height: 3.7rem;
+    width: 3.2rem;
+    height: 3.2rem;
     background-color: black;
     border-radius: 50%;
     align-self: end;

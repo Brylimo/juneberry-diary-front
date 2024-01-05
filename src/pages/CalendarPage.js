@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import styled from "styled-components";
 import CalendarHeader from "../components/cal/CalendarHeader";
-import CalendarBody from "../components/cal/CalendarBody";
+import CalendarBody from "../containers/cal/CalendarBody";
 import Todo from "../components/todo/Todo";
 import { addMonths, subMonths } from "date-fns";
 

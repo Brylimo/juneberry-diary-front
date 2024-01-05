@@ -1,3 +1,4 @@
+import React, { useCallback, useState } from 'react';
 import styled, { css } from "styled-components";
 
 const Tags = styled.div`
@@ -29,8 +30,28 @@ const Tag = styled.div`
 const TodoContent = styled.div`
     width: 100%;
     height: calc(100% - 4rem);
-    background-color: rgba(255, 225, 255, 0.3);
     padding: 1rem;
+
+    ${props =>
+        props.activeTag === "todo" &&
+        css`
+            background-color: rgba(255, 225, 255, 0.3);
+        `
+    }
+
+    ${props =>
+        props.activeTag === "stat" &&
+        css`
+            background-color: rgba(173, 216, 173, 0.3);
+        `
+    }
+
+    ${props =>
+        props.activeTag === "note" &&
+        css`
+            background-color: rgba(255, 255, 0, 0.3);
+        `
+    }
 `;
 
 const THeaderFrame = styled.div`
@@ -49,24 +70,43 @@ const TContentFrame = styled.div`
 
 
 const Todo = ({ selectedDate }) => {
+    const [activeTag, setActiveTag] = useState("todo");
+
+    const onClickTodoTag = useCallback(e => {
+        setActiveTag("todo");
+    }, [setActiveTag]);
+
+    const onClickStatTag = useCallback(e => {
+        setActiveTag("stat");
+    }, [setActiveTag]);
+
+    const onClickNoteTag = useCallback(e => {
+        setActiveTag("note");
+    }, [setActiveTag]);
+
     const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"];
 
     return (
         <>
             <Tags>
-                <Tag kind={"todo"}></Tag>
-                <Tag kind={"stat"}></Tag>
-                <Tag kind={"note"}></Tag>
+                <Tag kind={"todo"} onClick={onClickTodoTag}></Tag>
+                <Tag kind={"stat"} onClick={onClickStatTag}></Tag>
+                <Tag kind={"note"} onClick={onClickNoteTag}></Tag>
             </Tags>
-            <TodoContent>
-                <THeaderFrame>
-                    <THeaderFrameSpan>{monthNames[selectedDate.getMonth()]}</THeaderFrameSpan>
-                    <THeaderFrameSpan>{selectedDate.getDate()}</THeaderFrameSpan>
-                </THeaderFrame>
-                <TContentFrame>
+            <TodoContent activeTag={activeTag}>
+                {
+                    activeTag === "todo" && 
+                    (<>
+                        <THeaderFrame>
+                            <THeaderFrameSpan>{monthNames[selectedDate.getMonth()]} </THeaderFrameSpan>
+                            <THeaderFrameSpan>{selectedDate.getDate()}</THeaderFrameSpan>
+                        </THeaderFrame>
+                        <TContentFrame>
 
-                </TContentFrame>
+                        </TContentFrame>
+                    </>)
+                }
             </TodoContent>
         </>
     );

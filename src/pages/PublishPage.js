@@ -1,7 +1,9 @@
+import Editor from "../components/post/Editor";
+
 const PublishPage = () => {
 
     return (
-        <div>hihihihhihi</div>
+        <Editor />
     );
 }
 

@@ -1,18 +1,25 @@
+import React, { useCallback } from 'react';
 import { addDays, endOfMonth, endOfWeek, format, isSameMonth, isSameDay, startOfMonth, startOfWeek } from "date-fns";
-import { Dispatch, SetStateAction, useCallback } from "react";
 import styled, {css} from "styled-components";
 
-const CalendarBodyFrame = styled.div`
+const CalendarGridFrame = styled.div`
     width: 100%;
     height: calc(100% - 8rem);
     display: grid;
-    grid-template-columns: repeat(7, 1fr);  
+    grid-template-columns: repeat(7, 1fr);
+    
+    ${props =>
+        props.columnCnt &&
+        css`
+            grid-template-rows: 2.4rem repeat(${props.columnCnt}, calc((100% - 2.4rem) / ${props.columnCnt}));
+        `
+    }
 `;
 
 const Day = styled.div`
     width: 100%;
     font-size: 1.8rem;
-    border-radius: 0.6;
+    border-radius: 0.6rem;
     padding: 0.1rem 0.6rem;
     background-color: rgba(204, 204, 255, 0.5);
     text-align: center;
@@ -75,7 +82,7 @@ const CellBox = ({dayx, setSelectedDate, color, bgColor, flag }) => {
     );
 }
 
-const CalendarBody = ({ currentMonth, selectedDate, setSelectedDate }) => {
+const CalendarGrid = ({ currentMonth, selectedDate, setSelectedDate }) => {
     const week = ["Sun", "Mon", "Thu", "Wed", "Thurs", "Fri", "Sat"];
     const monthStart = startOfMonth(currentMonth); // 오늘이 속한 달의 시작일
     const monthEnd = endOfMonth(monthStart); // 오늘이 속한 달의 마지막일
@@ -85,14 +92,21 @@ const CalendarBody = ({ currentMonth, selectedDate, setSelectedDate }) => {
 
     let days = [];
     let day = startDate;
+    let columnCnt = 5;
 
     while (day <= endDate) {
         days.push(day);
         day = addDays(day, 1);
     }
 
+    if (days.length > 35) {
+        columnCnt = 6;
+    } else if (days.length <= 28) {
+        columnCnt = 4;
+    }
+
     return (
-        <CalendarBodyFrame>
+        <CalendarGridFrame columnCnt={columnCnt}>
             {week.map((elem) => {
                 return <Day key={elem}>{elem}</Day>;
             })}
@@ -109,8 +123,8 @@ const CalendarBody = ({ currentMonth, selectedDate, setSelectedDate }) => {
                      <CellBox key={index} setSelectedDate={setSelectedDate} dayx={dayx} color={"#dddcdb"} flag={true} />       
                 );
             })}
-        </CalendarBodyFrame>
+        </CalendarGridFrame>
     );
 };
 
-export default CalendarBody;
+export default CalendarGrid;

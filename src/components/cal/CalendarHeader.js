@@ -18,7 +18,7 @@ const LeftSideSpan = styled.span`
 `;
 
 const YearSpan = styled.span`
-    color: var(--main-color);
+    color: #b95de2;
     font-weight: bold;
     font-size: 2rem;
 `;
@@ -37,10 +37,8 @@ const IconSpan = styled.span`
 `;
 
 const CalendarHeader = ({ currentMonth, prevMonth, nextMonth }) => {
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"];
-    
-    // const today = new Date();
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
+    "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
 
     return (
         <HeaderFrame>

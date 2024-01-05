@@ -15,13 +15,11 @@ export const ProtectedRoute = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        console.log("asdfasdfasdfasd", user);
         if (!user) {
             const fetchData = async () => {
                 setLoading(true);
                 try {
                     const response = await validate();
-                    console.log("ttt", response.status)
                     if (response.status === 403) {
                         navigate("/login");
                     } else if (response.status === 200) {
