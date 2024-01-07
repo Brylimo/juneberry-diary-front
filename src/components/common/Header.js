@@ -1,10 +1,12 @@
 import React, { useCallback, useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import styled, { css } from 'styled-components';
 import Menu from './Menu';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { signout } from './../../modules/user';
+import * as authAPI from '../../lib/api/authAPI';
 
 const HeaderBlock = styled.div`
     position: fixed;
@@ -138,9 +140,19 @@ const Header = () => {
     const { pathname } = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const queryClient = useQueryClient();
 
+    const [isLogout, setIsLogout] = useState(false);
     const [view, setView] = useState(false);
     const dropdownElement = useRef(null);
+
+    const { data } = useQuery({
+        queryKey: ["logout"],
+        queryFn: authAPI.logout,
+        enabled: isLogout,
+        cacheTime: 0,
+        staleTime: 0
+    });
 
     const onClickMapFlag = useCallback(e => {
         navigate('/geo/map');
@@ -160,8 +172,8 @@ const Header = () => {
     }, [view]);
 
     const onClickLogout = useCallback(e => {
-        dispatch(signout());
-    }, [dispatch]);
+        setIsLogout(true);
+    }, [setIsLogout]);
 
     const handleCloseDropdown = useCallback(e => {
         if (view && (dropdownElement.current && !dropdownElement.current.contains(e.target))) setView(false);
@@ -173,6 +185,13 @@ const Header = () => {
             window.removeEventListener('click', handleCloseDropdown);
         }
     }, [handleCloseDropdown]);
+
+    useEffect(() => {
+        if (isLogout && data) {
+            queryClient.invalidateQueries();
+            dispatch(signout())
+        }
+    }, [data, dispatch, queryClient, isLogout])
 
     return (
         <HeaderBlock>

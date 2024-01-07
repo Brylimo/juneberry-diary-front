@@ -4,18 +4,12 @@ import createRequestSaga, { createRequestActionTypes } from '../lib/createReques
 import * as authAPI from '../lib/api/authAPI';
 
 const SIGNIN = 'user/SIGNIN';
-const [SIGNOUT, SIGNOUT_SUCCESS, SIGNOUT_FAILURE] = createRequestActionTypes(
+const [SIGNOUT] = createRequestActionTypes(
     'user/SIGNOUT'
 );
 
 export const signin = createAction(SIGNIN);
 export const signout = createAction(SIGNOUT);
-
-const signoutSaga = createRequestSaga(SIGNOUT, authAPI.logout);
-
-export function* userSaga() {
-    yield takeLatest(SIGNOUT, signoutSaga);
-}
 
 const initialState = {
     user: null
@@ -27,14 +21,10 @@ export default handleActions(
             ...state,
             user
         }),
-        [SIGNOUT_SUCCESS]: (state, action) => ({
+        [SIGNOUT]: (state, action) => ({
             ...state,
             user: null
-        }),
-        [SIGNOUT_FAILURE]: (state, action) => ({
-            ...state,
-            user: null
-        }),
+        })
     },
     initialState,
 );

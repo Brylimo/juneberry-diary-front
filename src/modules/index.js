@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { all } from 'redux-saga/effects';
 import loading from './loading';
 import auth, { authSaga } from './auth';
-import user, { userSaga } from './user';
+import user from './user';
 import cal, { calSaga } from './cal';
 
 const rootReducer = combineReducers({
@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
 });
 
 export function* rootSaga() {
-    yield all([authSaga(), userSaga(), calSaga()]);
+    yield all([authSaga(), calSaga()]);
 }
 
 export default rootReducer;
