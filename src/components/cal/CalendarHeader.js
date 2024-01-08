@@ -25,6 +25,7 @@ const YearSpan = styled.span`
 
 const LeftWrapper = styled.div`
     display: flex;
+    text-align: center;
 `;
 
 const FontWrapper = styled.div`
@@ -34,6 +35,7 @@ const FontWrapper = styled.div`
 
 const IconSpan = styled.span`
     cursor: pointer;
+    line-height: 100%;
 `;
 
 const CalendarHeader = ({ currentMonth, prevMonth, nextMonth }) => {
@@ -48,7 +50,7 @@ const CalendarHeader = ({ currentMonth, prevMonth, nextMonth }) => {
                         <ArrowLeftIcon></ArrowLeftIcon>
                     </IconSpan>
                 </FontWrapper>
-                <div>
+                <div style={{width: "6.6rem"}}>
                     <LeftSideSpan>{monthNames[currentMonth.getMonth()]}</LeftSideSpan>
                 </div>
                 <FontWrapper>

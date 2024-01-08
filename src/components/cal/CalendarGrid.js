@@ -30,7 +30,7 @@ const Cell = styled.div`
     position: relative;
     padding: 0.3rem;
     font-size: 16px;
-    border-radius: 0.6rem;
+    border-radius: 1rem;
     color: ${(props) => props.color || '#21252a'};
     background-color: ${(props) => props.bgColor || 'transparent'};
     display: flex;
@@ -44,16 +44,16 @@ const Cell = styled.div`
     }
 
     &:hover {
-        background-color: rgba(255, 225, 255, 0.7);
+        background-color: rgba(240, 248, 255, 0.7);
     }
 
     ${props => props.flag && css`
         pointer-events: none;
     `};
     ${
-        props => props.bgColor === "rgba(255, 225, 255, 0.7)" && css`
+        props => props.bgColor === "rgba(240, 248, 255, 0.7)" && css`
             &:hover {
-                background-color: rgb(255, 225, 255);
+                background-color: rgb(240, 248, 255);
             }
     `};
     ${
@@ -70,13 +70,32 @@ const CellInner = styled.div`
     height: 100%;
 `;
 
-const CellBox = ({dayx, setSelectedDate, color, bgColor, flag }) => {
+const CellCircle = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 2.3rem;
+    width: 2.3rem;
+    text-align: center;
+    line-height: 2.3rem;
+    border-radius: 50%;
+    ${
+        props => props.isToday && css`
+            background-color: skyblue;
+            color: white;    
+        `
+    };
+`;
+
+const CellBox = ({dayx, setSelectedDate, color, bgColor, flag, isToday }) => {
     const onSelect = useCallback(() => setSelectedDate(dayx), [dayx, setSelectedDate]);
     
     return (
         <Cell color={color} bgColor={bgColor} flag={flag} onClick={onSelect}>
             <CellInner>
-                {format(dayx, 'd')}
+                <CellCircle isToday={isToday} >
+                    {format(dayx, 'd')}
+                </CellCircle >
             </CellInner>
         </Cell>
     );
@@ -114,13 +133,13 @@ const CalendarGrid = ({ currentMonth, selectedDate, setSelectedDate }) => {
                 return (
                     isSameMonth(dayx, monthStart) ?
                      (isSameDay(dayx, today) && isSameDay(dayx, selectedDate)? 
-                      <CellBox key={index} setSelectedDate={setSelectedDate} dayx={dayx} bgColor={"rgba(243, 221, 252, 0.79)"} /> :
+                      <CellBox key={index} isToday={true} setSelectedDate={setSelectedDate} dayx={dayx} bgColor={"rgba(240, 248, 255, 0.7)"} /> :
                       isSameDay(dayx, today) ?
-                      <CellBox key={index} setSelectedDate={setSelectedDate} dayx={dayx} bgColor={"rgba(204, 204, 255, 0.3)"} /> :
+                      <CellBox key={index} isToday={true} setSelectedDate={setSelectedDate} dayx={dayx} /> :
                      isSameDay(dayx, selectedDate) ? 
-                     <CellBox key={index} setSelectedDate={setSelectedDate} dayx={dayx} bgColor={"rgba(255, 225, 255, 0.7)"} /> : 
+                     <CellBox key={index} setSelectedDate={setSelectedDate} dayx={dayx} bgColor={"rgba(240, 248, 255, 0.7)"} /> : 
                      <CellBox key={index} setSelectedDate={setSelectedDate} dayx={dayx} />) :
-                     <CellBox key={index} setSelectedDate={setSelectedDate} dayx={dayx} color={"#dddcdb"} flag={true} />       
+                     <CellBox key={index} setSelectedDate={setSelectedDate} dayx={dayx} color={"#dddcdb"} flag={true} />
                 );
             })}
         </CalendarGridFrame>
