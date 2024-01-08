@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import styled, { css } from 'styled-components';
 import Menu from './Menu';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -140,18 +140,15 @@ const Header = () => {
     const { pathname } = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const queryClient = useQueryClient();
 
-    const [isLogout, setIsLogout] = useState(false);
     const [view, setView] = useState(false);
     const dropdownElement = useRef(null);
 
-    const { data } = useQuery({
+    const { refetch } = useQuery({
         queryKey: ["logout"],
         queryFn: authAPI.logout,
-        enabled: isLogout,
-        cacheTime: 0,
-        staleTime: 0
+        enabled: false,
+        retry: 0
     });
 
     const onClickMapFlag = useCallback(e => {
@@ -172,8 +169,12 @@ const Header = () => {
     }, [view]);
 
     const onClickLogout = useCallback(e => {
-        setIsLogout(true);
-    }, [setIsLogout]);
+        refetch().then(res => {
+            console.log("kingking", res)
+
+            dispatch(signout());
+        });
+    }, [refetch, dispatch]);
 
     const handleCloseDropdown = useCallback(e => {
         if (view && (dropdownElement.current && !dropdownElement.current.contains(e.target))) setView(false);
@@ -185,13 +186,6 @@ const Header = () => {
             window.removeEventListener('click', handleCloseDropdown);
         }
     }, [handleCloseDropdown]);
-
-    useEffect(() => {
-        if (isLogout && data) {
-            queryClient.invalidateQueries();
-            dispatch(signout())
-        }
-    }, [data, dispatch, queryClient, isLogout])
 
     return (
         <HeaderBlock>
