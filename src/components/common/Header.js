@@ -169,9 +169,7 @@ const Header = () => {
     }, [view]);
 
     const onClickLogout = useCallback(e => {
-        refetch().then(res => {
-            console.log("kingking", res)
-
+        refetch().then(() => {
             dispatch(signout());
         });
     }, [refetch, dispatch]);
