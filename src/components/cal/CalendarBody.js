@@ -91,16 +91,34 @@ const TagBlock = styled.div`
     left: 0;
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.3rem;
 `;
 
-const Tag = styled.div`
+const CellTag = styled.div`
+    font-size: 1.2rem;
+    text-align: center;
+    border-radius: 2rem;
+    color: black;
+    padding: 0.2rem 0;
 
+    ${
+        props => props.type === 'special' && css`
+            color: red;  
+        `
+    };
+    ${
+        props => props.type === 'event' && css`
+            background-color: #98FB98;  
+        `
+    };
 `;
 
 const CellBox = ({dayObj, setSelectedDate, isSelected, isSameMonth }) => {
     const dayx = dayObj["date"];
     const yoil = dayObj["date"].getDay();
-    const isHoliday = dayObj["tags"]?.filter(tag => tag.tagType === 'holiday').length > 0
+    const isHoliday = dayObj["tags"]?.filter(tag => tag.tagType === 'holiday').length > 0;
 
     const onSelect = useCallback(() => setSelectedDate(dayx), [dayx, setSelectedDate]);
     let color = "#21252a";
@@ -128,7 +146,17 @@ const CellBox = ({dayObj, setSelectedDate, isSelected, isSameMonth }) => {
                     {format(dayx, 'd')}
                 </CellCircle >
                 <TagBlock>
-                          
+                    {
+                        dayObj["tags"]?.map(tag => {
+                            if (tag.tagType === "holiday") {
+                                return <CellTag type={"special"}>{tag.name}</CellTag>;
+                            } else if (tag.tagType === "anniversary" || tag.tagType === "division") {
+                                return <CellTag type={"anniversary"}>{tag.name}</CellTag>;
+                            } else if (tag.tagType === "event") {
+                                return <CellTag type={"event"}>{tag.name}</CellTag>;
+                            }
+                        })
+                    }
                 </TagBlock>
             </CellInner>
         </Cell>
@@ -162,10 +190,17 @@ const CalendarBody = ({ currentMonth, selectedDate, setSelectedDate }) => {
         })
 
         while (day <= endDate) {
-            dayList.push({
-                date: day,
-                tags: tagHash[day.getDate()],  
-            });
+            if (isSameMonth(day, monthStart)) {
+                dayList.push({
+                    date: day,
+                    tags: tagHash[day.getDate()],  
+                });
+            } else {
+                dayList.push({
+                    date: day,
+                    tags: [],  
+                });
+            }
             day = addDays(day, 1);
         }
     
