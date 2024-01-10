@@ -86,7 +86,7 @@ const FlagLi = styled.li`
     cursor: pointer;
     color: #868e96;
     ${props =>
-        props.isActive &&
+        props.active &&
         css`
             border-bottom: 0.3rem solid orange;
             color: black;
@@ -129,7 +129,7 @@ const ArrowDropDownIconWrapper = styled(ArrowDropDownIcon)`
     cursor: pointer;
 
     ${props =>
-        props.isActive &&
+        props.active &&
         css`
             color: black;
         `
@@ -195,7 +195,7 @@ const Header = () => {
                     <TitleSpan>JUNEBERRY DIARY</TitleSpan>
                     <FlagTopLeftBlock>
                         <AvatarBlock onClick={onClickAvatar}></AvatarBlock>
-                        <ArrowDropDownIconWrapper onClick={onClickAvatar} isActive={view}/>
+                        <ArrowDropDownIconWrapper onClick={onClickAvatar} active={view}/>
                         {view && <div ref={dropdownElement}>
                             <DropdownBlock>
                                 <DropdownMenuBlock>
@@ -209,9 +209,9 @@ const Header = () => {
                 <FlagBottomBlock>
                     <FlagBottomNav>
                         <FlagBottomUl>
-                            <FlagLi isActive={pathname === "/geo/map"} onClick={onClickMapFlag}>map</FlagLi>
-                            <FlagLi isActive={pathname === "/cal/calendar"} onClick={onClickCalendarFlag}>calendar</FlagLi>
-                            <FlagLi isActive={pathname === "/post/publish"} onClick={onClickPostFlag}>post</FlagLi>
+                            <FlagLi active={pathname === "/geo/map"} onClick={onClickMapFlag}>map</FlagLi>
+                            <FlagLi active={pathname === "/cal/calendar"} onClick={onClickCalendarFlag}>calendar</FlagLi>
+                            <FlagLi active={pathname === "/post/publish"} onClick={onClickPostFlag}>post</FlagLi>
                         </FlagBottomUl>
                     </FlagBottomNav>
                 </FlagBottomBlock>
