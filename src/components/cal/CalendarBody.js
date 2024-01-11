@@ -6,7 +6,7 @@ import * as calAPI from '../../lib/api/calAPI';
 
 const CalendarBodyFrame = styled.div`
     width: 100%;
-    height: calc(100% - 8rem);
+    height: calc(100% - 6.5rem);
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     
@@ -38,12 +38,6 @@ const Cell = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-
-    &:after {
-        content: "";
-        display: block;
-        padding-bottom: 100%;
-    }
 
     &:hover {
         background-color: rgba(240, 248, 255, 0.7);

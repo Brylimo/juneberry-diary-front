@@ -8,7 +8,7 @@ function App() {
     <StyledEngineProvider injectFirst>
         <GlobalStyle />
         <Router />
-        <ReactQueryDevtools />
+        {/*<ReactQueryDevtools />*/}
     </StyledEngineProvider>
   );
 }
