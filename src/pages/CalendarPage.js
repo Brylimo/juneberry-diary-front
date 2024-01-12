@@ -4,7 +4,8 @@ import CalendarHeader from "../components/cal/CalendarHeader";
 import CalendarBody from "../components/cal/CalendarBody";
 import Todo from "../components/todo/Todo";
 import { addMonths, subMonths } from "date-fns";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import ClearIcon from '@mui/icons-material/Clear';
 
 const FrameWrapper = styled.div`
     display: flex;
@@ -18,7 +19,8 @@ const FrameWrapper = styled.div`
 
 const CFrameMarginBlock = styled.div`
     flex: 17.5;
-    position: relative;
+    display: flex;
+    justify-content: center;
 `;
 
 const CFrame = styled.div`
@@ -84,22 +86,20 @@ const TodoBtnImg = styled.img`
 `;
 
 const EventAdderBlock = styled.div`
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, 0);
     min-width: 23rem;
     max-height: 35%;
     width: 80%;
-    min-height: 4rem;
+    min-height: 2rem;
     border-radius: 1.2rem;
     background-color: white;
     border: solid 1px #e0e0e0;
     z-index: 980;
     overflow: auto;
+    margin-top: 17rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
-const EvnetAdderHeader = styled.div`
+const EventAdderHeader = styled.div`
     width: 100%;
     height: 3rem;
     padding: 0.5rem;
@@ -108,15 +108,32 @@ const EvnetAdderHeader = styled.div`
     color: green;
     font-family: Georgia;
     flex-wrap: wrap;
+    position: relative;
+`;
+
+const ExitEventBlockBtn = styled.div`
+    background-color: #00CA4E;
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    transform: translate(0, -50%);
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+
+    &:active {
+        background-color: #008c38;
+    }
 `;
 
 const EventAdderBody = styled.div`
     width: 100%;
     min-height: 4rem;
     padding: 0.5rem 0.5rem 1rem 0.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
+
 `;
 
 const EventAdderInput = styled.input`
@@ -128,7 +145,9 @@ const EventAdderTagBlock = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    transition: 0.4s all;
+    margin-bottom: 0.5rem;
+    width: 95%;
+    gap: 0.2rem;    align-items: center;
 `;
 
 const EventAdderTag = styled.span`
@@ -141,24 +160,27 @@ const EventAdderTag = styled.span`
     cursor: pointer;
 `;
 
-const DragIndicator = styled.div`
-    width: 100%;
-    height: 0.2rem;
-    background-color: red;
-    margin-top: 0.3rem;
-    margin-bottom: 0.3rem;
+const ClearIconBlock = styled(ClearIcon)`
+    color: red;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+
+    &:hover {
+        transform: rotate(180deg);
+    }
 `;
 
 const CalendarPage = () => {
     const [ todoActive, setTodoActive ] = useState(false);
+    const [ dndActive, setDndActive ] = useState(false);
+    const [ eventAdderActive, setEventAdderActive ] = useState(false);
+
     const [ currentMonth, setCurrentMonth ] = useState(new Date());
     const [ selectedDate, setSelectedDate ] = useState(new Date());
     const [ eventAdderTagList, setEventAdderTagList ] = useState([]);
     const [ eventTxt, setEventTxt ] = useState('');
 
-    let eventAdderTagDrag = useRef();
-    let eventAdderTagDragOver = useRef();
-
+    const mounted = useRef(false);
     const eventAdderEndRef = useRef(null);
 
     const prevMonth = useCallback(() => {
@@ -178,54 +200,47 @@ const CalendarPage = () => {
 
     const onEventAdderInputKeyDown = useCallback(e => {
         if (e.key === "Enter" && e.nativeEvent.isComposing === false && eventTxt !== '') {
-            setEventAdderTagList(eventAdderTagList.concat({text: eventTxt, isDragging: false}))
+            setEventAdderTagList(eventAdderTagList.concat(eventTxt));
             setEventTxt('');
         }
     }, [eventAdderTagList, eventTxt]);
 
-    const onTagDragStart = useCallback((e, idx) => {
-        eventAdderTagDrag.current = idx;
+    const onTagDragEnd = useCallback((droppedItem) => {
+        if (!droppedItem.destination) return;
+
+        let updatedList = [...eventAdderTagList]
+        const [reorderedItem] = updatedList.splice(droppedItem.source.index, 1);
+        updatedList.splice(droppedItem.destination.index, 0, reorderedItem);
+        setDndActive(true);
+        setEventAdderTagList(updatedList);
+    }, [eventAdderTagList]);
+
+    const onClickClearIconBlock = useCallback(() => {
+        setEventAdderActive(false);
     }, []);
 
-    const onTagDragEnter = useCallback((e, idx) => {
-        eventAdderTagDragOver.current = idx;
-
-        setEventAdderTagList(eventAdderTagList.map((tag, index) => {
-            if (index === idx) {
-                return {
-                    ...tag,
-                    isDragging: true
-                }
-            } else {
-                return {
-                    ...tag,
-                    isDragging: false
-                };
-            }
-        }));
-    }, [eventAdderTagList]);
-
-    const onTagDragEnd = useCallback((e, idx) => {
-        const array = [...eventAdderTagList];
-        
-        const mainTag = array[eventAdderTagDrag.current];
-        array.splice(eventAdderTagDrag.current, 1);
-        array.splice(eventAdderTagDragOver.current, 0, mainTag);
-
-        eventAdderTagDrag.current = null;
-        eventAdderTagDragOver.current = null;
-
-        setEventAdderTagList(array.map(tag => {
-            return {
-                ...tag,
-                isDragging: false
-            }
-        }))
-    }, [eventAdderTagList]);
+    const removeEventTag = (index) => {
+        const removedEventAdderTagList = eventAdderTagList.filter((_, i) => {
+            return i !== index;
+        }); 
+        setEventAdderTagList(removedEventAdderTagList);
+    }
 
     useEffect(() => {
-        eventAdderEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }, [eventAdderTagList]);
+        if (eventAdderActive && !dndActive) {
+            eventAdderEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [eventAdderActive, dndActive, eventAdderTagList]);
+
+    useEffect(() => {
+        if (mounted.current) {
+            setEventTxt('');
+            setEventAdderTagList([]);
+            setEventAdderActive(true)
+        } else {
+            mounted.current = true;
+        }    
+    }, [selectedDate])
 
     return (
         <div style={{ position: 'relative', height: '100%' }}>
@@ -235,33 +250,38 @@ const CalendarPage = () => {
                 </TodoBtnBlock>
                 { !todoActive && 
                     (<CFrameMarginBlock>
-                        <EventAdderBlock>
-                            <EvnetAdderHeader>
+                        {eventAdderActive && 
+                        (<EventAdderBlock>
+                            <EventAdderHeader>
+                                <ExitEventBlockBtn onClick={onClickClearIconBlock} />
                                 <span>{`${selectedDate.getFullYear()}.${selectedDate.getMonth() + 1}.${selectedDate.getDate()}`}</span>
-                            </EvnetAdderHeader>
+                            </EventAdderHeader>
                             <EventAdderBody>
-                                <DragDropContext onDragEnd={()=>console.log("hi")}>
-                                {
-                                    eventAdderTagList?.map((tag, index) => {
-                                        return (
-                                            <>
-                                                <EventAdderTagBlock key={index} draggable droppable 
-                                                                    onDragStart={e => onTagDragStart(e, index)} 
-                                                                    onDragEnter={e => onTagDragEnter(e, index)}
-                                                                    onDragEnd={e => onTagDragEnd(e, index)}
-                                                >
-                                                    <EventAdderTag>{tag.text}</EventAdderTag>
-                                                </EventAdderTagBlock>
-                                                {tag.isDragging ? <DragIndicator /> : null}
-                                            </>
-                                        );
-                                    })
-                                }
+                                <DragDropContext onDragEnd={onTagDragEnd}>
+                                    <Droppable droppableId="list-container">
+                                        {(provided) => (
+                                            <div ref={provided.innerRef} {...provided.droppableProps}>
+                                                {eventAdderTagList?.map((tag, index) => (
+                                                    <Draggable key={index} draggableId={index.toString()} index={index}>
+                                                        {(provided) => (
+                                                            <EventAdderTagBlock ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
+                                                                <EventAdderTag>
+                                                                    {tag}
+                                                                </EventAdderTag>
+                                                                <ClearIconBlock onClick={() => removeEventTag(index)}></ClearIconBlock>
+                                                            </EventAdderTagBlock>
+                                                        )}
+                                                    </Draggable>
+                                                ))}
+                                                {provided.placeholder}
+                                            </div>
+                                        )}
+                                    </Droppable>
                                 </DragDropContext>
-                                <EventAdderInput value={eventTxt} placeholder="태그를 입력해주세요." onChange={onEventTxtChange} onKeyDown={onEventAdderInputKeyDown}></EventAdderInput>
+                                <EventAdderInput value={eventTxt} placeholder="태그를 입력하세요.." onChange={onEventTxtChange} onKeyDown={onEventAdderInputKeyDown}></EventAdderInput>
                                 <div ref={eventAdderEndRef}></div>
                             </EventAdderBody>
-                        </EventAdderBlock>
+                        </EventAdderBlock>)}
                     </CFrameMarginBlock>)
                 }
                 <CFrame isActive={todoActive}>
