@@ -9,7 +9,7 @@ import { applyMiddleware, createStore } from 'redux';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import createSagaMiddleware from 'redux-saga';
-import rootReducer, { rootSaga } from './modules';
+import rootReducer from './modules';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
 
@@ -20,8 +20,6 @@ const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(logger, sagaMiddleware))
 );
-
-sagaMiddleware.run(rootSaga);
 
 const queryClient = new QueryClient();
 

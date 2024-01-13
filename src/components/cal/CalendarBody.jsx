@@ -1,8 +1,7 @@
 import React, { useCallback, useState } from 'react';
-import { useQuery } from "@tanstack/react-query";
 import { addDays, endOfMonth, endOfWeek, format, isSameMonth, isSameDay, startOfMonth, startOfWeek } from "date-fns";
 import styled, {css} from "styled-components";
-import * as calAPI from '../../lib/api/calAPI';
+import { useGetTagsByMonthQuery } from '../../hooks/queries/useGetTagsByMonthQuery';
 
 const CalendarBodyFrame = styled.div`
     width: 100%;
@@ -164,18 +163,15 @@ const CalendarBody = ({ currentMonth, selectedDate, setSelectedDate }) => {
     const startDate = startOfWeek(monthStart); // monthStart가 속한 주의 시작일
     const endDate = endOfWeek(monthEnd); // monthEnd가 속한 주의 마지막일
 
-    const { isPending, data: res } = useQuery({
-        queryKey: ["getTagsByMonth", {year: currentMonth.getFullYear(), month: currentMonth.getMonth() + 1}],
-        queryFn: () => calAPI.getTagsByMonth(currentMonth.getFullYear(), currentMonth.getMonth() + 1)
-    });
+    const { isPending, data } = useGetTagsByMonthQuery(currentMonth.getFullYear(), currentMonth.getMonth() + 1);
 
     let dayList = [];
     let day = startDate;
     let columnCnt = 5;
 
-    if (res?.data) {
+    if (data) {
         let tagHash = {};
-        res.data.forEach(obj => {
+        data.forEach(obj => {
             if (tagHash[obj.date[2]]) {
                 tagHash[obj.date[2]].push(obj)
             } else {

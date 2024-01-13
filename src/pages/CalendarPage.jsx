@@ -6,6 +6,7 @@ import Todo from "../components/todo/Todo";
 import { addMonths, subMonths } from "date-fns";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import ClearIcon from '@mui/icons-material/Clear';
+import { useAddEventTagListMutation } from "../hooks/mutations/useAddEventTagListMutation";
 
 const FrameWrapper = styled.div`
     display: flex;
@@ -180,6 +181,8 @@ const CalendarPage = () => {
     const [ eventAdderTagList, setEventAdderTagList ] = useState([]);
     const [ eventTxt, setEventTxt ] = useState('');
 
+    const { mutate: addEventTagListMutate } = useAddEventTagListMutation();
+
     const mounted = useRef(false);
     const eventAdderEndRef = useRef(null);
 
@@ -202,6 +205,8 @@ const CalendarPage = () => {
         if (e.key === "Enter" && e.nativeEvent.isComposing === false && eventTxt !== '') {
             setEventAdderTagList(eventAdderTagList.concat(eventTxt));
             setEventTxt('');
+
+            
         }
     }, [eventAdderTagList, eventTxt]);
 
