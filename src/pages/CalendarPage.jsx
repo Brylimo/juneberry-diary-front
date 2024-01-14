@@ -7,6 +7,8 @@ import { addMonths, subMonths } from "date-fns";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import ClearIcon from '@mui/icons-material/Clear';
 import { useAddEventTagListMutation } from "../hooks/mutations/useAddEventTagListMutation";
+import useDebounce from "../hooks/useDebounce";
+import { toast } from 'react-toastify'
 
 const FrameWrapper = styled.div`
     display: flex;
@@ -175,6 +177,7 @@ const CalendarPage = () => {
     const [ todoActive, setTodoActive ] = useState(false);
     const [ dndActive, setDndActive ] = useState(false);
     const [ eventAdderActive, setEventAdderActive ] = useState(false);
+    const [ eventTagLaunchActive, setEventTagLaunchActive ] = useState(false);
 
     const [ currentMonth, setCurrentMonth ] = useState(new Date());
     const [ selectedDate, setSelectedDate ] = useState(new Date());
@@ -203,10 +206,9 @@ const CalendarPage = () => {
 
     const onEventAdderInputKeyDown = useCallback(e => {
         if (e.key === "Enter" && e.nativeEvent.isComposing === false && eventTxt !== '') {
+            setEventTagLaunchActive(true);
             setEventAdderTagList(eventAdderTagList.concat(eventTxt));
             setEventTxt('');
-
-            
         }
     }, [eventAdderTagList, eventTxt]);
 
@@ -235,7 +237,24 @@ const CalendarPage = () => {
         if (eventAdderActive && !dndActive) {
             eventAdderEndRef.current.scrollIntoView({ behavior: 'smooth' });
         }
-    }, [eventAdderActive, dndActive, eventAdderTagList]);
+
+        if (eventTagLaunchActive) {
+            addEventTagListMutate(
+                {
+                    eventAdderTagList
+                },
+                {
+                    onSuccess: () => {
+                        toast.success("태그가 저장되었습니다.");
+                    },
+                    onError: () => {
+                        toast.error("태그 저장에 실패했습니다.");
+                        return;
+                    }
+                }
+            )
+        }
+    }, [eventAdderActive, eventTagLaunchActive, dndActive, eventAdderTagList, addEventTagListMutate]);
 
     useEffect(() => {
         if (mounted.current) {
