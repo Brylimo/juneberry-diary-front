@@ -1,15 +1,22 @@
 import client from './client';
 
 export const getTagsByMonth = async (year, month) => {
-    const res = await client.get('/cal/getTagsByMonth', { params: {
-        year: year,
-        month: month
-    }});
-    return res.data;   
+    const res = await client.get('/cal/getTagsByMonth', { 
+        params: {
+            year: year,
+            month: month
+        }, 
+        withCredentials: false
+    });
+    return res.data;
 }
 
 export const addEventTagList = async ({ selectedDate, eventAdderTagList }) => {
-    const res = await client.post('/cal/addEventTagList', { date: selectedDate, eventTagList: eventAdderTagList });
+    const year = selectedDate.getFullYear();
+    const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);
+    const day = ('0' + selectedDate.getDate()).slice(-2);
+
+    const res = await client.post('/cal/addEventTagList', { date: `${year}-${month}-${day}`, eventTagList: eventAdderTagList });
     return res.data;
 }
 
