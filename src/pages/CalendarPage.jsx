@@ -177,12 +177,13 @@ const CalendarPage = () => {
     const [ todoActive, setTodoActive ] = useState(false);
     const [ dndActive, setDndActive ] = useState(false);
     const [ eventAdderActive, setEventAdderActive ] = useState(false);
-    const [ eventTagLaunchActive, setEventTagLaunchActive ] = useState(false);
 
     const [ currentMonth, setCurrentMonth ] = useState(new Date());
     const [ selectedDate, setSelectedDate ] = useState(new Date());
     const [ eventAdderTagList, setEventAdderTagList ] = useState([]);
     const [ eventTxt, setEventTxt ] = useState('');
+
+    const debouncedValue = useDebounce(eventAdderTagList, 3000);
 
     const { mutate: addEventTagListMutate } = useAddEventTagListMutation();
 
@@ -206,7 +207,6 @@ const CalendarPage = () => {
 
     const onEventAdderInputKeyDown = useCallback(e => {
         if (e.key === "Enter" && e.nativeEvent.isComposing === false && eventTxt !== '') {
-            setEventTagLaunchActive(true);
             setEventAdderTagList(eventAdderTagList.concat(eventTxt));
             setEventTxt('');
         }
@@ -237,10 +237,13 @@ const CalendarPage = () => {
         if (eventAdderActive && !dndActive) {
             eventAdderEndRef.current.scrollIntoView({ behavior: 'smooth' });
         }
+    }, [eventAdderActive, dndActive ]);
 
-        if (eventTagLaunchActive) {
+    useEffect(() => {
+        if (debouncedValue?.length) {
             addEventTagListMutate(
                 {
+                    selectedDate,
                     eventAdderTagList
                 },
                 {
@@ -254,7 +257,7 @@ const CalendarPage = () => {
                 }
             )
         }
-    }, [eventAdderActive, eventTagLaunchActive, dndActive, eventAdderTagList, addEventTagListMutate]);
+    }, [debouncedValue, addEventTagListMutate]);
 
     useEffect(() => {
         if (mounted.current) {

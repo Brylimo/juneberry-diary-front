@@ -8,8 +8,8 @@ export const getTagsByMonth = async (year, month) => {
     return res.data;   
 }
 
-export const addEventTagList = async ( eventAdderTagList ) => {
-    const res = await client.post('/cal/addEventTagList', eventAdderTagList);
+export const addEventTagList = async ({ selectedDate, eventAdderTagList }) => {
+    const res = await client.post('/cal/addEventTagList', { date: selectedDate, eventTagList: eventAdderTagList });
     return res.data;
 }
 
