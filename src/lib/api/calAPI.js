@@ -11,6 +11,16 @@ export const getTagsByMonth = async (year, month) => {
     return res.data;
 }
 
+export const getEventTagsByMonth = async (year, month) => {
+    const res = await client.get('/cal/getEventTagsByMonth', { 
+        params: {
+            year: year,
+            month: month
+        }
+    });
+    return res.data;
+}
+
 export const addEventTagList = async ({ selectedDate, eventAdderTagList }) => {
     const year = selectedDate.getFullYear();
     const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);

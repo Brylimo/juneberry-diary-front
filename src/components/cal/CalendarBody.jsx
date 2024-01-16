@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { addDays, endOfMonth, endOfWeek, format, isSameMonth, isSameDay, startOfMonth, startOfWeek } from "date-fns";
 import styled, {css} from "styled-components";
 import { useGetTagsByMonthQuery } from '../../hooks/queries/useGetTagsByMonthQuery';
+import { useGetEventTagsByMonthQuery } from '../../hooks/queries/useGetEventTagsByMonthQuery';
 
 const CalendarBodyFrame = styled.div`
     width: 100%;
@@ -163,21 +164,28 @@ const CalendarBody = ({ currentMonth, selectedDate, setSelectedDate }) => {
     const startDate = startOfWeek(monthStart); // monthStart가 속한 주의 시작일
     const endDate = endOfWeek(monthEnd); // monthEnd가 속한 주의 마지막일
 
-    const { isPending, data } = useGetTagsByMonthQuery(currentMonth.getFullYear(), currentMonth.getMonth() + 1);
+    const { isPending: isTagPending , data: tagData } = useGetTagsByMonthQuery(currentMonth.getFullYear(), currentMonth.getMonth() + 1);
+    const { isPending: isEventTagPending, data: eventTagData } = useGetEventTagsByMonthQuery(currentMonth.getFullYear(), currentMonth.getMonth() + 1);
 
     let dayList = [];
     let day = startDate;
     let columnCnt = 5;
 
-    if (data) {
+    if (tagData) {
         let tagHash = {};
-        data.forEach(obj => {
+        tagData.forEach(obj => {
             if (tagHash[obj.date[2]]) {
                 tagHash[obj.date[2]].push(obj)
             } else {
                 tagHash[obj.date[2]] = [obj]
             }            
         })
+
+        if (eventTagData) {
+            eventTagData.forEach(obj => {
+                
+            })
+        }
 
         while (day <= endDate) {
             if (isSameMonth(day, monthStart)) {
@@ -206,8 +214,7 @@ const CalendarBody = ({ currentMonth, selectedDate, setSelectedDate }) => {
             {week.map((elem) => {
                 return <Day key={elem}>{elem}</Day>;
             })}
-            {isPending ? "로딩중입니다..." :
-            dayList?.map((dayObj, index) => {
+            {dayList?.map((dayObj, index) => {
                 return (
                      <CellBox 
                         key={index}
