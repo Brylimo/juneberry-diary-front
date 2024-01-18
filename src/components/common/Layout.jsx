@@ -1,10 +1,10 @@
 import { Outlet } from 'react-router-dom';
-import Header from './Header';
+import HeaderForm from '../../containers/HeaderForm';
 
 const Layout = () => {
     return (
         <>
-            <Header></Header>
+            <HeaderForm/>
             <main>
                 <Outlet/>
             </main>

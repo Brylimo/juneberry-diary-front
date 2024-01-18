@@ -1,11 +1,9 @@
 import React, { useCallback, useState, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import styled, { css } from 'styled-components';
 import Menu from './Menu';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { signout } from '../../modules/user';
-import { useLogoutQuery } from '../../hooks/queries/useLogoutQuery';
+
 
 const HeaderBlock = styled.div`
     position: fixed;
@@ -135,15 +133,12 @@ const ArrowDropDownIconWrapper = styled(ArrowDropDownIcon)`
     }
 `;
 
-const Header = () => {
+const Header = ({ onLogout }) => {
     const { pathname } = useLocation();
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     const [view, setView] = useState(false);
     const dropdownElement = useRef(null);
-
-    const { logoutRefetch } = useLogoutQuery();
 
     const onClickMapFlag = useCallback(e => {
         navigate('/geo/map');
@@ -161,12 +156,6 @@ const Header = () => {
         e.stopPropagation();
         setView(!view);
     }, [view]);
-
-    const onClickLogout = useCallback(e => {
-        logoutRefetch().then(() => {
-            dispatch(signout());
-        });
-    }, [logoutRefetch, dispatch]);
 
     const handleCloseDropdown = useCallback(e => {
         if (view && (dropdownElement.current && !dropdownElement.current.contains(e.target))) setView(false);
@@ -194,7 +183,7 @@ const Header = () => {
                             <DropdownBlock>
                                 <DropdownMenuBlock>
                                     <DropdownMenu>마이페이지</DropdownMenu>
-                                    <DropdownMenu onClick={onClickLogout}>로그아웃</DropdownMenu>
+                                    <DropdownMenu onClick={onLogout}>로그아웃</DropdownMenu>
                                 </DropdownMenuBlock>
                             </DropdownBlock>
                         </div>}
