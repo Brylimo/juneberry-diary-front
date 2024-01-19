@@ -109,7 +109,7 @@ const CalendarPage = () => {
                 </TodoBtnBlock>
                 { !todoActive && 
                     (<CFrameMarginBlock>
-                        <EventAdderForm selectedDate={selectedDate} />
+                        <EventAdderForm currentMonth={currentMonth} selectedDate={selectedDate} />
                     </CFrameMarginBlock>)
                 }
                 <CFrame isActive={todoActive}>

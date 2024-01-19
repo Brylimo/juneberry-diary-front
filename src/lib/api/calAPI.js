@@ -21,12 +21,12 @@ export const getEventTagsByMonth = async (year, month) => {
     return res.data;
 }
 
-export const addEventTagList = async ({ selectedDate, eventAdderTagList }) => {
+export const addEventTagList = async ({ selectedDate, events }) => {
     const year = selectedDate.getFullYear();
     const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);
     const day = ('0' + selectedDate.getDate()).slice(-2);
 
-    const res = await client.post('/cal/addEventTagList', { date: `${year}-${month}-${day}`, eventTagList: eventAdderTagList });
+    const res = await client.post('/cal/addEventTagList', { date: `${year}-${month}-${day}`, eventTagList: events });
     return res.data;
 }
 

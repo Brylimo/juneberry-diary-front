@@ -1,10 +1,7 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React from "react";
 import styled from "styled-components";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import ClearIcon from '@mui/icons-material/Clear';
-import { useAddEventTagListMutation } from "../../hooks/mutations/useAddEventTagListMutation";
-import useDebounce from "../../hooks/useDebounce";
-import { toast } from 'react-toastify'
 
 const EventAdderBlock = styled.div`
     min-width: 23rem;
@@ -50,6 +47,24 @@ const ExitEventBlockBtn = styled.div`
     }
 `;
 
+const FlushEventBlockBtn = styled.div`
+    background-color: #7E57C2;
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    position: absolute;
+    top: 50%;
+    left: 3rem;
+    transform: translate(0, -50%);
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+
+    &:active {
+        background-color: #5D4037;
+    }
+`;
+
 const EventAdderBody = styled.div`
     width: 100%;
     min-height: 4rem;
@@ -91,93 +106,13 @@ const ClearIconBlock = styled(ClearIcon)`
     }
 `;
 
-const EventAdder = ({ selectedDate, events }) => {
-    const [ eventAdderActive, setEventAdderActive ] = useState(false);
-    const [ dndActive, setDndActive ] = useState(false);
-
-    const [ eventTxt, setEventTxt ] = useState('');
-    const [ eventAdderTagList, setEventAdderTagList ] = useState([]);
-
-    const debouncedValue = useDebounce(events, 3000);
-
-    const { mutate: addEventTagListMutate } = useAddEventTagListMutation();
-
-    const mounted = useRef(false);
-    const eventAdderEndRef = useRef(null);
-
-    const onEventTxtChange = useCallback(e => {
-        setEventTxt(e.target.value);
-    }, [setEventTxt]);
-
-    const onEventAdderInputKeyDown = useCallback(e => {
-        if (e.key === "Enter" && e.nativeEvent.isComposing === false && eventTxt !== '') {
-            setEventAdderTagList(eventAdderTagList.concat(eventTxt));
-            setEventTxt('');
-        }
-    }, [eventAdderTagList, eventTxt]);
-
-    const onClickClearIconBlock = useCallback(() => {
-        setEventAdderActive(false);
-    }, []);
-
-    const onTagDragEnd = useCallback((droppedItem) => {
-        if (!droppedItem.destination) return;
-
-        let updatedList = [...eventAdderTagList]
-        const [reorderedItem] = updatedList.splice(droppedItem.source.index, 1);
-        updatedList.splice(droppedItem.destination.index, 0, reorderedItem);
-        setDndActive(true);
-        setEventAdderTagList(updatedList);
-    }, [eventAdderTagList]);
-
-    const removeEventTag = (index) => {
-        const removedEventAdderTagList = eventAdderTagList.filter((_, i) => {
-            return i !== index;
-        }); 
-        setEventAdderTagList(removedEventAdderTagList);
-    }
-
-    useEffect(() => {
-        if (eventAdderActive && !dndActive) {
-            eventAdderEndRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [eventAdderActive, dndActive ]);
-
-    useEffect(() => {
-        if (debouncedValue?.length) {
-            addEventTagListMutate(
-                {
-                    selectedDate,
-                    events
-                },
-                {
-                    onSuccess: () => {
-                        toast.success("태그가 저장되었습니다.");
-                    },
-                    onError: () => {
-                        toast.error("태그 저장에 실패했습니다.");
-                        return;
-                    }
-                }
-            )
-        }
-    }, [debouncedValue, addEventTagListMutate]);
-
-    useEffect(() => {
-        if (mounted.current) {
-            setEventTxt('');
-            setEventAdderActive(true)
-        } else {
-            mounted.current = true;
-        }    
-    }, [selectedDate])
-
+const EventAdder = ({ selectedDate, eventTxt, eventAdderEndRef, tempEvents, onClickClearIconBlock, onClickFlushIconBlock, onTagDragEnd, removeEventTag, onEventTxtChange, onEventAdderInputKeyDown }) => {
     return (
         <>
-            {eventAdderActive && 
-            (<EventAdderBlock>
+            <EventAdderBlock>
                 <EventAdderHeader>
                     <ExitEventBlockBtn onClick={onClickClearIconBlock} />
+                    <FlushEventBlockBtn onClick={onClickFlushIconBlock} />
                     <span>{`${selectedDate.getFullYear()}.${selectedDate.getMonth() + 1}.${selectedDate.getDate()}`}</span>
                 </EventAdderHeader>
                 <EventAdderBody>
@@ -185,7 +120,7 @@ const EventAdder = ({ selectedDate, events }) => {
                         <Droppable droppableId="list-container">
                             {(provided) => (
                                 <div ref={provided.innerRef} {...provided.droppableProps}>
-                                    {events?.map((tag, index) => (
+                                    {tempEvents?.map((tag, index) => (
                                         <Draggable key={index} draggableId={index.toString()} index={index}>
                                             {(provided) => (
                                                 <EventAdderTagBlock ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
@@ -205,7 +140,7 @@ const EventAdder = ({ selectedDate, events }) => {
                     <EventAdderInput value={eventTxt} placeholder="태그를 입력하세요.." onChange={onEventTxtChange} onKeyDown={onEventAdderInputKeyDown}></EventAdderInput>
                     <div ref={eventAdderEndRef}></div>
                 </EventAdderBody>
-            </EventAdderBlock>)}
+            </EventAdderBlock>
         </>
     );
 }

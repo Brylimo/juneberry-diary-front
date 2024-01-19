@@ -27,7 +27,7 @@ const Day = styled.div`
     text-align: center;
 `;
 
-const CalendarBody = ({ currentMonth, selectedDate, setSelectedDate }) => {
+const CalendarBody = ({ currentMonth, selectedDate, setSelectedDate, isEventPending }) => {
     const week = ["Sun", "Mon", "Thu", "Wed", "Thurs", "Fri", "Sat"];
     const monthStart = startOfMonth(currentMonth); // 오늘이 속한 달의 시작일
     const monthEnd = endOfMonth(monthStart); // 오늘이 속한 달의 마지막일
