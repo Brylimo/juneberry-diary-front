@@ -127,7 +127,10 @@ const CellBox = ({ dayObj, setSelectedDate, isSelected, isSameMonth, events }) =
                     }
                     {
                         events && events.map(event => {
-                            return <CellTag type={"event"}>{event}</CellTag> 
+                            if (event) {
+                                return <CellTag type={"event"}>{event}</CellTag>
+                            }
+                            return null;
                         })
                     }
                 </TagBlock>

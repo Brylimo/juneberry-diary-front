@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from "react-redux"
 import EventAdder from '../../components/cal/EventAdder';
 import { changeTags } from '../../modules/cal';
+import { useQueryClient } from '@tanstack/react-query';
 import { useAddEventTagListMutation } from "../../hooks/mutations/useAddEventTagListMutation";
 import { toast } from 'react-toastify'
 
@@ -16,6 +17,7 @@ const EventAdderForm = ({ currentMonth, selectedDate }) => {
     const [ eventAdderActive, setEventAdderActive ] = useState(false);
     const [ dndActive, setDndActive ] = useState(false);
 
+    const queryClient = useQueryClient();
     const { mutate: addEventTagListMutate } = useAddEventTagListMutation();
 
     const mounted = useRef(false);
@@ -26,8 +28,8 @@ const EventAdderForm = ({ currentMonth, selectedDate }) => {
     }, [setEventTxt]);
 
     const onEventAdderInputKeyDown = useCallback(e => {
-        if (e.key === "Enter" && e.nativeEvent.isComposing === false && eventTxt !== '') {
-            setTempEvents(tempEvents.concat(eventTxt));
+        if (e.key === "Enter" && e.nativeEvent.isComposing === false && eventTxt.trim() !== '') {       
+            setTempEvents(tempEvents.concat(eventTxt.trim()));
             setEventTxt('');
         }
     }, [tempEvents, eventTxt]);
@@ -47,7 +49,7 @@ const EventAdderForm = ({ currentMonth, selectedDate }) => {
     }, []);
 
     const onClickFlushIconBlock = useCallback(() => {
-        if (tempEvents.length) {
+        if (tempEvents?.length || events?.length) {
             addEventTagListMutate(
                 {
                     selectedDate,
@@ -61,6 +63,8 @@ const EventAdderForm = ({ currentMonth, selectedDate }) => {
                                 value: tempEvents
                             })
                         )
+                        queryClient.invalidateQueries(["getEventTagsByMonth"]);
+                        
                         toast.success("태그가 저장되었습니다.");
                     },
                     onError: () => {
@@ -70,7 +74,7 @@ const EventAdderForm = ({ currentMonth, selectedDate }) => {
                 }
             )
         }
-    }, [tempEvents, selectedDate, addEventTagListMutate, dispatch]);
+    }, [tempEvents, events, selectedDate, addEventTagListMutate, dispatch]);
 
     const removeEventTag = (index) => {
         const removedEventAdderTagList = tempEvents.filter((_, i) => {
@@ -102,7 +106,6 @@ const EventAdderForm = ({ currentMonth, selectedDate }) => {
         }
     }, [eventAdderActive, dndActive ]);
 
-
     return (
         <>
             {eventAdderActive && 
@@ -117,7 +120,7 @@ const EventAdderForm = ({ currentMonth, selectedDate }) => {
                 removeEventTag={removeEventTag}
                 onEventTxtChange={onEventTxtChange}
                 onEventAdderInputKeyDown={onEventAdderInputKeyDown} 
-            />)};
+            />)}
         </>
     )
 }

@@ -1,10 +1,9 @@
 import { useCallback, useState } from "react";
 import styled, { css } from "styled-components";
-import CalendarHeader from "../components/cal/CalendarHeader";
 import CalendarBodyForm from "../containers/cal/CalendarBodyForm";
 import Todo from "../components/todo/Todo";
 import EventAdderForm from "../containers/cal/EventAdderForm";
-import { addMonths, subMonths } from "date-fns";
+import CalendarHeaderForm from "../containers/cal/CalendarHeaderForm";
 
 const FrameWrapper = styled.div`
     display: flex;
@@ -14,6 +13,12 @@ const FrameWrapper = styled.div`
     position: absolute;
     top: 8rem;
     background-color: #fffcfb;
+
+    ${
+        props => props.isActive && css`
+            background-color: transparent;  
+        `
+    };
 `;
 
 const CFrameMarginBlock = styled.div`
@@ -47,7 +52,7 @@ const CalendarFrame = styled.div`
 
 const TFrame = styled.div`
     flex: 1;
-    padding: 3rem;
+    padding: 1rem;
 `;
 
 const TodoBtnBlock = styled.div`
@@ -90,20 +95,13 @@ const CalendarPage = () => {
     const [ currentMonth, setCurrentMonth ] = useState(new Date());
     const [ selectedDate, setSelectedDate ] = useState(new Date());
 
-    const prevMonth = useCallback(() => {
-        setCurrentMonth(subMonths(currentMonth, 1));
-    }, [currentMonth]);
-    const nextMonth = useCallback(() => {
-        setCurrentMonth(addMonths(currentMonth, 1));
-    }, [currentMonth]);
-
     const onClickTodoBtn = useCallback(e => {
         setTodoActive(prev => !prev);
     }, [setTodoActive]);
 
     return (
         <div style={{ position: 'relative', height: '100%' }}>
-            <FrameWrapper>
+            <FrameWrapper isActive={todoActive}>
                 <TodoBtnBlock onClick={onClickTodoBtn}>
                     <TodoBtnImg src="/logo.svg" alt="btn"></TodoBtnImg>
                 </TodoBtnBlock>
@@ -114,11 +112,11 @@ const CalendarPage = () => {
                 }
                 <CFrame isActive={todoActive}>
                     <CalendarFrame>
-                        <CalendarHeader currentMonth={currentMonth} prevMonth={prevMonth} nextMonth={nextMonth} />
+                        <CalendarHeaderForm currentMonth={currentMonth} setCurrentMonth={setCurrentMonth} />
                         <CalendarBodyForm currentMonth={currentMonth} selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
                     </CalendarFrame>
                 </CFrame>
-                { !todoActive && <CFrameMarginBlock></CFrameMarginBlock>}
+                { !todoActive && <CFrameMarginBlock />}
                 { todoActive && 
                     (<TFrame isActive={todoActive}>
                         <Todo selectedDate={selectedDate} />

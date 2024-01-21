@@ -1,65 +1,41 @@
 import React, { useCallback, useState } from 'react';
 import styled, { css } from "styled-components";
 
-const Tags = styled.div`
-    height: 4rem;
-    background-color: transparent;
-    display: flex;
-    flex-direction: row;
-`;
-
-const Tag = styled.div`
-    height: 100%;
-    width: calc(100% / 6);
-    border-radius: 2rem 2rem 0 0;
-    cursor: pointer;
-
-    ${props => props.kind === "todo" && css`
-        background-color: rgba(255, 225, 255, 0.3);
-    `};
-
-    ${props => props.kind === "stat" && css`
-        background-color: rgba(173, 216, 173, 0.3);
-    `};
-
-    ${props => props.kind === "note" && css`
-        background-color: rgba(255, 255, 0, 0.3);
-    `};
-`;
-
 const TodoContent = styled.div`
     width: 100%;
-    height: calc(100% - 4rem);
-    padding: 1rem;
-
-    ${props =>
-        props.activeTag === "todo" &&
-        css`
-            background-color: rgba(255, 225, 255, 0.3);
-        `
-    }
-
-    ${props =>
-        props.activeTag === "stat" &&
-        css`
-            background-color: rgba(173, 216, 173, 0.3);
-        `
-    }
-
-    ${props =>
-        props.activeTag === "note" &&
-        css`
-            background-color: rgba(255, 255, 0, 0.3);
-        `
-    }
+    height: 100%;
+    font-family: 'Cute Font', sans-serif;
 `;
 
 const THeaderFrame = styled.div`
+    width: 100%;
+    height: 15rem;
     margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: column;
 `;
 
-const THeaderFrameSpan = styled.span`
-    font-size: 3rem;
+const THeaderBlock = styled.div`
+    width: 100%;
+    display: flex;
+    flex: 1;
+`;
+
+const THeaderLongBox = styled.div`
+    flex: 3;
+    border-bottom: 0.07rem solid gray;
+    display: flex;
+    align-items: center;
+`;
+
+const THeaderSmallBox = styled.div`
+    flex: 1;
+`;
+
+const THeaderDaySpan = styled.span`
+    font-size: 4rem;
+    line-height: 100%;
+    letter-spacing: 2px;
 `;
 
 const TContentFrame = styled.div`
@@ -89,24 +65,30 @@ const Todo = ({ selectedDate }) => {
 
     return (
         <>
-            <Tags>
-                <Tag kind={"todo"} onClick={onClickTodoTag}></Tag>
-                <Tag kind={"stat"} onClick={onClickStatTag}></Tag>
-                <Tag kind={"note"} onClick={onClickNoteTag}></Tag>
-            </Tags>
-            <TodoContent activeTag={activeTag}>
-                {
-                    activeTag === "todo" && 
-                    (<>
-                        <THeaderFrame>
-                            <THeaderFrameSpan>{monthNames[selectedDate.getMonth()]} </THeaderFrameSpan>
-                            <THeaderFrameSpan>{selectedDate.getDate()}</THeaderFrameSpan>
-                        </THeaderFrame>
-                        <TContentFrame>
+            <TodoContent>
+                <THeaderFrame>
+                    <THeaderBlock>
+                        <THeaderLongBox>
+                            <THeaderDaySpan>
+                                {`${selectedDate.getFullYear()} . ${selectedDate.getMonth()+1} . ${selectedDate.getDate()}`}
+                            </THeaderDaySpan>
+                        </THeaderLongBox>
+                        <THeaderSmallBox>
 
-                        </TContentFrame>
-                    </>)
-                }
+                        </THeaderSmallBox>
+                    </THeaderBlock>
+                    <THeaderBlock>
+                        <THeaderLongBox>
+
+                        </THeaderLongBox>
+                        <THeaderSmallBox>
+                            
+                        </THeaderSmallBox>
+                    </THeaderBlock>
+                </THeaderFrame>
+                <TContentFrame>
+
+                </TContentFrame>
             </TodoContent>
         </>
     );

@@ -86,7 +86,7 @@ const CalendarBody = ({ currentMonth, selectedDate, setSelectedDate, isEventPend
                         isSelected={isSameDay(dayObj["date"], selectedDate)}
                         isSameMonth={isSameMonth(dayObj["date"], monthStart)} 
                      />
-                );
+                )
             })}
         </CalendarBodyFrame>
     );
