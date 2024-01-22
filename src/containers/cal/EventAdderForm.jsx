@@ -74,7 +74,7 @@ const EventAdderForm = ({ currentMonth, selectedDate }) => {
                 }
             )
         }
-    }, [tempEvents, events, selectedDate, addEventTagListMutate, dispatch]);
+    }, [tempEvents, events, selectedDate, addEventTagListMutate, queryClient, dispatch]);
 
     const removeEventTag = (index) => {
         const removedEventAdderTagList = tempEvents.filter((_, i) => {

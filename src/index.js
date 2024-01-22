@@ -12,6 +12,7 @@ import createSagaMiddleware from 'redux-saga';
 import rootReducer from './modules';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
+import './index.css';
 
 const sagaMiddleware = createSagaMiddleware();
 const logger = createLogger();

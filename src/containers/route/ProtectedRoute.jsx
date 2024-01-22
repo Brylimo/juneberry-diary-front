@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Outlet } from "react-router-dom";
 import { signin } from '../../modules/user';
+import { initializeEventHash } from '../../modules/cal';
+import { useQueryClient } from '@tanstack/react-query';
 import * as authAPI from '../../lib/api/authAPI';
 
 export const ProtectedRoute = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
     const [loading, setLoading] = useState(false);
 
     const { user } = useSelector(({ user }) => ({
@@ -23,6 +26,8 @@ export const ProtectedRoute = () => {
                         navigate("/login");
                     } else if (response.status === 200) {
                         dispatch(signin(response.data));
+                        dispatch(initializeEventHash());
+                        queryClient.removeQueries();
                     }
                 } catch (e) {
                     navigate("/login");
@@ -32,7 +37,7 @@ export const ProtectedRoute = () => {
 
             fetchData();
         }
-    }, [user, dispatch, navigate]);
+    }, [user, dispatch, navigate, queryClient]);
 
     if (loading) {
         return "로딩중입니다....";
