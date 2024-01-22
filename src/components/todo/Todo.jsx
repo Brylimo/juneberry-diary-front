@@ -1,5 +1,6 @@
-import React, { useCallback, useState } from 'react';
-import styled, { css } from "styled-components";
+import React, { useState, useEffect, useRef } from 'react';
+import styled from "styled-components";
+import { useBbox } from '../../hooks/useBbox';
 
 const TodoContent = styled.div`
     width: 100%;
@@ -135,9 +136,11 @@ const TContentTimeTable = styled.div`
 const TContentTimeCell = styled.div`
     border-bottom: 1px solid #dddddd;
     border-right: 1px solid #dddddd;
-    text-align: center;
     font-weight: bold;
     font-family: sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:nth-child(7n) {
         border-right: none;
@@ -147,26 +150,76 @@ const TContentTimeCell = styled.div`
         border-top: 1px solid #999999;
     }
 
-    &:nth-child(-161 + n) {
-        border-bottom: 1px solid red;
+    &:nth-child(n + 161) {
+        border-bottom: 1px solid #999999;
     }
 `;
 
+const TodoWrapper = styled.div`
+    padding-right: 2rem;
+    width: 100%;
+    height: 100%;
+`;
+
+const TodoBlock = styled.div`
+    width: 100%;
+    height: 100%;
+    border-top: 1px solid #999999;
+    border-bottom: 1px solid #999999;
+    display: grid;
+    overflow: auto;
+`;
+
+const TodoLine = styled.div`
+    width: 100%;
+    border-bottom: 1px solid #dddddd;
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+`;
+
+const TodoLineGroup = styled.div`
+    flex: 3;
+    border-right: 1px solid #999999;
+`;
+
+const TodoLineContent = styled.div`
+    flex: 12;
+    border-right: 1px solid #999999;
+`;
+
+const TodoLineCheck = styled.div`
+    flex: 1;
+`;
+
+const TodoLineBlock = () => {
+    return (
+        <TodoLine>
+            <TodoLineGroup></TodoLineGroup>
+            <TodoLineContent></TodoLineContent>
+            <TodoLineCheck></TodoLineCheck>
+        </TodoLine>
+    );
+}
 
 const Todo = ({ selectedDate }) => {
-    const [activeTag, setActiveTag] = useState("todo");
+    const [countArray, setCountArray] = useState([]);
+    const [bbox, ref] = useBbox();
+    let count = useRef(0);
 
-    const onClickTodoTag = useCallback(e => {
-        setActiveTag("todo");
-    }, [setActiveTag]);
+    useEffect(() => {
+        if (bbox) {
+            let rectHeight = bbox.height;
 
-    const onClickStatTag = useCallback(e => {
-        setActiveTag("stat");
-    }, [setActiveTag]);
+            while (rectHeight > 0) {
+                count.current += 1
+                rectHeight -= 30;
+            }
 
-    const onClickNoteTag = useCallback(e => {
-        setActiveTag("note");
-    }, [setActiveTag]);
+            setCountArray(Array.from({ length: count.current - 1}, (_, index) => index));
+            count.current = 0;
+        }
+    }, [bbox]);
 
     const week = ["Sun", "Mon", "Thu", "Wed", "Thurs", "Fri", "Sat"];
     let tdTimeArray = Array.from(
@@ -176,47 +229,51 @@ const Todo = ({ selectedDate }) => {
         });
 
     return (
-        <>
-            <TodoContent>
-                <THeaderFrame>
-                    <THeaderBlock>
-                        <THeaderLongBox>
-                            <THeaderLong>
-                                <THeaderTitleSpan>DATE.</THeaderTitleSpan>
-                                <THeaderDaySpan>
-                                    {`${selectedDate.getFullYear().toString().slice(-2)} . ${('0' + (selectedDate.getMonth()+1)).slice(-2)} . ${('0' + selectedDate.getDate()).slice(-2)}`}
-                                </THeaderDaySpan>
-                                <THeaderYoilSpan>
-                                    {week[selectedDate.getDay()]}
-                                </THeaderYoilSpan>
-                            </THeaderLong>
-                            <THeaderLong>
-                                <THeaderTitleSpan>TODAY.</THeaderTitleSpan>
-                                <THeaderInput placeholder="what's up?" />
-                            </THeaderLong>
-                        </THeaderLongBox>
-                        <THeaderSmallBox>
-                            <ScoreBox>
-                                <ScoreBoxTitleSpan>TIME</ScoreBoxTitleSpan>
-                                <ScoreBoxScoreSpan>off</ScoreBoxScoreSpan>
-                            </ScoreBox>
-                        </THeaderSmallBox>
-                    </THeaderBlock>
-                </THeaderFrame>
-                <TContentFrame>
-                    <TContentBody>
-                        안녕
-                    </TContentBody>
-                    <TContentTimeTable>
-                        {
-                            tdTimeArray.map((_, index) => {
-                                return tdTimeArray[index].map(time => <TContentTimeCell>{time}</TContentTimeCell>)
-                            })
-                        }
-                    </TContentTimeTable>
-                </TContentFrame>
-            </TodoContent>
-        </>
+        <TodoContent>
+            <THeaderFrame>
+                <THeaderBlock>
+                    <THeaderLongBox>
+                        <THeaderLong>
+                            <THeaderTitleSpan>DATE.</THeaderTitleSpan>
+                            <THeaderDaySpan>
+                                {`${selectedDate.getFullYear().toString().slice(-2)} . ${('0' + (selectedDate.getMonth()+1)).slice(-2)} . ${('0' + selectedDate.getDate()).slice(-2)}`}
+                            </THeaderDaySpan>
+                            <THeaderYoilSpan>
+                                {week[selectedDate.getDay()]}
+                            </THeaderYoilSpan>
+                        </THeaderLong>
+                        <THeaderLong>
+                            <THeaderTitleSpan>TODAY.</THeaderTitleSpan>
+                            <THeaderInput placeholder="what's up?" />
+                        </THeaderLong>
+                    </THeaderLongBox>
+                    <THeaderSmallBox>
+                        <ScoreBox>
+                            <ScoreBoxTitleSpan>TIME</ScoreBoxTitleSpan>
+                            <ScoreBoxScoreSpan>off</ScoreBoxScoreSpan>
+                        </ScoreBox>
+                    </THeaderSmallBox>
+                </THeaderBlock>
+            </THeaderFrame>
+            <TContentFrame>
+                <TContentBody>
+                    <TodoWrapper>
+                        <TodoBlock ref={ref}>
+                            {countArray.map(value => (
+                                <TodoLineBlock key={value} />
+                            ))}
+                        </TodoBlock>
+                    </TodoWrapper>
+                </TContentBody>
+                <TContentTimeTable>
+                    {
+                        tdTimeArray.map((_, index) => {
+                            return tdTimeArray[index].map(time => <TContentTimeCell>{time}</TContentTimeCell>)
+                        })
+                    }
+                </TContentTimeTable>
+            </TContentFrame>
+        </TodoContent>
     );
 }
 
