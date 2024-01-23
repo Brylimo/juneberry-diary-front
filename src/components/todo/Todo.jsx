@@ -4,6 +4,7 @@ import { useBbox } from '../../hooks/useBbox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Modal from '../common/Modal';
+import TodoTaskModal from '../modal/TodoTaskModal';
 
 const TodoContent = styled.div`
     width: 100%;
@@ -308,6 +309,7 @@ const TodoLineBlock = () => {
     const [chkActive, setChkActive] = useState(false);
     const [lineActive, setLineActive] = useState(false);
     const [chkValue, setChkValue] = useState(null);
+    const [modalActive, setModalActive] = useState(false);
     const [lineGroupTxt, setLineGroupTxt] = useState('');
     const [lineContentTxt, setLineContentTxt] = useState('');
 
@@ -316,6 +318,10 @@ const TodoLineBlock = () => {
             setChkActive(true);
         }
     }, [lineActive]);
+
+    const onClickSettingsIcon = useCallback(() => {
+        setModalActive(true);
+    }, []);
 
     useEffect(() => {
         if (lineGroupTxt || lineContentTxt) {
@@ -348,7 +354,7 @@ const TodoLineBlock = () => {
                         onChange={e=>setLineContentTxt(e.target.value)} 
                     />
                     {lineActive && <TodoLineSettingIcon>
-                        <SettingsIconBlock />
+                        <SettingsIconBlock onClick={onClickSettingsIcon} />
                     </TodoLineSettingIcon>}
                 </TodoLineContent>
                 <TodoLineCheck onClick={onClickTodoLineCheck}>
@@ -362,7 +368,9 @@ const TodoLineBlock = () => {
                     setLineActive={setLineActive} 
                 />}
             </TodoLine>
-            <Modal></Modal>
+            <Modal activeState={modalActive} setActiveState={setModalActive} headerTxt={lineContentTxt}>
+                <TodoTaskModal/>
+            </Modal>
         </>
     );
 }

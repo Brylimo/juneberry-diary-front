@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import styled from "styled-components";
 
 const ModalBlock = styled.div`
@@ -8,7 +8,7 @@ const ModalBlock = styled.div`
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.03);
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 19983004;
 `;
 
@@ -26,9 +26,9 @@ const ModalWrapper = styled.div`
     transform: translate(-50%, -50%);
     border-radius: 0.4rem;
     margin: 3.2rem;
-    box-shadow: rgba(0, 0, 0, 0.02) 0 1.1rem 1rem -0.7rem,
-                rgba(0, 0, 0, 0.014) 0 0.26rem 0.38rem 0.05rem,
-                rgba(0, 0, 0, 0.012) 0 0.09rem 4.6rem 0.18rem;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 1.1rem 1.5rem -0.7rem,
+                rgba(0, 0, 0, 0.14) 0 2.4rem 3.8rem 0.3rem,
+                rgba(0, 0, 0, 0.12) 0 0.9rem 4.6rem 0.8rem;
     
 `;
 
@@ -43,22 +43,50 @@ const ModalHeader = styled.div`
     align-items: center;
 `;
 
-const ModalClose = styled.div`
-
+const ModalBody = styled.div`
+    padding: 2rem 2.4rem;
 `;
 
-const Modal = () => {
+const ModalClose = styled.div`
+    padding: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+`;
+
+const CloseBtn = styled.button`
+    background-color: transparent;
+    outline: none;
+    border: none;
+    box-sizing: border-box;
+    color: rgb(25, 118, 210);
+    padding: 0.6rem 0.8rem;
+    cursor: pointer;
+`;
+
+const Modal = ({ activeState, setActiveState, headerTxt, children }) => {
+    const onClickCloseBtn = useCallback((e) => {
+        setActiveState(false);
+    }, [setActiveState]);
+
     return (
-        <ModalBlock>
-            <ModalWrapper>
-                <ModalHeader>
-                    Settings
-                </ModalHeader>
-                <ModalClose>
-                    
-                </ModalClose>
-            </ModalWrapper>
-        </ModalBlock>
+        <>
+            {activeState && 
+                (<ModalBlock>
+                    <ModalWrapper>
+                        <ModalHeader>
+                            {headerTxt}
+                        </ModalHeader>
+                        <ModalBody>
+                            {children}
+                        </ModalBody>
+                        <ModalClose>
+                            <CloseBtn onClick={onClickCloseBtn}>CLOSE</CloseBtn>
+                        </ModalClose>
+                    </ModalWrapper>
+                </ModalBlock>)
+            }
+        </>
     );
 }
 
