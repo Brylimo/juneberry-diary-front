@@ -1,4 +1,5 @@
 @font-face {
     font-family: 'slowslow';
     src: local('slowslow'), url('./fonts/나눔손글씨-느릿느릿체.woff') format('woff');
+    font-display: block;
 }
