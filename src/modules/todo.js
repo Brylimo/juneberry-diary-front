@@ -1,21 +1,21 @@
 import { createAction, handleActions } from "redux-actions";
 import {produce} from 'immer';
 
-const STORE_TODO = 'cal/STORE_TODO';
+const STORE_TODOS = 'cal/STORE_TODOS';
 
-export const storeTodo = createAction(STORE_TODO);
+export const storeTodos = createAction(STORE_TODOS);
 
 const initialState = {
-    todoList: [],
+    todoHash: {},
     maxIdx: 0
 }
 
 const todo = handleActions(
     {
-        [STORE_TODO]: (state, { payload: { todo } }) => 
-            produce(state, draft => {
-                draft.todoList.push(todo);
-            }),
+        [STORE_TODOS]: (state, { payload: { todoHash } }) => ({
+            ...state,
+            todoHash: todoHash
+        })
     }, 
     initialState
 );

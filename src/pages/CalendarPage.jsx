@@ -1,9 +1,9 @@
 import { useCallback, useState } from "react";
 import styled, { css } from "styled-components";
 import CalendarBodyForm from "../containers/cal/CalendarBodyForm";
-import Todo from "../components/todo/Todo";
 import EventAdderForm from "../containers/cal/EventAdderForm";
 import CalendarHeaderForm from "../containers/cal/CalendarHeaderForm";
+import TodoForm from "../containers/todo/TodoForm";
 
 const FrameWrapper = styled.div`
     display: flex;
@@ -119,7 +119,7 @@ const CalendarPage = () => {
                 { !todoActive && <CFrameMarginBlock />}
                 { todoActive && 
                     (<TFrame isActive={todoActive}>
-                        <Todo selectedDate={selectedDate} />
+                        <TodoForm selectedDate={selectedDate} />
                     </TFrame>) 
                 }
             </FrameWrapper>

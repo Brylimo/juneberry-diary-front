@@ -30,7 +30,7 @@ export const addEventTagList = async ({ selectedDate, events }) => {
     return res.data;
 }
 
-export const getTodosByDay = async ({ selectedDate }) => {
+export const getTodosByDay = async (selectedDate) => {
     const year = selectedDate.getFullYear();
     const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);
     const day = ('0' + selectedDate.getDate()).slice(-2);
@@ -43,12 +43,12 @@ export const getTodosByDay = async ({ selectedDate }) => {
     return res.data;
 }
 
-export const addOneTodo = async ({ selectedDate }) => {
+export const addOneTodo = async ({ selectedDate, groupName, content, position, doneCd }) => {
     const year = selectedDate.getFullYear();
     const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);
     const day = ('0' + selectedDate.getDate()).slice(-2);
 
-    const res = await client.post('/cal/addOneTodo', { date: `${year}-${month}-${day}` });
+    const res = await client.post('/cal/addOneTodo', { date: `${year}-${month}-${day}`, groupName, content, position, doneCd });
     return res.data;
 }
 

@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from "styled-components";
 import { useBbox } from '../../hooks/useBbox';
 import TodoHeader from './TodoHeader';
-import TodoLine from './TodoLine';
-import { useAddOneTodoMutation } from './../../hooks/mutations/useAddOneTodo';
+import TodoLineForm from '../../containers/todo/TodoLineForm';
 
 const TodoContent = styled.div`
     width: 100%;
@@ -69,9 +68,9 @@ const TodoBlock = styled.div`
 `;
 
 const Todo = ({ selectedDate }) => {
-    const [todoArray, setTodoArray] = useState([]);
     const [countArray, setCountArray] = useState([]);
     const [bbox, ref] = useBbox();
+
     let count = useRef(0);
 
     useEffect(() => {
@@ -102,7 +101,7 @@ const Todo = ({ selectedDate }) => {
                     <TodoWrapper>
                         <TodoBlock ref={ref}>
                             {countArray.map(value => (
-                                <TodoLine key={value} index={value} />
+                                <TodoLineForm key={value} index={value} selectedDate={selectedDate} />
                             ))}
                         </TodoBlock>
                     </TodoWrapper>
