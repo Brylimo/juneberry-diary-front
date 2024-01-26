@@ -84,12 +84,11 @@ const CellTag = styled.div`
     };
 `;
 
-const CellBox = ({ dayObj, setSelectedDate, isSelected, isSameMonth, events }) => {
+const CellBox = ({ dayObj, onSelect, isSelected, isSameMonth, events }) => {
     const dayx = dayObj["date"];
     const yoil = dayObj["date"].getDay();
     const isHoliday = dayObj["tags"]?.filter(tag => tag.tagType === 'holiday').length > 0;
 
-    const onSelect = useCallback(() => setSelectedDate(dayx), [dayx, setSelectedDate]);
     let color = "#21252a";
     let bgColor = "transparent";
 

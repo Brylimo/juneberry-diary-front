@@ -4,9 +4,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Modal from '../common/Modal';
 import TodoTaskModal from '../modal/TodoTaskModal';
-import { toast } from 'react-toastify'
-import { useAddOneTodoMutation } from '../../hooks/mutations/useAddOneTodoMutation';
-import useDebounce from './../../hooks/useDebounce';
 
 const TodoLineBlock = styled.div`
     width: 100%;
@@ -140,66 +137,25 @@ const CheckOverlayBlock = ({ setChkValue, setChkActive, setLineActive }) => {
     );
 }
 
-const TodoLine = ({ index, selectedDate }) => {
-    const [chkActive, setChkActive] = useState(false);
-    const [lineActive, setLineActive] = useState(false);
-    const [chkValue, setChkValue] = useState(null);
+const TodoLine = ({ 
+    chkActive,
+    chkValue,
+    lineActive,
+    lineGroupTxt,
+    lineContentTxt,
+    onClickTodoLineCheck,
+    onFocusTodoInput,
+    setChkActive,
+    setLineActive,
+    setChkValue,
+    setLineGroupTxt,
+    setLineContentTxt
+     }) => {
     const [modalActive, setModalActive] = useState(false);
-    const [lineGroupTxt, setLineGroupTxt] = useState('');
-    const [lineContentTxt, setLineContentTxt] = useState('');
-
-    const debouncedValue = useDebounce(lineGroupTxt + lineContentTxt, 2000);
-
-    const { mutate: addOneTodoMutate } = useAddOneTodoMutation();
-
-    const onClickTodoLineCheck = useCallback(() => {
-        if (lineActive) {
-            setChkActive(true);
-        }
-    }, [lineActive]);
 
     const onClickSettingsIcon = useCallback(() => {
         setModalActive(true);
     }, []);
-
-    useEffect(() => {
-        if (debouncedValue) {
-            addOneTodoMutate(
-                {
-                    selectedDate,
-                    groupName: lineGroupTxt,
-                    content: lineContentTxt,
-                    position: index,
-                    doneCd: chkValue === 'O' ? true : false
-                },
-                {
-                    onSuccess: () => {
-                        
-                    },
-                    onError: () => {
-                        toast.error("todo 저장에 실패했습니다.");
-                        return;
-                    }
-                }
-            )
-        }
-    }, [debouncedValue, addOneTodoMutate]);
-
-    useEffect(() => {
-        if (lineGroupTxt || lineContentTxt) {
-            setLineActive(true);
-        } else {
-            setLineActive(false);
-        }
-    }, [lineGroupTxt, lineContentTxt]);
-
-    useEffect(() => {
-        if (!lineActive) {
-            setLineGroupTxt('');
-            setLineContentTxt('');
-            setChkValue('')
-        }
-    }, [lineActive]);
 
     return (
         <>
@@ -207,13 +163,15 @@ const TodoLine = ({ index, selectedDate }) => {
                 <TodoLineGroup>
                     <TodoLineGroupInput 
                         value={lineGroupTxt} 
-                        onChange={e=>setLineGroupTxt(e.target.value)} 
+                        onChange={e=>setLineGroupTxt(e.target.value)}
+                        onInput={onFocusTodoInput} 
                     />
                 </TodoLineGroup>
                 <TodoLineContent>
                     <TodoLineContentInput
                         value={lineContentTxt}
-                        onChange={e=>setLineContentTxt(e.target.value)} 
+                        onChange={e=>setLineContentTxt(e.target.value)}
+                        onInput={onFocusTodoInput} 
                     />
                     <TodoLineIcons>
                         {lineActive &&

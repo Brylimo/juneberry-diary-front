@@ -82,6 +82,7 @@ const CalendarBody = ({ currentMonth, selectedDate, setSelectedDate }) => {
                      <CellBoxForm 
                         key={index}
                         dayObj={dayObj}  
+                        selectedDate={selectedDate}
                         setSelectedDate={setSelectedDate}  
                         isSelected={isSameDay(dayObj["date"], selectedDate)}
                         isSameMonth={isSameMonth(dayObj["date"], monthStart)} 

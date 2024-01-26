@@ -30,10 +30,10 @@ export const addEventTagList = async ({ selectedDate, events }) => {
     return res.data;
 }
 
-export const getTodosByDay = async (selectedDate) => {
-    const year = selectedDate.getFullYear();
-    const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);
-    const day = ('0' + selectedDate.getDate()).slice(-2);
+export const getTodosByDay = async (selectedYear, selectedMonth, selectedDay) => {
+    const year = selectedYear;
+    const month = ('0' + selectedMonth).slice(-2);
+    const day = ('0' + selectedDay).slice(-2);
 
     const res = await client.get('/cal/getTodosByDay', { 
         params: {

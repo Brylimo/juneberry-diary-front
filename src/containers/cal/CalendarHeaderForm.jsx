@@ -8,16 +8,12 @@ const CalendarHeaderForm = ({ currentMonth, setCurrentMonth }) => {
     const dispatch = useDispatch();
 
     const prevMonth = useCallback(() => {
-        dispatch(
-            initializeEventHash()
-        );
+        dispatch(initializeEventHash());
         setCurrentMonth(subMonths(currentMonth, 1));
     }, [currentMonth, setCurrentMonth, dispatch]);
     
     const nextMonth = useCallback(() => {
-        dispatch(
-            initializeEventHash()
-        );
+        dispatch(initializeEventHash());
         setCurrentMonth(addMonths(currentMonth, 1));
     }, [currentMonth, setCurrentMonth, dispatch]);
 

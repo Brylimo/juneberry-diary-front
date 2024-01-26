@@ -23,7 +23,7 @@ function App() {
           pauseOnHover
           theme="colored"
         />
-        {/*<ReactQueryDevtools />*/}
+        <ReactQueryDevtools />
     </StyledEngineProvider>
   );
 }

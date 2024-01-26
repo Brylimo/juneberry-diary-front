@@ -6,7 +6,7 @@ import { storeTodos } from '../../modules/todo';
 
 const TodoForm = ({ selectedDate }) => {
     const dispatch = useDispatch();
-    const {isPending: isTodosPending, data: todoList} = useGetTodosByDayQuery(selectedDate);
+    const {isPending: isTodosPending, data: todoList} = useGetTodosByDayQuery(selectedDate.getFullYear(), selectedDate.getMonth() + 1, selectedDate.getDate());
 
     useEffect(() => {
         if (todoList) {
