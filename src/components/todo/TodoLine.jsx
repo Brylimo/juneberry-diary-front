@@ -4,6 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Modal from '../common/Modal';
 import TodoTaskModal from '../modal/TodoTaskModal';
+import { BeatLoader } from 'react-spinners';
 
 const TodoLineBlock = styled.div`
     width: 100%;
@@ -58,6 +59,7 @@ const TodoLineIcons = styled.div`
     display: flex;
     align-items: center;
     height: 100%;
+    gap: 0.3rem;
 `;
 
 const CheckOverlay = styled.div`
@@ -89,6 +91,7 @@ const DeleteIconBlock = styled(DeleteIcon)`
 const SettingsIconBlock = styled(SettingsIcon)`
     cursor: pointer;
     color: #dddddd;
+    width: 24px;
 
     &:hover {
         color: #999999;
@@ -139,6 +142,7 @@ const CheckOverlayBlock = ({ setChkValue, setChkActive, setLineActive }) => {
 
 const TodoLine = ({ 
     chkActive,
+    isTyping,
     chkValue,
     lineActive,
     lineGroupTxt,
@@ -176,7 +180,7 @@ const TodoLine = ({
                     <TodoLineIcons>
                         {lineActive &&
                         (<>
-                            <SettingsIconBlock onClick={onClickSettingsIcon} />
+                            {isTyping ? <BeatLoader color="#36d7b7" size="4"></BeatLoader> : <SettingsIconBlock onClick={onClickSettingsIcon} />}
                         </>)}
                     </TodoLineIcons>
                 </TodoLineContent>

@@ -16,16 +16,19 @@ const TodoLineForm = ({ index, selectedDate }) => {
     const [chkActive, setChkActive] = useState(false);
     const [lineActive, setLineActive] = useState(false);
     const [focusActive, setFocusActive] = useState(false);
+    const [pendingActive, setPendingActive] = useState(true);
+    const [stopActive, setStopActive] = useState(false);
     const [chkValue, setChkValue] = useState(null);
-    const [tempTodo, setTempTodo] = useState({});
     const [lineGroupTxt, setLineGroupTxt] = useState('');
     const [lineContentTxt, setLineContentTxt] = useState('');
+    const [prevTodo, setPrevTodo]= useState(undefined);
 
-    const debouncedValue = useDebounce(lineGroupTxt + lineContentTxt, 2000);
+    const [isPending, debouncedValue] = useDebounce(lineGroupTxt + lineContentTxt, 2000);
     const queryClient = useQueryClient();
-    const { mutate: addOneTodoMutate } = useAddOneTodoMutation();
+    const { mutate: addOneTodoMutate, isPending: apiPending } = useAddOneTodoMutation();
 
     const onFocusTodoInput = useCallback(() => {
+        setPendingActive(true);
         setFocusActive(true);
     }, []);
 
@@ -36,7 +39,7 @@ const TodoLineForm = ({ index, selectedDate }) => {
     }, [lineActive]);
 
     useEffect(() => {
-        if (debouncedValue && focusActive) {
+        if (debouncedValue && focusActive && !stopActive) {
             addOneTodoMutate(
                 {
                     selectedDate,
@@ -47,13 +50,16 @@ const TodoLineForm = ({ index, selectedDate }) => {
                 },
                 {
                     onSuccess: (res) => {
+                        const resDate = new Date(res.data.date)
+                        queryClient.removeQueries({
+                            queryKey : ["getTodosByDay", {year: resDate.getFullYear(), month: resDate.getMonth() + 1, day: resDate.getDate()}]
+                        });
                         dispatch(
                             changeTodo({
                                 key: res?.position,
                                 value: res?.data
                             })
                         )
-                        queryClient.invalidateQueries(["getTodosByDay"]);
                     },
                     onError: () => {
                         toast.error("todo 저장에 실패했습니다.");
@@ -62,20 +68,33 @@ const TodoLineForm = ({ index, selectedDate }) => {
                 }
             )
         }
+        if (stopActive) {
+            setStopActive(false);
+            toast.error("todo 저장에 실패했습니다.");
+        }
+        if (!pendingActive) setPendingActive(true)
         return () => setFocusActive(false)
     }, [debouncedValue, addOneTodoMutate]);
 
     useEffect(() => {
-        if (!focusActive || !todo) {
+        if (!focusActive || !todo || ((isPending || apiPending) && pendingActive)) {
             setLineGroupTxt(todo?.groupName || '');
             setLineContentTxt(todo?.content || '');
+            setPendingActive(false)
+            if (isPending && pendingActive) {
+                setStopActive(true);
+                setFocusActive(false);
+            }
         }
-        setTempTodo(todo);
+        setPrevTodo(todo);
     }, [todo]);
 
     useEffect(() => {
         if (lineGroupTxt || lineContentTxt) {
             setLineActive(true);
+        } else if (todo) {
+            setLineActive(true);
+            // 따로처리
         } else {
             setLineActive(false);
         }
@@ -89,8 +108,22 @@ const TodoLineForm = ({ index, selectedDate }) => {
         }
     }, [lineActive]);
 
+    useEffect(() => {
+        // 만들어지지 않은 라인 날짜 바꾼 경우
+        if (lineActive && !todo && prevTodo === todo) {
+            setLineGroupTxt(todo?.groupName || '');
+            setLineContentTxt(todo?.content || '');
+            setPendingActive(false)
+            if (isPending && pendingActive) {
+                setStopActive(true);
+                setFocusActive(false);
+            }
+        }
+    }, [selectedDate])
+
     return <TodoLine 
         chkActive={chkActive}
+        isTyping={(isPending || apiPending) && pendingActive}
         chkValue={chkValue}
         lineActive={lineActive}
         lineGroupTxt={lineGroupTxt}
