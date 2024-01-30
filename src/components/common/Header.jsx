@@ -4,7 +4,6 @@ import Menu from './Menu';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-
 const HeaderBlock = styled.div`
     position: fixed;
     top: 0;

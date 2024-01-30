@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import styled, {css} from "styled-components";
+import useDebounce from '../../hooks/useDebounce';
+import { useUpdateTodayTxtMutation } from '../../hooks/mutations/useUpdateTodayTxtMutation';
+import { BeatLoader } from 'react-spinners';
+import { toast } from 'react-toastify';
 
 const THeaderFrame = styled.div`
     width: 100%;
@@ -32,6 +36,13 @@ const THeaderLong = styled.div`
     gap: 2rem;
     border-bottom: 0.07rem dashed gray;
     padding: 0 1rem;
+
+    ${props =>
+        props.kind === "today" &&
+        css`
+            gap: 1.2rem;
+        `
+    }
 `;
 
 const THeaderSmallBox = styled.div`
@@ -97,6 +108,11 @@ const THeaderYoilSpan = styled.span`
     }
 `;
 
+const THeaderTodayBlock = styled.div`
+    flex: 1;
+    display: flex;
+`;
+
 const THeaderInput = styled.input`
     font-size: inherit;
     width: 100%;
@@ -106,15 +122,44 @@ const THeaderInput = styled.input`
     letter-spacing: 0.5rem;
 `;
 
+const BeatLoaderWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    width: 27px;
+`;
+
 const TodoHeader = ({ selectedDate }) => {
     const [todayTxt, setTodayTxt] = useState('');
+    const [isPending, debouncedValue] = useDebounce(todayTxt, 1000);
+    const { mutate: updateTodayTxtMutate, isPending: apiPending } = useUpdateTodayTxtMutation();
+
     const week = ["Sun", "Mon", "Thu", "Wed", "Thurs", "Fri", "Sat"];
+
+    useEffect(() => {
+        if (debouncedValue) {
+            updateTodayTxtMutate(
+                {
+                    selectedDate,
+                    todayTxt: debouncedValue
+                },
+                {
+                    onSuccess: (res) => {
+
+                    },
+                    onError: () => {
+                        toast.error("글 저장에 실패했습니다.");
+                        return;
+                    }
+                }
+            )
+        }
+    }, [debouncedValue, updateTodayTxtMutate])
 
     return (
         <THeaderFrame>
             <THeaderBlock>
                 <THeaderLongBox>
-                    <THeaderLong>
+                    <THeaderLong kind="date">
                         <THeaderTitleSpan>DATE.</THeaderTitleSpan>
                         <THeaderDaySpan>
                             {`${selectedDate.getFullYear().toString().slice(-2)} . ${('0' + (selectedDate.getMonth()+1)).slice(-2)} . ${('0' + selectedDate.getDate()).slice(-2)}`}
@@ -123,13 +168,18 @@ const TodoHeader = ({ selectedDate }) => {
                             {week[selectedDate.getDay()]}
                         </THeaderYoilSpan>
                     </THeaderLong>
-                    <THeaderLong>
+                    <THeaderLong kind="today">
                         <THeaderTitleSpan>TODAY.</THeaderTitleSpan>
-                        <THeaderInput 
-                            value={todayTxt} 
-                            placeholder="what's up?" 
-                            onChange={e=>setTodayTxt(e.target.value)} 
-                        />
+                        <THeaderTodayBlock>
+                            <THeaderInput 
+                                value={todayTxt} 
+                                placeholder="what's up?" 
+                                onChange={e=>setTodayTxt(e.target.value)} 
+                            />
+                            <BeatLoaderWrapper>
+                                {(isPending || apiPending) ? <BeatLoader color="#36d7b7" size="5" /> : null}
+                            </BeatLoaderWrapper>
+                        </THeaderTodayBlock>
                     </THeaderLong>
                 </THeaderLongBox>
                 <THeaderSmallBox>

@@ -52,5 +52,14 @@ export const addOneTodo = async ({ selectedDate, groupName, content, position, d
     return res.data;
 }
 
+export const updateTodayTxt = async ({ selectedDate, todayTxt }) => {
+    const year = selectedDate.getFullYear();
+    const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);
+    const day = ('0' + selectedDate.getDate()).slice(-2);
+
+    const res = await client.post('/cal/updateTodayTxt', { date: `${year}-${month}-${day}`, todayTxt });    
+    return res.data;
+}
+
 export const getAllDayTasks = ({ date }) =>
     client.get('/cal/getAllDayTasks', { date });
