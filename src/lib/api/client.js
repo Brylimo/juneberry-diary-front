@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const client = axios.create({
-    baseURL: "https://juneberrydiary.store/api",
+    baseURL: process.env.REACT_APP_BASE_URL,
     headers: {
         "Content-Type": "application/json",
     },
