@@ -43,6 +43,19 @@ export const getTodosByDay = async (selectedYear, selectedMonth, selectedDay) =>
     return res.data;
 }
 
+export const getTodayTxt = async (selectedDate) => {
+    const year = selectedDate.getFullYear();
+    const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);
+    const day = ('0' + selectedDate.getDate()).slice(-2);
+
+    const res = await client.get('/cal/getTodayTxt', { 
+        params: {
+            date: `${year}-${month}-${day}`
+        }
+    });
+    return res.data;
+}
+
 export const addOneTodo = async ({ selectedDate, groupName, content, position, doneCd }) => {
     const year = selectedDate.getFullYear();
     const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);
@@ -58,6 +71,15 @@ export const updateTodayTxt = async ({ selectedDate, todayTxt }) => {
     const day = ('0' + selectedDate.getDate()).slice(-2);
 
     const res = await client.post('/cal/updateTodayTxt', { date: `${year}-${month}-${day}`, todayTxt });    
+    return res.data;
+}
+
+export const updateTodoChk = async ({ selectedDate, position, check }) => {
+    const year = selectedDate.getFullYear();
+    const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);
+    const day = ('0' + selectedDate.getDate()).slice(-2);
+
+    const res = await client.post('/cal/updateTodoChk', { date: `${year}-${month}-${day}`, position, check });    
     return res.data;
 }
 

@@ -4,6 +4,7 @@ import useDebounce from '../../hooks/useDebounce';
 import { useUpdateTodayTxtMutation } from '../../hooks/mutations/useUpdateTodayTxtMutation';
 import { BeatLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
+import { useGetTodayTxtQuery } from '../../hooks/queries/useGetTodayTxtQuery';
 
 const THeaderFrame = styled.div`
     width: 100%;
@@ -131,12 +132,20 @@ const BeatLoaderWrapper = styled.div`
 const TodoHeader = ({ selectedDate }) => {
     const [todayTxt, setTodayTxt] = useState('');
     const [isPending, debouncedValue] = useDebounce(todayTxt, 1000);
+    const [debouncedValueUpdated, setDebouncedValueUpdated] = useState(false);
+    const { data: todayTxtData } = useGetTodayTxtQuery(selectedDate);
     const { mutate: updateTodayTxtMutate, isPending: apiPending } = useUpdateTodayTxtMutation();
 
     const week = ["Sun", "Mon", "Thu", "Wed", "Thurs", "Fri", "Sat"];
 
     useEffect(() => {
-        if (debouncedValue) {
+        if (todayTxtData) {
+            setTodayTxt(todayTxtData.todayTxt);
+        }
+    }, [todayTxtData]);
+
+    useEffect(() => {
+        if (debouncedValueUpdated && debouncedValue) {
             updateTodayTxtMutate(
                 {
                     selectedDate,
@@ -153,7 +162,14 @@ const TodoHeader = ({ selectedDate }) => {
                 }
             )
         }
-    }, [debouncedValue, updateTodayTxtMutate])
+        setDebouncedValueUpdated(false);
+    }, [debouncedValue, debouncedValueUpdated, updateTodayTxtMutate])
+
+    useEffect(() => {
+        if (debouncedValue !== todayTxt) {
+            setDebouncedValueUpdated(true);
+        }
+    }, [debouncedValue, todayTxt]);
 
     return (
         <THeaderFrame>
@@ -174,10 +190,13 @@ const TodoHeader = ({ selectedDate }) => {
                             <THeaderInput 
                                 value={todayTxt} 
                                 placeholder="what's up?" 
-                                onChange={e=>setTodayTxt(e.target.value)} 
+                                onChange={e=>{
+                                    setTodayTxt(e.target.value)
+                                    setDebouncedValueUpdated(true);
+                                }} 
                             />
                             <BeatLoaderWrapper>
-                                {(isPending || apiPending) ? <BeatLoader color="#36d7b7" size="5" /> : null}
+                                {(isPending || apiPending) && debouncedValueUpdated ? <BeatLoader color="#36d7b7" size="5" /> : null}
                             </BeatLoaderWrapper>
                         </THeaderTodayBlock>
                     </THeaderLong>
