@@ -4,6 +4,7 @@ import useDebounce from '../../hooks/useDebounce';
 import { useUpdateTodayTxtMutation } from '../../hooks/mutations/useUpdateTodayTxtMutation';
 import { BeatLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
+import { useQueryClient } from '@tanstack/react-query';
 import { useGetTodayTxtQuery } from '../../hooks/queries/useGetTodayTxtQuery';
 
 const THeaderFrame = styled.div`
@@ -135,6 +136,7 @@ const TodoHeader = ({ selectedDate }) => {
     const [debouncedValueUpdated, setDebouncedValueUpdated] = useState(false);
     const { data: todayTxtData } = useGetTodayTxtQuery(selectedDate);
     const { mutate: updateTodayTxtMutate, isPending: apiPending } = useUpdateTodayTxtMutation();
+    const queryClient = useQueryClient();
 
     const week = ["Sun", "Mon", "Thu", "Wed", "Thurs", "Fri", "Sat"];
 
@@ -145,7 +147,7 @@ const TodoHeader = ({ selectedDate }) => {
     }, [todayTxtData]);
 
     useEffect(() => {
-        if (debouncedValueUpdated && debouncedValue) {
+        if (debouncedValueUpdated && debouncedValue && !isPending) {
             updateTodayTxtMutate(
                 {
                     selectedDate,
@@ -153,7 +155,9 @@ const TodoHeader = ({ selectedDate }) => {
                 },
                 {
                     onSuccess: (res) => {
-
+                        queryClient.invalidateQueries({
+                            queryKey : ["getTodayTxt", {selectedDate}]
+                        })
                     },
                     onError: () => {
                         toast.error("글 저장에 실패했습니다.");
@@ -190,7 +194,7 @@ const TodoHeader = ({ selectedDate }) => {
                             <THeaderInput 
                                 value={todayTxt} 
                                 placeholder="what's up?" 
-                                onChange={e=>{
+                                onInput={e=>{
                                     setTodayTxt(e.target.value)
                                     setDebouncedValueUpdated(true);
                                 }} 
