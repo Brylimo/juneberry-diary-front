@@ -42,13 +42,20 @@ const TodoLineForm = ({ index, selectedDate }) => {
 
     useEffect(() => {
         if (debouncedValue && focusActive && !stopActive) {
+            let chkNum = 0
+            if (chkValue === 'O') {
+                chkNum = 1
+            } else if (chkValue === 'X') {
+                chkNum = 2
+            }
+
             addOneTodoMutate(
                 {
                     selectedDate,
                     groupName: lineGroupTxt,
                     content: lineContentTxt,
                     position: index,
-                    doneCd: chkValue === 'O' ? true : false
+                    chk: chkNum
                 },
                 {
                     onSuccess: (res) => {
@@ -83,6 +90,8 @@ const TodoLineForm = ({ index, selectedDate }) => {
             setLineGroupTxt(todo?.groupName || '');
             setLineContentTxt(todo?.content || '');
             setPendingActive(false)
+
+            // todo
             if (isPending && pendingActive) {
                 setStopActive(true);
                 setFocusActive(false);
@@ -124,22 +133,31 @@ const TodoLineForm = ({ index, selectedDate }) => {
     }, [selectedDate])
 
     useEffect(() => {
-        updateTodoChkMutate(
-            {
-                selectedDate,
-                position: index,
-                check: chkValue
-            },
-            {
-                onSuccess: (res) => {
-                    
-                },
-                onError: () => {
-                    toast.error("check 저장에 실패했습니다.");
-                    return;
-                }
+        if (chkValue) {
+            let chkNum = 0
+            if (chkValue === 'O') {
+                chkNum = 1
+            } else if (chkValue === 'X') {
+                chkNum = 2
             }
-        )
+            
+            updateTodoChkMutate(
+                {
+                    selectedDate,
+                    position: index,
+                    chk: chkNum
+                },
+                {
+                    onSuccess: (res) => {
+                        
+                    },
+                    onError: () => {
+                        toast.error("check 저장에 실패했습니다.");
+                        return;
+                    }
+                }
+            )
+        }
     }, [chkValue])
 
     return <TodoLine 
