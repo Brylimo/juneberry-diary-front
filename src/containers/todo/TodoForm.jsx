@@ -8,7 +8,7 @@ import { useQueryClient } from '@tanstack/react-query';
 const TodoForm = ({ selectedDate }) => {
     const dispatch = useDispatch();
     const queryClient = useQueryClient();
-    const {isPending: isTodosPending, data: todoList} = useGetTodosByDayQuery(selectedDate.getFullYear(), selectedDate.getMonth() + 1, selectedDate.getDate());
+    const { data: todoList } = useGetTodosByDayQuery(selectedDate.getFullYear(), selectedDate.getMonth() + 1, selectedDate.getDate());
 
     useEffect(() => {
         if (todoList) {
@@ -22,7 +22,7 @@ const TodoForm = ({ selectedDate }) => {
                     todoHash: todoHash
                 })
             )
-            queryClient.removeQueries({
+            queryClient.invalidateQueries({
                 queryKey : ["getTodosByDay", {year: selectedDate.getFullYear(), month: selectedDate.getMonth() + 1, day: selectedDate.getDate()}]
             });
         }

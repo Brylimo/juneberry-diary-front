@@ -42,25 +42,18 @@ const TodoLineForm = ({ index, selectedDate }) => {
 
     useEffect(() => {
         if (debouncedValue && focusActive && !stopActive) {
-            let chkNum = 0
-            if (chkValue === 'O') {
-                chkNum = 1
-            } else if (chkValue === 'X') {
-                chkNum = 2
-            }
-
             addOneTodoMutate(
                 {
                     selectedDate,
                     groupName: lineGroupTxt,
                     content: lineContentTxt,
                     position: index,
-                    chk: chkNum
+                    chk: chkValue
                 },
                 {
                     onSuccess: (res) => {
                         const resDate = new Date(res.data.date)
-                        queryClient.removeQueries({
+                        queryClient.invalidateQueries({
                             queryKey : ["getTodosByDay", {year: resDate.getFullYear(), month: resDate.getMonth() + 1, day: resDate.getDate()}]
                         });
                         dispatch(
@@ -89,9 +82,8 @@ const TodoLineForm = ({ index, selectedDate }) => {
         if (!focusActive || !todo || ((isPending || apiPending) && pendingActive)) {
             setLineGroupTxt(todo?.groupName || '');
             setLineContentTxt(todo?.content || '');
+            setChkValue(todo?.chk || '')
             setPendingActive(false)
-
-            // todo
             if (isPending && pendingActive) {
                 setStopActive(true);
                 setFocusActive(false);
@@ -112,18 +104,11 @@ const TodoLineForm = ({ index, selectedDate }) => {
     }, [lineGroupTxt, lineContentTxt]);
 
     useEffect(() => {
-        if (!lineActive) {
-            setLineGroupTxt('');
-            setLineContentTxt('');
-            setChkValue('')
-        }
-    }, [lineActive]);
-
-    useEffect(() => {
         // 만들어지지 않은 라인 날짜 바꾼 경우
         if (lineActive && !todo && prevTodo === todo) {
             setLineGroupTxt(todo?.groupName || '');
             setLineContentTxt(todo?.content || '');
+            setChkValue(todo?.chk || '')
             setPendingActive(false)
             if (isPending && pendingActive) {
                 setStopActive(true);
@@ -132,24 +117,21 @@ const TodoLineForm = ({ index, selectedDate }) => {
         }
     }, [selectedDate])
 
+    console.log("lemon", index, chkValue)
     useEffect(() => {
-        if (chkValue) {
-            let chkNum = 0
-            if (chkValue === 'O') {
-                chkNum = 1
-            } else if (chkValue === 'X') {
-                chkNum = 2
-            }
-            
+        if (chkValue && chkValue !== todo?.chk) {
             updateTodoChkMutate(
                 {
                     selectedDate,
                     position: index,
-                    chk: chkNum
+                    chk: chkValue
                 },
                 {
                     onSuccess: (res) => {
-                        
+                        /*const resDate = new Date(res.data.date)
+                        queryClient.invalidateQueries({
+                            queryKey : ["getTodosByDay", {year: resDate.getFullYear(), month: resDate.getMonth() + 1, day: resDate.getDate()}]
+                        });*/
                     },
                     onError: () => {
                         toast.error("check 저장에 실패했습니다.");

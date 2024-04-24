@@ -102,12 +102,12 @@ const CheckOverlayBlock = ({ setChkValue, setChkActive, setLineActive }) => {
     const checkOverlayRef = useRef(null);
 
     const onClickOIcon = useCallback(() => {
-        setChkValue('O');
+        setChkValue(1);
         setChkActive(false);
     }, [setChkValue, setChkActive]);
 
     const onClickXIcon = useCallback(() => {
-        setChkValue('X');
+        setChkValue(2);
         setChkActive(false);
     }, [setChkValue, setChkActive]);
 
@@ -185,7 +185,7 @@ const TodoLine = ({
                     </TodoLineIcons>
                 </TodoLineContent>
                 <TodoLineCheck onClick={onClickTodoLineCheck}>
-                    {!!chkValue && chkValue}
+                    {!!chkValue && chkValue === 1 ? "O" : chkValue === 2 ? "X" : null}
                 </TodoLineCheck>
 
                 {(chkActive && lineActive) && 
