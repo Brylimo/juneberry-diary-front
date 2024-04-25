@@ -117,7 +117,6 @@ const TodoLineForm = ({ index, selectedDate }) => {
         }
     }, [selectedDate])
 
-    console.log("lemon", index, chkValue)
     useEffect(() => {
         if (chkValue && chkValue !== todo?.chk) {
             updateTodoChkMutate(
@@ -128,10 +127,10 @@ const TodoLineForm = ({ index, selectedDate }) => {
                 },
                 {
                     onSuccess: (res) => {
-                        /*const resDate = new Date(res.data.date)
+                        const resDate = new Date(res.data.date)
                         queryClient.invalidateQueries({
                             queryKey : ["getTodosByDay", {year: resDate.getFullYear(), month: resDate.getMonth() + 1, day: resDate.getDate()}]
-                        });*/
+                        });
                     },
                     onError: () => {
                         toast.error("check 저장에 실패했습니다.");
