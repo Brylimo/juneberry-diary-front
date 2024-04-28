@@ -85,6 +85,9 @@ const WhiteBox = styled.div`
         font-size: 2.7rem;
         margin-bottom: 1rem;
         font-family: Georgia;
+        ${({ theme }) => theme.xxs`
+            font-size: 2rem;
+        `};
     }
     border: 1px solid #dbdbdb;
     padding: 2rem;

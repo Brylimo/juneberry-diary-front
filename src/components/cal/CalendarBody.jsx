@@ -16,6 +16,10 @@ const CalendarBodyFrame = styled.div`
             grid-template-rows: 2.4rem repeat(${props.columnCnt}, calc((100% - 2.4rem) / ${props.columnCnt}));
         `
     }
+
+    ${({ theme }) => theme.md`
+        height: calc(100vh - 14.5rem);;
+    `};
 `;
 
 const Day = styled.div`
@@ -25,6 +29,9 @@ const Day = styled.div`
     padding: 0.1rem 0.6rem;
     background-color: rgba(204, 204, 255, 0.5);
     text-align: center;
+    ${({ theme }) => theme.xxs`
+        font-size: 1.3rem;
+    `};
 `;
 
 const CalendarBody = ({ currentMonth, selectedDate, setSelectedDate }) => {

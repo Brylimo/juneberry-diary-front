@@ -26,7 +26,7 @@ function App() {
             theme="colored"
           />
         </ThemeProvider>
-        <ReactQueryDevtools />
+        {/*<ReactQueryDevtools />*/}
     </StyledEngineProvider>
   );
 }

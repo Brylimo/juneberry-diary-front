@@ -15,7 +15,7 @@ function Router() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route element={<AuthRoute />}>
+                <Route>
                     <Route path="login" element={<LoginPage/>} />
                     <Route path="register" element={<RegisterPage/>} />
                 </Route>

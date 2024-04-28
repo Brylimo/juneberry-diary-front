@@ -24,7 +24,7 @@ const THeaderBlock = styled.div`
 `;
 
 const THeaderLongBox = styled.div`
-    flex: 27;
+    flex: 5;
     display: flex;
     flex-direction: column;
 `;
@@ -45,10 +45,14 @@ const THeaderLong = styled.div`
             gap: 1.2rem;
         `
     }
+    ${({ theme }) => theme.xs`
+        font-size: 1.4rem;
+        gap: 1rem;
+    `};
 `;
 
 const THeaderSmallBox = styled.div`
-    flex: 10;
+    flex: 2;
 `;
 
 const ScoreBox = styled.div`
@@ -59,6 +63,10 @@ const ScoreBox = styled.div`
     margin: 0 auto;
     border-radius: 0.3rem;
     position: relative;
+
+    ${({ theme }) => theme.xs`
+        width: 100%;
+    `};
 `;
 
 const ScoreBoxTitleSpan = styled.div`
@@ -69,6 +77,10 @@ const ScoreBoxTitleSpan = styled.div`
     left: 50%;
     transform: translateX(-50%);
     color: green;
+
+    ${({ theme }) => theme.xs`
+        font-size: 1.4rem;
+    `};
 `;
 
 const ScoreBoxScoreSpan = styled.div`
@@ -78,12 +90,20 @@ const ScoreBoxScoreSpan = styled.div`
     top: 45%;
     left: 50%;
     transform: translateX(-50%);
+
+    ${({ theme }) => theme.xs`
+        font-size: 1.4rem;
+    `};
 `;
 
 const THeaderTitleSpan = styled.span`
     font-size: 1.8rem;
     font-family: sans-serif;
     color: green;
+
+    ${({ theme }) => theme.xs`
+        font-size: 1.4rem;
+    `};
 `;
 
 const THeaderDaySpan = styled.span`

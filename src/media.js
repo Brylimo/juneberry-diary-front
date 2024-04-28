@@ -1,9 +1,11 @@
 import { css } from "styled-components";
 
 const deviceSizes = {
-  mobile: 375,
-  tablet: 768,
-  laptop: 1024
+  xxs: 320,
+  xs: 375,
+  sm: 768,
+  md: 992,
+  lg: 1200
 }
 
 export default Object.keys(deviceSizes).reduce((acc, label) => {

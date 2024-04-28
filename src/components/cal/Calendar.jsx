@@ -25,6 +25,10 @@ const CFrameMarginBlock = styled.div`
     flex: 17.5;
     display: flex;
     justify-content: center;
+
+    ${({ theme }) => theme.md`
+        display: none;
+    `};
 `;
 
 const CFrame = styled.div`
@@ -42,12 +46,30 @@ const CFrame = styled.div`
             flex: 1;  
         `
     };
+    ${props => props.isActive && props.theme.md`
+        display: none;
+    `};
+    ${({ theme }) => theme.xxs`
+        padding: 0;
+    `};
 `;
 
 const CalendarFrame = styled.div`
     width: 100%;
     height: 100%;
     padding: 1rem 2rem;
+
+    ${
+        props => !props.isActive && css`
+            min-width: 992px;  
+        `
+    };
+    ${({ theme }) => theme.md`
+        min-width: unset;   
+    `};
+    ${({ theme }) => theme.xxs`
+        padding: 0;
+    `};
 `;
 
 const TFrame = styled.div`
@@ -104,7 +126,7 @@ const Calendar = ({ todoActive, onClickTodoBtn }) => {
                 </CFrameMarginBlock>)
             }
             <CFrame isActive={todoActive}>
-                <CalendarFrame>
+                <CalendarFrame isActive={todoActive}>
                     <CalendarHeaderForm currentMonth={currentMonth} setCurrentMonth={setCurrentMonth} />
                     <CalendarBodyForm currentMonth={currentMonth} selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
                 </CalendarFrame>

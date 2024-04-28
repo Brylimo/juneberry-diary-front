@@ -19,12 +19,12 @@ const TContentFrame = styled.div`
 `;
 
 const TContentBody = styled.div`
-    flex: 27;
+    flex: 5;
     font-size: inherit;
 `;
 
 const TContentTimeTable = styled.div`
-    flex: 10;
+    flex: 2;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: repeat(24, 1fr);
@@ -56,6 +56,9 @@ const TodoWrapper = styled.div`
     padding-right: 2rem;
     width: 100%;
     height: 100%;
+    ${({ theme }) => theme.xs`
+        padding-right: 0.8rem;
+    `};
 `;
 
 const TodoBlock = styled.div`

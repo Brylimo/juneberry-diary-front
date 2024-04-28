@@ -42,6 +42,9 @@ const FlagTopLeftBlock = styled.div`
     align-items: center;
     margin-right: 2rem;
     position: relative;
+    ${({ theme }) => theme.sm`
+        margin-right: 0.5rem;
+    `};
 `;
 
 const FlagBottomBlock = styled.div`
@@ -53,6 +56,15 @@ const TitleSpan = styled.span`
     font-size: 3rem;
     margin-left: 2rem;
     font-family: Georgia;
+
+    ${({ theme }) => theme.sm`
+        font-size: 2rem;
+        margin-left: 1rem;
+    `};
+    ${({ theme }) => theme.xxs`
+        font-size: 1.6rem;
+        margin-left: 0.5rem;
+    `};
 `;
 
 const AvatarBlock = styled.div`
@@ -62,11 +74,21 @@ const AvatarBlock = styled.div`
     border-radius: 50%;
     align-self: end;
     cursor: pointer;
+    ${({ theme }) => theme.sm`
+        width: 2.2rem;
+        height: 2.2rem;
+    `};
 `;
 
 const FlagBottomNav = styled.nav`
     height: 100%;
     margin-left: 2rem;
+    ${({ theme }) => theme.sm`
+        margin-left: 1rem;
+    `};
+    ${({ theme }) => theme.xxs`
+        margin-left: 0.5rem;
+    `};
 `;
 
 const FlagBottomUl = styled.ul`
@@ -88,6 +110,9 @@ const FlagLi = styled.li`
             color: black;
         `
     }
+    ${({ theme }) => theme.xs`
+        font-size: 1.2rem;
+    `};
 `;
 
 const DropdownBlock = styled.div`
@@ -130,6 +155,10 @@ const ArrowDropDownIconWrapper = styled(ArrowDropDownIcon)`
             color: black;
         `
     }
+    ${({ theme }) => theme.sm`
+        width: 1em;
+        height: 1em;
+    `};
 `;
 
 const Header = ({ onLogout }) => {
