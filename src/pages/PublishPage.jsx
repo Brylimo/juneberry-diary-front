@@ -3,7 +3,9 @@ import Editor from "../components/post/Editor";
 const PublishPage = () => {
 
     return (
-        <Editor />
+        <div style={{ position: 'relative', height: '100%' }}>
+            <Editor />
+        </div>
     );
 }
 

@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import Menu from './Menu';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import Switch from '@mui/material/Switch';
 
 const HeaderBlock = styled.div`
     position: fixed;
@@ -49,6 +50,9 @@ const FlagTopLeftBlock = styled.div`
 
 const FlagBottomBlock = styled.div`
     flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 `;
 
 const TitleSpan = styled.span`
@@ -88,6 +92,15 @@ const FlagBottomNav = styled.nav`
     `};
     ${({ theme }) => theme.xxs`
         margin-left: 0.5rem;
+    `};
+`;
+
+const FlagBottomUtilityBlock = styled.div`
+    margin-right: 1.2rem;
+    display: flex;
+    align-items: center;
+    ${({ theme }) => theme.sm`
+        margin-right: 0.2rem;
     `};
 `;
 
@@ -161,7 +174,90 @@ const ArrowDropDownIconWrapper = styled(ArrowDropDownIcon)`
     `};
 `;
 
-const Header = ({ onLogout }) => {
+const TodoBtnBlock = styled.div`
+    cursor: pointer;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 5px;
+    background-color: #fffff0;
+    transition: background-color 0.3 ease, box-shadow 0.3s ease;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    line-height: 4rem;
+
+    &:hover {
+        background-color: #ffffff;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    &:active {
+        background-color: #bdc3c7;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.2);
+        transform: scale(0.9);
+    }
+`;
+
+const TodoBtnImg = styled.img`
+    width: 60%;
+    height: 60%;
+    object-fit: cover;
+    vertical-align: middle;
+`;
+
+const IOSSpan = styled.span`
+    font-size: 18px;
+    ${({ theme }) => theme.sm`
+        font-size: 15px;
+    `};
+`;
+
+const IOSSwitch = styled((props) => (
+    <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
+  ))(({ theme }) => ({
+    width: 42,
+    height: 26,
+    padding: 0,
+    margin: '4px',
+    '& .MuiSwitch-switchBase': {
+      padding: 0,
+      margin: 2,
+      transitionDuration: '300ms',
+      '&.Mui-checked': {
+        transform: 'translateX(16px)',
+        color: '#fff',
+        '& + .MuiSwitch-track': {
+          backgroundColor: '#65C466',
+          opacity: 1,
+          border: 0,
+        },
+        '&.Mui-disabled + .MuiSwitch-track': {
+          opacity: 0.5,
+        },
+      },
+      '&.Mui-focusVisible .MuiSwitch-thumb': {
+        color: '#33cf4d',
+        border: '6px solid #fff',
+      },
+      '&.Mui-disabled .MuiSwitch-thumb': {
+        color: '#e9e9ea',
+      },
+      '&.Mui-disabled + .MuiSwitch-track': {
+        opacity: 0.7,
+      },
+    },
+    '& .MuiSwitch-thumb': {
+      boxSizing: 'border-box',
+      width: 22,
+      height: 22,
+    },
+    '& .MuiSwitch-track': {
+      borderRadius: 26 / 2,
+      backgroundColor: '#E9E9EA',
+      opacity: 1,
+    },
+  }));
+
+const Header = ({ todoActive, onLogout, onClickTodoBtn }) => {
     const { pathname } = useLocation();
     const navigate = useNavigate();
 
@@ -225,6 +321,14 @@ const Header = ({ onLogout }) => {
                             <FlagLi active={pathname === "/post/publish"} onClick={onClickPostFlag}>post</FlagLi>
                         </FlagBottomUl>
                     </FlagBottomNav>
+                    <FlagBottomUtilityBlock>
+                        {pathname === "/cal/calendar" ? 
+                        (<>
+                            <IOSSpan>Todo</IOSSpan>
+                            <IOSSwitch sx={{ m: 1 }} onChange={onClickTodoBtn} checked={todoActive}/>
+                        </>) 
+                        : ''}
+                    </FlagBottomUtilityBlock>
                 </FlagBottomBlock>
             </HeaderFlagBlock>
         </HeaderBlock>

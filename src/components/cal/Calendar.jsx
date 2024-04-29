@@ -77,49 +77,12 @@ const TFrame = styled.div`
     padding: 1rem;
 `;
 
-const TodoBtnBlock = styled.div`
-    position: absolute;
-    right: 1.5rem;
-    bottom: 1.5rem;
-    cursor: pointer;
-    z-index: 9000;
-    width: 4rem;
-    height: 4rem;
-    border-radius: 50%;
-    background-color: #fffff0;
-    transition: background-color 0.3 ease, box-shadow 0.3s ease;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    line-height: 4rem;
-
-    &:hover {
-        background-color: #ffffff;
-        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    &:active {
-        background-color: #bdc3c7;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.2);
-        transform: scale(0.9);
-    }
-`;
-
-const TodoBtnImg = styled.img`
-    width: 60%;
-    height: 60%;
-    object-fit: cover;
-    vertical-align: middle;
-`;
-
 const Calendar = ({ todoActive, onClickTodoBtn }) => {
     const [ currentMonth, setCurrentMonth ] = useState(new Date());
     const [ selectedDate, setSelectedDate ] = useState(new Date());
     
     return (
         <FrameWrapper isActive={todoActive}>
-            <TodoBtnBlock onClick={onClickTodoBtn}>
-                <TodoBtnImg src="/logo.svg" alt="btn"></TodoBtnImg>
-            </TodoBtnBlock>
             { !todoActive && 
                 (<CFrameMarginBlock>
                     <EventAdderForm currentMonth={currentMonth} selectedDate={selectedDate} />
