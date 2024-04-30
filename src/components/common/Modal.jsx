@@ -16,17 +16,16 @@ const ModalBlock = styled.div`
 
 const ModalWrapper = styled.div`
     position: relative;
-    margin: 0 auto;
     width: auto;
     display: flex;
     justify-content: center;
-    margin: 5.5rem;
+    margin: 5.5rem 10px 0 10px;
+    min-width: 228px;
 `;
 
 const ModalContent = styled.div`
     overflow: auto;
     width: 50rem; 
-    min-width: 50rem;
     min-height: 60px;
     color: rgba(0, 0, 0, 0.87);
     border-radius: 0.4rem;
@@ -37,6 +36,10 @@ const ModalContent = styled.div`
     rgba(0, 0, 0, 0.14) 0 2.4rem 3.8rem 0.3rem,
     rgba(0, 0, 0, 0.12) 0 0.9rem 4.6rem 0.8rem;
     transition: box-shadow 300ms cubiz-bezier(0.4, 0, 0.2, 1) 0ms;
+
+    @media (max-width: 500px) {
+        width: 100%;
+    }
 `
 
 const ModalHeader = styled.div`
@@ -107,21 +110,22 @@ const Modal = ({ activeState, setActiveState, headerTxt, children }) => {
                 (<ModalBlock>
                     <Draggable
                         nodeRef={nodeRef}
-                        onDrag={(e, data) => trackPos(data)}                    
+                        onDrag={(e, data) => trackPos(data)}
+                        cancel=".ignore-click"                    
                     >
                         <ModalWrapper ref={nodeRef}>
                             <ModalContent>
                                 <ModalHeader>
                                     <h5>{headerTxt}</h5>
                                     <ModalHeaderBtnWrapper>
-                                        <CloseIconBtn onClick={onClickCloseBtn}><CloseIcon style={{width: "20px", height: "20px", opacity: "0.5"}}></CloseIcon></CloseIconBtn>
+                                        <CloseIconBtn onClick={onClickCloseBtn} className='ignore-click'><CloseIcon style={{width: "20px", height: "20px", opacity: "0.5"}}></CloseIcon></CloseIconBtn>
                                     </ModalHeaderBtnWrapper>
                                 </ModalHeader>
-                                <ModalBody>
+                                <ModalBody className='ignore-click'>
                                     {children}
                                 </ModalBody>
-                                <ModalFooter>
-                                    <CloseBtn onClick={onClickCloseBtn}>닫기</CloseBtn>
+                                <ModalFooter className='ignore-click'>
+                                    <CloseBtn onClick={onClickCloseBtn} className='ignore-click'>닫기</CloseBtn>
                                 </ModalFooter>
                             </ModalContent>
                         </ModalWrapper>

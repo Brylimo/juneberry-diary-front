@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import styled, { css } from "styled-components";
 import CalendarBodyForm from '../../containers/cal/CalendarBodyForm';
 import EventAdderForm from '../../containers/cal/EventAdderForm';
 import CalendarHeaderForm from '../../containers/cal/CalendarHeaderForm';
 import TodoForm from '../../containers/todo/TodoForm';
+import EventModalForm from '../../containers/cal/EventModalForm';
+import Modal from '../common/Modal';
 
 const FrameWrapper = styled.div`
     display: flex;
@@ -77,21 +79,31 @@ const TFrame = styled.div`
     padding: 1rem;
 `;
 
-const Calendar = ({ todoActive, onClickTodoBtn }) => {
+const Calendar = ({ todoActive }) => {
     const [ currentMonth, setCurrentMonth ] = useState(new Date());
     const [ selectedDate, setSelectedDate ] = useState(new Date());
-    
+    const [ modalActive, setModalActive ] = useState(false);
+
     return (
         <FrameWrapper isActive={todoActive}>
             { !todoActive && 
                 (<CFrameMarginBlock>
-                    <EventAdderForm currentMonth={currentMonth} selectedDate={selectedDate} />
+                    {/*<EventAdderForm currentMonth={currentMonth} selectedDate={selectedDate} />*/}
                 </CFrameMarginBlock>)
+            }
+            { !todoActive &&
+                (<Modal
+                    activeState={modalActive} 
+                    setActiveState={setModalActive} 
+                    headerTxt={`${selectedDate.getFullYear()}.${selectedDate.getMonth() + 1}.${selectedDate.getDate()}`}
+                 >
+                    <EventModalForm currentMonth={currentMonth} selectedDate={selectedDate}/>
+                </Modal>)
             }
             <CFrame isActive={todoActive}>
                 <CalendarFrame isActive={todoActive}>
                     <CalendarHeaderForm currentMonth={currentMonth} setCurrentMonth={setCurrentMonth} />
-                    <CalendarBodyForm currentMonth={currentMonth} selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+                    <CalendarBodyForm currentMonth={currentMonth} selectedDate={selectedDate} setSelectedDate={setSelectedDate} setModalActive={setModalActive} />
                 </CalendarFrame>
             </CFrame>
             { !todoActive && <CFrameMarginBlock />}

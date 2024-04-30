@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useGetEventTagsByMonthQuery } from '../../hooks/queries/useGetEventTagsByMonthQuery';
 import { storeEvents } from '../../modules/cal';
 
-const CalendarBodyForm = ({ currentMonth, selectedDate, setSelectedDate }) => {
+const CalendarBodyForm = ({ currentMonth, selectedDate, setSelectedDate, setModalActive }) => {
     const dispatch = useDispatch();
     const { isPending: isEventPending, data: eventTagData } = useGetEventTagsByMonthQuery(currentMonth.getFullYear(), currentMonth.getMonth() + 1);
 
@@ -27,7 +27,7 @@ const CalendarBodyForm = ({ currentMonth, selectedDate, setSelectedDate }) => {
                 currentMonth={currentMonth}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
-                isEventPending={isEventPending} 
+                setModalActive={setModalActive}
             />;
 }
 

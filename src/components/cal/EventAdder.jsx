@@ -69,7 +69,6 @@ const EventAdderBody = styled.div`
     width: 100%;
     min-height: 4rem;
     padding: 0.5rem 0.5rem 1rem 0.5rem;
-
 `;
 
 const EventAdderInput = styled.input`
@@ -83,7 +82,8 @@ const EventAdderTagBlock = styled.div`
     justify-content: space-between;
     margin-bottom: 0.5rem;
     width: 95%;
-    gap: 0.2rem;    align-items: center;
+    gap: 0.2rem;    
+    align-items: center;
 `;
 
 const EventAdderTag = styled.span`

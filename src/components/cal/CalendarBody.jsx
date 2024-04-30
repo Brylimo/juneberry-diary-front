@@ -34,7 +34,7 @@ const Day = styled.div`
     `};
 `;
 
-const CalendarBody = ({ currentMonth, selectedDate, setSelectedDate }) => {
+const CalendarBody = ({ currentMonth, selectedDate, setSelectedDate, setModalActive }) => {
     const week = ["Sun", "Mon", "Thu", "Wed", "Thurs", "Fri", "Sat"];
     const monthStart = startOfMonth(currentMonth); // 오늘이 속한 달의 시작일
     const monthEnd = endOfMonth(monthStart); // 오늘이 속한 달의 마지막일
@@ -90,7 +90,8 @@ const CalendarBody = ({ currentMonth, selectedDate, setSelectedDate }) => {
                         key={index}
                         dayObj={dayObj}  
                         selectedDate={selectedDate}
-                        setSelectedDate={setSelectedDate}  
+                        setSelectedDate={setSelectedDate}
+                        setModalActive={setModalActive}  
                         isSelected={isSameDay(dayObj["date"], selectedDate)}
                         isSameMonth={isSameMonth(dayObj["date"], monthStart)} 
                      />
