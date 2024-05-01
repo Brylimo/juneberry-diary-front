@@ -8,7 +8,7 @@ import { useLogoutQuery } from '../hooks/queries/useLogoutQuery';
 const HeaderForm = () => {
     const dispatch = useDispatch();
     const { todoActive } = useSelector(({ cal }) => ({
-        todoActive: cal.isTodo
+        todoActive: cal.todoActive
     }));
     const { logoutRefetch } = useLogoutQuery();
 

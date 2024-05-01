@@ -3,8 +3,11 @@ import styled, {css} from "styled-components";
 import { format, isSameDay } from "date-fns";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import useDraggableInPortal from '../../hooks/useDraggableInPortal';
+import Picker from '@emoji-mart/react';
+import data from '@emoji-mart/data';
 import ClearIcon from '@mui/icons-material/Clear';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
+import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 
 const EventModalBlock = styled.div`
     display: flex;
@@ -29,6 +32,7 @@ const CellBoard = styled.div`
     border-radius: 1rem;
     background-color: rgba(240, 248, 255, 0.7);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: ${(props) => props.color || '#21252a'};
 
     &::after {
         display: block;
@@ -88,7 +92,7 @@ const EventAdderInput = styled.input`
     width: 100%;
 `;
 
-const EventAdderTagBlock = styled.div`
+const TagBlock = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -98,19 +102,30 @@ const EventAdderTagBlock = styled.div`
     align-items: center;
 `;
 
-const EventAdderTag = styled.span`
-    background-color: #98FB98;
+const Tag = styled.span`
+    cursor: default;
     color: black;
     border-radius: 2rem;
     padding: 0.3rem 0.9rem;
     font-size: 1.4rem;
-    cursor: pointer;
     text-align: center;
     font-family: Roboto, Helvetica, Arial, sans-serif;
 
     ${
         props => props.width && css`
             width: ${props.width}px;    
+        `
+    };
+
+    ${
+        props => props.type === 'holiday' && css`
+            color: red;  
+        `
+    };
+    ${
+        props => props.type === 'event' && css`
+            cursor: pointer;
+            background-color: #98FB98;
         `
     };
 `;
@@ -208,10 +223,41 @@ const AutorenewIconCustom = styled(AutorenewIcon)`
     color: #b95de2;
 `;
 
-const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn, tempEvents, onTagDragEnd, removeEventTag, onEventTxtChange, onEventAdderInputKeyDown }) => {
+const EmojiBtn = styled.button`
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    border: none;
+    height: 5rem;
+    width: 5rem;
+    line-height: 5rem;
+    border-radius: 50%;
+`;
+
+const EmojiPickerBlock = styled.div`
+    display: block;
+    ${
+        props => !props.isVisible && css`
+            display: none;
+        `
+    };
+`
+
+const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn, tags, tempEvents, onTagDragEnd, removeEventTag, onEventTxtChange, onEventAdderInputKeyDown }) => {
     const [cellBoardWidth, setCellBoardWidth] = useState(0)
+    const [isEmojiPickerVisible, setIsEmojiPickerVisible] = useState(false)
+    const [currentEmoji, setCurrentEmoji] = useState(null)
     const optionalPortal = useDraggableInPortal();
     const cellBoardRef = useRef(null);
+
+    let color = "#21252a";
+    const yoil = selectedDate.getDay();
+    const isHoliday =  tags?.filter(tag => tag.tagType === 'holiday').length > 0;
+
+    if (yoil === 6) color = "blue";
+    if (yoil === 0) color = "red";
+    if (isHoliday) color = "red";
 
     const updateCellBoardWidth = useCallback((e) => {
             if (cellBoardRef.current) {
@@ -242,15 +288,38 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
                 </FlushContainer>
             </FlushBlock>
             <CellBoardBlock>
-                <CellBoard ref={cellBoardRef}>
+                <CellBoard ref={cellBoardRef} color={color}>
                     <CellBoardContent>
                         <CellBoardCircle isToday={isSameDay(selectedDate, new Date())}>
                             {format(selectedDate, 'd')}
                         </CellBoardCircle>
+                        <EmojiBtn
+                            onClick={() => setIsEmojiPickerVisible(!isEmojiPickerVisible)}
+                            style={{display: "none"}}
+                        >
+                            <InsertEmoticonIcon />
+                        </EmojiBtn>
+                        <EmojiPickerBlock isVisible={isEmojiPickerVisible}>
+                            <Picker 
+                                data={data} 
+                                previewPosition="none" 
+                                onEmojiSelect={(e) => {
+                                    setCurrentEmoji(e.natvie);
+                                    setIsEmojiPickerVisible(!isEmojiPickerVisible)
+                                }} 
+                            />
+                        </EmojiPickerBlock>
                     </CellBoardContent>
                 </CellBoard>
                 <InvisibleCellBoard />
                 <EventAdderBody>
+                    {tags?.map((tag, index) => (
+                        <TagBlock>
+                            <Tag width={cellBoardWidth} type={tag.tagType}>
+                                {tag.name}
+                            </Tag>
+                        </TagBlock>
+                    ))}
                     <DragDropContext onDragEnd={onTagDragEnd}>
                         <Droppable droppableId="list-container">
                             {(provided) => (
@@ -258,17 +327,17 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
                                     {tempEvents?.map((tag, index) => (
                                         <Draggable key={index} draggableId={index.toString()} index={index}>
                                             {optionalPortal((provided) => (
-                                                <EventAdderTagBlock ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
-                                                    <EventAdderTag width={cellBoardWidth}>
+                                                <TagBlock ref={provided.innerRef} {...provided.dragHandleProps} {...provided.draggableProps}>
+                                                    <Tag width={cellBoardWidth} type={"event"}>
                                                         {tag}
-                                                    </EventAdderTag>
+                                                    </Tag>
                                                     <ClearBlock>
                                                         <ClearLine>
                                                             <DottedLine />
                                                         </ClearLine>
                                                         <ClearIconBlock onClick={() => removeEventTag(index)}/>
                                                     </ClearBlock>
-                                                </EventAdderTagBlock>
+                                                </TagBlock>
                                             ))}
                                             </Draggable>
                                     ))}

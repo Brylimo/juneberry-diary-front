@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from "react-redux"
 import EventAdder from '../../components/cal/EventAdder';
-import { changeTags } from '../../modules/cal';
+import { changeEventTags } from '../../modules/cal';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAddEventTagListMutation } from "../../hooks/mutations/useAddEventTagListMutation";
 import { toast } from 'react-toastify'
@@ -58,7 +58,7 @@ const EventAdderForm = ({ currentMonth, selectedDate }) => {
                 {
                     onSuccess: () => {
                         dispatch(
-                            changeTags({
+                            changeEventTags({
                                 key: selectedDate.getDate(),
                                 value: tempEvents
                             })

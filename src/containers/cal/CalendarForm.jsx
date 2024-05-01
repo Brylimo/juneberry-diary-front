@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 const CalendarForm = () => {
     const { todoActive } = useSelector(({ cal }) => ({
-        todoActive: cal.isTodo
+        todoActive: cal.todoActive
     }));
 
     return <Calendar

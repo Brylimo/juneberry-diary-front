@@ -47,7 +47,7 @@ const THeaderLong = styled.div`
     }
     ${({ theme }) => theme.xs`
         font-size: 1.4rem;
-        gap: 1rem;
+        gap: 0.7rem;
     `};
 `;
 

@@ -82,6 +82,13 @@ const CellTag = styled.div`
             background-color: #98FB98;
         `
     };
+
+    ${({ theme }) => theme.xs`
+        font-size: 1rem;
+    `};
+    ${({ theme }) => theme.xxs`
+        font-size: 0.9rem;
+    `};
 `;
 
 const CellBox = ({ dayObj, onSelect, isSelected, isSameMonth, events }) => {

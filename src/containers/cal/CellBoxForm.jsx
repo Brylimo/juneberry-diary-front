@@ -9,7 +9,7 @@ const CellBoxForm = ({ dayObj, selectedDate, setSelectedDate, setModalActive, is
         eventHash: cal.eventHash
     }));
     const { todoActive } = useSelector(({ cal }) => ({
-        todoActive: cal.isTodo
+        todoActive: cal.todoActive
     }));
 
     const dayx = dayObj["date"];
@@ -20,11 +20,14 @@ const CellBoxForm = ({ dayObj, selectedDate, setSelectedDate, setModalActive, is
         if (selectedDate.getTime() !== dayx.getTime()) {
             dispatch(initializeTodoHash())
             setSelectedDate(dayx)
-            if (!todoActive) {
-                setModalActive(true)
-            }
         }
-    }, [dayx, selectedDate, setSelectedDate, dispatch]);
+        console.log(todoActive)
+        if (todoActive === false) {
+            setModalActive(true)
+        } else {
+            setModalActive(false)
+        }
+    }, [dayx, selectedDate, todoActive, setModalActive, setSelectedDate, dispatch]);
 
     return <CellBox 
         dayObj={dayObj}

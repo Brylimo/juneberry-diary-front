@@ -57,7 +57,7 @@ const TodoWrapper = styled.div`
     width: 100%;
     height: 100%;
     ${({ theme }) => theme.xs`
-        padding-right: 0.8rem;
+        padding-right: 0.4rem;
     `};
 `;
 

@@ -1,7 +1,6 @@
 import React from 'react';
-import { addDays, endOfMonth, endOfWeek, isSameMonth, isSameDay, startOfMonth, startOfWeek } from "date-fns";
+import { isSameMonth, isSameDay, startOfMonth } from "date-fns";
 import styled, {css} from "styled-components";
-import { useGetTagsByMonthQuery } from '../../hooks/queries/useGetTagsByMonthQuery';
 import CellBoxForm from '../../containers/cal/CellBoxForm';
 
 const CalendarBodyFrame = styled.div`
@@ -34,44 +33,12 @@ const Day = styled.div`
     `};
 `;
 
-const CalendarBody = ({ currentMonth, selectedDate, setSelectedDate, setModalActive }) => {
+const CalendarBody = ({ currentMonth, selectedDate, dayList, setSelectedDate, setModalActive }) => {
     const week = ["Sun", "Mon", "Thu", "Wed", "Thurs", "Fri", "Sat"];
-    const monthStart = startOfMonth(currentMonth); // 오늘이 속한 달의 시작일
-    const monthEnd = endOfMonth(monthStart); // 오늘이 속한 달의 마지막일
-    const startDate = startOfWeek(monthStart); // monthStart가 속한 주의 시작일
-    const endDate = endOfWeek(monthEnd); // monthEnd가 속한 주의 마지막일
-
-    const { data: tagData } = useGetTagsByMonthQuery(currentMonth.getFullYear(), currentMonth.getMonth() + 1);
-
-    let dayList = [];
-    let day = startDate;
+    const monthStart = startOfMonth(currentMonth);
     let columnCnt = 5;
 
-    if (tagData) {
-        let tagHash = {};
-        tagData.forEach(obj => {
-            if (tagHash[obj.date[2]]) {
-                tagHash[obj.date[2]].push(obj)
-            } else {
-                tagHash[obj.date[2]] = [obj]
-            }            
-        })
-
-        while (day <= endDate) {
-            if (isSameMonth(day, monthStart)) {
-                dayList.push({
-                    date: day,
-                    tags: tagHash[day.getDate()],  
-                });
-            } else {
-                dayList.push({
-                    date: day,
-                    tags: [],  
-                });
-            }
-            day = addDays(day, 1);
-        }
-    
+    if (dayList) {
         if (dayList.length > 35) {
             columnCnt = 6;
         } else if (dayList.length <= 28) {

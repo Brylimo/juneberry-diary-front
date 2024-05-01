@@ -141,6 +141,9 @@ const DropdownMenuBlock = styled.div`
     width: 20rem;
     background-color: white;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px;
+    ${({ theme }) => theme.xs`
+        width: 13rem;
+    `};
 `;
 
 const DropdownMenu = styled.div`
@@ -154,6 +157,10 @@ const DropdownMenu = styled.div`
         background-color: #F8F9FA;
         color: red;
     }
+    ${({ theme }) => theme.xs`
+        font-weight: 400;
+        font-size: 1.3rem;
+    `};
 `;
 
 const ArrowDropDownIconWrapper = styled(ArrowDropDownIcon)`
