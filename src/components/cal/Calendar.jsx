@@ -96,6 +96,7 @@ const Calendar = ({ todoActive }) => {
                     activeState={modalActive} 
                     setActiveState={setModalActive} 
                     headerTxt={`${selectedDate.getFullYear()}.${selectedDate.getMonth() + 1}.${selectedDate.getDate()}`}
+                    headerFontFamily={"Georgia"}
                  >
                     <EventModalForm currentMonth={currentMonth} selectedDate={selectedDate}/>
                 </Modal>)

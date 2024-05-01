@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { useQueryClient } from '@tanstack/react-query';
 import { useAddEventTagListMutation } from "../../hooks/mutations/useAddEventTagListMutation";
 import EventModal from '../../components/modal/EventModal';
+import { changeTags } from '../../modules/cal';
 
 const EventModalForm = ({ currentMonth, selectedDate }) => {
     const dispatch = useDispatch();
@@ -42,6 +43,31 @@ const EventModalForm = ({ currentMonth, selectedDate }) => {
         setTempEvents(updatedList);
     }, [tempEvents]);
 
+    const onClickFlushBtn = useCallback(() => {
+        if (tempEvents?.length || events?.length) {
+            addEventTagListMutate(
+                {
+                    selectedDate,
+                    events: tempEvents
+                },
+                {
+                    onSuccess: () => {
+                        dispatch(
+                            changeTags({
+                                key: selectedDate.getDate(),
+                                value: tempEvents
+                            })
+                        )
+                        queryClient.invalidateQueries(["getEventTagsByMonth"]);
+                    },
+                    onError: () => {
+                        return;
+                    }
+                }
+            )
+        }
+    }, [tempEvents, events, selectedDate, addEventTagListMutate, queryClient, dispatch]);
+
     const removeEventTag = (index) => {
         const removedEventAdderTagList = tempEvents.filter((_, i) => {
             return i !== index;
@@ -65,6 +91,7 @@ const EventModalForm = ({ currentMonth, selectedDate }) => {
             eventTxt={eventTxt}
             eventAdderEndRef={eventAdderEndRef}
             tempEvents={tempEvents}
+            onClickFlushBtn={onClickFlushBtn}
             onTagDragEnd={onTagDragEnd}
             removeEventTag={removeEventTag}
             onEventTxtChange={onEventTxtChange}

@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useRef } from 'react';
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import CloseIcon from '@mui/icons-material/Close';
 import Draggable from 'react-draggable';
 
@@ -55,12 +55,25 @@ const ModalHeader = styled.div`
     border-bottom: 1px solid #e5e9f2;
 `;
 
+const ModalHeaderTxt = styled.h5`
+    ${
+        props => props.color && css`
+            color: ${props.color};    
+        `
+    };
+    ${
+        props => props.family && css`
+            font-family: ${props.family};    
+        `
+    };
+`;
+
 const ModalHeaderBtnWrapper = styled.div`
     display: flex;
 `;
 
 const ModalBody = styled.div`
-    padding: 2rem 2.4rem;
+    padding: 2rem 0;
 `;
 
 const ModalFooter = styled.div`
@@ -92,7 +105,17 @@ const CloseIconBtn = styled.button`
     cursor: pointer;
 `;
 
-const Modal = ({ activeState, setActiveState, headerTxt, children }) => {
+const CloseIconCore = styled(CloseIcon)`
+    width: 20px;
+    height: 20px; 
+    opacity: 0.5;
+
+    &:hover {
+        opacity: 1;
+    }
+`
+
+const Modal = ({ activeState, setActiveState, headerTxt, headerColor, headerFontFamily, children }) => {
     const nodeRef = useRef(null);
     const [pos, setPos] = useState({ x: 0, y: 0})
 
@@ -116,9 +139,9 @@ const Modal = ({ activeState, setActiveState, headerTxt, children }) => {
                         <ModalWrapper ref={nodeRef}>
                             <ModalContent>
                                 <ModalHeader>
-                                    <h5>{headerTxt}</h5>
+                                    <ModalHeaderTxt color={headerColor} family={headerFontFamily}>{headerTxt}</ModalHeaderTxt>
                                     <ModalHeaderBtnWrapper>
-                                        <CloseIconBtn onClick={onClickCloseBtn} className='ignore-click'><CloseIcon style={{width: "20px", height: "20px", opacity: "0.5"}}></CloseIcon></CloseIconBtn>
+                                        <CloseIconBtn onClick={onClickCloseBtn} className='ignore-click'><CloseIconCore /></CloseIconBtn>
                                     </ModalHeaderBtnWrapper>
                                 </ModalHeader>
                                 <ModalBody className='ignore-click'>
