@@ -12,6 +12,7 @@ const ModalBlock = styled.div`
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 19983004;
+    overflow: hidden;
 `;
 
 const ModalWrapper = styled.div`

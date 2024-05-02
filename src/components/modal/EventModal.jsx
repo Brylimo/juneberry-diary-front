@@ -3,6 +3,7 @@ import styled, {css} from "styled-components";
 import { format, isSameDay } from "date-fns";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import useDraggableInPortal from '../../hooks/useDraggableInPortal';
+import useScreenSize from '../../hooks/useScreenSize';
 import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -45,7 +46,17 @@ const InvisibleCellBoard = styled.div`
     flex: 1;
     background-color: transparent;
     position: relative;
-`
+`;
+
+const InvisibleCellBoardHeader = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5rem;
+    display: flex;
+    align-items: center;
+`;
 
 const CellBoardContent = styled.div`
     position: absolute;
@@ -142,6 +153,11 @@ const Tag = styled.span`
 const ClearBlock = styled.div`
     display: flex;
     flex: 1;
+    ${
+        props => props.isVisible === false && css`
+            display: none;
+        `
+    };
 `;
 
 const ClearLine = styled.div`
@@ -253,6 +269,11 @@ const EmojiPickerBlock = styled.div`
     position: fixed;
     z-index: 9999999;
     ${
+        props => (!props.isRoomOkay && (props.modalWidth && props.width)) && css`
+            transform: translate(calc(${props.modalWidth}px - ${props.width}px), -1.2rem)
+        `
+    };
+    ${
         props => !props.isVisible && css`
             display: none;
         `
@@ -270,14 +291,25 @@ const SentimentSatisfiedAltIconCustom = styled(SentimentSatisfiedAltIcon)`
     &:hover {
         color: grey;
     }
+    ${
+        props => props.isVisible && css`
+            color: grey;
+        `
+    };
 `;
 
 const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn, tags, tempEvents, onTagDragEnd, removeEventTag, onEventTxtChange, onEventAdderInputKeyDown }) => {
     const [cellBoardWidth, setCellBoardWidth] = useState(0)
+    const [emojiPickerWidth, setEmojiPickerWidth] = useState(0)
+    const [emojiBtnSize, setEmojiBtnSize] = useState(28)
+    const [emojiSize, setEmojiSize] = useState(20)
     const [isEmojiPickerVisible, setIsEmojiPickerVisible] = useState(false)
+    const [isPickerRoomOkay, setIsPickerRoomOkay] = useState(false)
     const [currentEmoji, setCurrentEmoji] = useState(null)
     const optionalPortal = useDraggableInPortal();
+    const screenSize = useScreenSize();
     const cellBoardRef = useRef(null);
+    const emojiPickerRef = useRef(null);
 
     let color = "#21252a";
     const yoil = selectedDate.getDay();
@@ -294,6 +326,13 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
             }
     }, [])
 
+    const updateEmojiPickerWidth = useCallback((e) => {
+        if (emojiPickerRef.current) {
+            const { width } = emojiPickerRef.current.getBoundingClientRect();
+            setEmojiPickerWidth(width);
+        }
+    }, [])
+
     useEffect(() => {
         window.addEventListener('resize', updateCellBoardWidth);
         updateCellBoardWidth();
@@ -303,14 +342,43 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
         }
     }, [])
 
-// 현재 뷰포트의 너비
-const viewportWidth = window.innerWidth;
+    useEffect(() => {
+        if (isEmojiPickerVisible) {
+            window.addEventListener('resize', updateEmojiPickerWidth);
+            updateEmojiPickerWidth();
 
-// 현재 뷰포트의 높이
-const viewportHeight = window.innerHeight;
+            return () => {
+                window.removeEventListener('resize', updateEmojiPickerWidth);
+            }
+        }
+    }, [isEmojiPickerVisible])
 
-console.log(`뷰포트 너비: ${viewportWidth}px`);
-console.log(`뷰포트 높이: ${viewportHeight}px`);
+    useEffect(() => {
+        if (cellBoardWidth >= 280) {
+            setEmojiBtnSize(28)
+            setEmojiSize(20)
+        } else if (cellBoardWidth < 154) {
+            setEmojiBtnSize(12)
+            setEmojiSize(10)
+        } else if (cellBoardWidth < 188) {
+            setEmojiBtnSize(14)
+            setEmojiSize(12)
+        } else if (cellBoardWidth < 225) {
+            setEmojiBtnSize(18)
+            setEmojiSize(16)
+        } else if (cellBoardWidth < 280) {
+            setEmojiBtnSize(22)
+            setEmojiSize(18)
+        }
+    }, [cellBoardWidth])
+
+    useEffect(() => {
+        if (screenSize.width > 880) {
+            setIsPickerRoomOkay(true)
+        } else {
+            setIsPickerRoomOkay(false)
+        }
+    }, [screenSize])
 
     return (
         <EventModalBlock>
@@ -336,25 +404,49 @@ console.log(`뷰포트 높이: ${viewportHeight}px`);
                                     href="javascript:void(0);"
                                     onClick={() => setIsEmojiPickerVisible(!isEmojiPickerVisible)}
                                 >
-                                    { currentEmoji ? <Emoji>{currentEmoji}</Emoji> : <SentimentSatisfiedAltIconCustom />}
+                                    { currentEmoji ? <Emoji>{currentEmoji.native}</Emoji> : <SentimentSatisfiedAltIconCustom isVisible={isEmojiPickerVisible}/>}
                                 </EmojiLink>
                             </EmojiBlock>
                         </CellBoardHeader>
                     </CellBoardContent>
                 </CellBoard>
                 <InvisibleCellBoard>
-                    <EmojiPickerBlock isVisible={isEmojiPickerVisible}>
+                    <InvisibleCellBoardHeader>
+                        <ClearBlock isVisible={!!currentEmoji}>
+                            <ClearLine>
+                                <DottedLine />
+                            </ClearLine>
+                            <ClearIconBlock onClick={() => setCurrentEmoji(null)}/>
+                        </ClearBlock>
+                    </InvisibleCellBoardHeader>
+                    { isPickerRoomOkay && 
+                    <EmojiPickerBlock ref={emojiPickerRef} isVisible={isEmojiPickerVisible} isRoomOkay={isPickerRoomOkay} modalWidth={cellBoardWidth} width={emojiPickerWidth}>
                         <Picker 
-                            data={data} 
+                            data={data}
+                            emojiSize = {emojiSize}
+                            emojiButtonSize={emojiBtnSize} 
                             previewPosition="none" 
                             onEmojiSelect={(e) => {
-                                setCurrentEmoji(e.native);
+                                setCurrentEmoji(e);
                                 setIsEmojiPickerVisible(!isEmojiPickerVisible)
                             }} 
                         />
-                    </EmojiPickerBlock>
+                    </EmojiPickerBlock>}
                 </InvisibleCellBoard>
                 <EventAdderBody>
+                    {!isPickerRoomOkay && 
+                    <EmojiPickerBlock ref={emojiPickerRef} isVisible={isEmojiPickerVisible} modalWidth={cellBoardWidth} width={emojiPickerWidth}>
+                        <Picker 
+                            data={data}
+                            emojiSize = {emojiSize}
+                            emojiButtonSize={emojiBtnSize}
+                            previewPosition="none" 
+                            onEmojiSelect={(e) => {
+                                setCurrentEmoji(e);
+                                setIsEmojiPickerVisible(!isEmojiPickerVisible)
+                            }} 
+                        />
+                    </EmojiPickerBlock>}
                     {tags?.map((tag, index) => (
                         <TagBlock>
                             <Tag width={cellBoardWidth} type={tag.tagType}>
