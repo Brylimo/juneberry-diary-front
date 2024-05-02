@@ -7,7 +7,7 @@ import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
 import ClearIcon from '@mui/icons-material/Clear';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
-import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
+import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 
 const EventModalBlock = styled.div`
     display: flex;
@@ -44,6 +44,7 @@ const CellBoard = styled.div`
 const InvisibleCellBoard = styled.div`
     flex: 1;
     background-color: transparent;
+    position: relative;
 `
 
 const CellBoardContent = styled.div`
@@ -54,14 +55,22 @@ const CellBoardContent = styled.div`
     height: 100%;
 `;
 
-const CellBoardCircle = styled.div`
+const CellBoardHeader = styled.div`
     position: absolute;
     top: 0;
     left: 0;
     height: 5rem;
+    display: flex
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+`;
+
+const CellBoardCircle = styled.div`
     width: 5rem;
-    text-align: center;
+    height: 100%;
     line-height: 5rem;
+    text-align: center;
     border-radius: 50%;
     font-size: 30px;
     ${
@@ -223,26 +232,45 @@ const AutorenewIconCustom = styled(AutorenewIcon)`
     color: #b95de2;
 `;
 
-const EmojiBtn = styled.button`
+const EmojiBlock = styled.div`
     position: absolute;
     top: 0;
     right: 0;
+    height: 100%;
+    width: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const EmojiLink = styled.a`
     cursor: pointer;
     border: none;
-    height: 5rem;
-    width: 5rem;
-    line-height: 5rem;
-    border-radius: 50%;
 `;
 
 const EmojiPickerBlock = styled.div`
     display: block;
+    position: fixed;
+    z-index: 9999999;
     ${
         props => !props.isVisible && css`
             display: none;
         `
     };
-`
+`;
+
+const Emoji = styled.div`
+    font-size: 2rem;
+`;
+
+const SentimentSatisfiedAltIconCustom = styled(SentimentSatisfiedAltIcon)`
+    width: 2rem;
+    height: 2rem;
+    color: #c8cac9;
+    &:hover {
+        color: grey;
+    }
+`;
 
 const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn, tags, tempEvents, onTagDragEnd, removeEventTag, onEventTxtChange, onEventAdderInputKeyDown }) => {
     const [cellBoardWidth, setCellBoardWidth] = useState(0)
@@ -275,6 +303,15 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
         }
     }, [])
 
+// 현재 뷰포트의 너비
+const viewportWidth = window.innerWidth;
+
+// 현재 뷰포트의 높이
+const viewportHeight = window.innerHeight;
+
+console.log(`뷰포트 너비: ${viewportWidth}px`);
+console.log(`뷰포트 높이: ${viewportHeight}px`);
+
     return (
         <EventModalBlock>
             <FlushBlock>
@@ -290,28 +327,33 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
             <CellBoardBlock>
                 <CellBoard ref={cellBoardRef} color={color}>
                     <CellBoardContent>
-                        <CellBoardCircle isToday={isSameDay(selectedDate, new Date())}>
-                            {format(selectedDate, 'd')}
-                        </CellBoardCircle>
-                        <EmojiBtn
-                            onClick={() => setIsEmojiPickerVisible(!isEmojiPickerVisible)}
-                            style={{display: "none"}}
-                        >
-                            <InsertEmoticonIcon />
-                        </EmojiBtn>
-                        <EmojiPickerBlock isVisible={isEmojiPickerVisible}>
-                            <Picker 
-                                data={data} 
-                                previewPosition="none" 
-                                onEmojiSelect={(e) => {
-                                    setCurrentEmoji(e.natvie);
-                                    setIsEmojiPickerVisible(!isEmojiPickerVisible)
-                                }} 
-                            />
-                        </EmojiPickerBlock>
+                        <CellBoardHeader>
+                            <CellBoardCircle isToday={isSameDay(selectedDate, new Date())}>
+                                {format(selectedDate, 'd')}
+                            </CellBoardCircle>
+                            <EmojiBlock>
+                                <EmojiLink
+                                    href="javascript:void(0);"
+                                    onClick={() => setIsEmojiPickerVisible(!isEmojiPickerVisible)}
+                                >
+                                    { currentEmoji ? <Emoji>{currentEmoji}</Emoji> : <SentimentSatisfiedAltIconCustom />}
+                                </EmojiLink>
+                            </EmojiBlock>
+                        </CellBoardHeader>
                     </CellBoardContent>
                 </CellBoard>
-                <InvisibleCellBoard />
+                <InvisibleCellBoard>
+                    <EmojiPickerBlock isVisible={isEmojiPickerVisible}>
+                        <Picker 
+                            data={data} 
+                            previewPosition="none" 
+                            onEmojiSelect={(e) => {
+                                setCurrentEmoji(e.native);
+                                setIsEmojiPickerVisible(!isEmojiPickerVisible)
+                            }} 
+                        />
+                    </EmojiPickerBlock>
+                </InvisibleCellBoard>
                 <EventAdderBody>
                     {tags?.map((tag, index) => (
                         <TagBlock>

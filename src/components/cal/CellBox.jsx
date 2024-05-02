@@ -13,6 +13,7 @@ const Cell = styled.div`
     flex-direction: column;
     gap: 0.5rem;
     overflow: hidden;
+    cursor: default;
 
     &:hover {
         background-color: rgba(240, 248, 255, 0.7);
