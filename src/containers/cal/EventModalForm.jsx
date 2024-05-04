@@ -21,8 +21,7 @@ const EventModalForm = ({ selectedDate }) => {
     const [ eventTxt, setEventTxt ] = useState('');
     const [ tempEvents, setTempEvents ] = useState([]);
     const [ currentEmoji, setCurrentEmoji ] = useState([])
-    const [ eventAdderActive, setEventAdderActive ] = useState(false);
-    const [ dndActive, setDndActive ] = useState(false);
+    const [ isScrollDown, setIsScrollDown ] = useState(true);
     
     const queryClient = useQueryClient();
     const { mutate: addEventTagListMutate } = useAddEventTagListMutation();
@@ -41,13 +40,20 @@ const EventModalForm = ({ selectedDate }) => {
         }
     }, [tempEvents, eventTxt]);
 
+    const onClickAdderInputBtn = useCallback(e => {
+        if (eventTxt.trim() !== '') {       
+            setTempEvents(tempEvents.concat(eventTxt.trim()));
+            setEventTxt('');
+        }
+    }, [tempEvents, eventTxt])
+
     const onTagDragEnd = useCallback((droppedItem) => {
         if (!droppedItem.destination) return;
 
         let updatedList = [...tempEvents]
         const [reorderedItem] = updatedList.splice(droppedItem.source.index, 1);
         updatedList.splice(droppedItem.destination.index, 0, reorderedItem);
-        setDndActive(true);
+        setIsScrollDown(false);
         setTempEvents(updatedList);
     }, [tempEvents]);
 
@@ -102,6 +108,7 @@ const EventModalForm = ({ selectedDate }) => {
         const removedEventAdderTagList = tempEvents.filter((_, i) => {
             return i !== index;
         });
+        setIsScrollDown(false)
         setTempEvents(removedEventAdderTagList); 
     }
 
@@ -114,10 +121,12 @@ const EventModalForm = ({ selectedDate }) => {
     }, [emojiCodeArray]);
 
     useEffect(() => {
-        if (eventAdderActive && !dndActive) {
+        if (isScrollDown) {
             eventAdderEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            setIsScrollDown(true)
         }
-    }, [eventAdderActive, dndActive ]);
+    }, [tempEvents, setIsScrollDown]);
 
     return (
         <EventModal
@@ -128,6 +137,7 @@ const EventModalForm = ({ selectedDate }) => {
             currentEmoji={currentEmoji}
             tempEvents={tempEvents}
             onClickFlushBtn={onClickFlushBtn}
+            onClickAdderInputBtn={onClickAdderInputBtn}
             onTagDragEnd={onTagDragEnd}
             removeEventTag={removeEventTag}
             onEventTxtChange={onEventTxtChange}

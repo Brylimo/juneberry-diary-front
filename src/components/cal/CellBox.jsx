@@ -71,9 +71,10 @@ const CellEmojiBlock = styled.div`
     justify-content: center;
     align-items: center;
     margin-right: 0.8rem;
-    ${({ theme }) => theme.xs`
+
+    @media (max-width: 560px) {
         margin-right: 0;
-    `};
+    }
 `;
 
 const TagBlock = styled.div`

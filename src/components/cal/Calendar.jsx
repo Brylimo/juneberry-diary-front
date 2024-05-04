@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled, { css } from "styled-components";
 import CalendarBodyForm from '../../containers/cal/CalendarBodyForm';
-import EventAdderForm from '../../containers/cal/EventAdderForm';
 import CalendarHeaderForm from '../../containers/cal/CalendarHeaderForm';
 import TodoForm from '../../containers/todo/TodoForm';
 import EventModalForm from '../../containers/cal/EventModalForm';
@@ -86,16 +85,12 @@ const Calendar = ({ todoActive }) => {
 
     return (
         <FrameWrapper isActive={todoActive}>
-            { !todoActive && 
-                (<CFrameMarginBlock>
-                    {/*<EventAdderForm currentMonth={currentMonth} selectedDate={selectedDate} />*/}
-                </CFrameMarginBlock>)
-            }
+            { !todoActive && <CFrameMarginBlock/> }
             { !todoActive &&
                 (<Modal
                     activeState={modalActive} 
                     setActiveState={setModalActive} 
-                    headerTxt={`${selectedDate.getFullYear()}.${selectedDate.getMonth() + 1}.${selectedDate.getDate()}`}
+                    headerTxt={`${selectedDate.getMonth() + 1}월 ${selectedDate.getDate()}일`}
                     headerFontFamily={"Georgia"}
                  >
                     <EventModalForm selectedDate={selectedDate}/>

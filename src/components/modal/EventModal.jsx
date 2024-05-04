@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled, {css} from "styled-components";
 import { format, isSameDay } from "date-fns";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { scrollbarWidth } from '@xobotyi/scrollbar-width';
 import useDraggableInPortal from '../../hooks/useDraggableInPortal';
 import useScreenSize from '../../hooks/useScreenSize';
 import Picker from '@emoji-mart/react';
@@ -9,6 +10,7 @@ import data from '@emoji-mart/data';
 import ClearIcon from '@mui/icons-material/Clear';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
+import AddIcon from '@mui/icons-material/Add';
 
 const EventModalBlock = styled.div`
     display: flex;
@@ -77,6 +79,65 @@ const CellBoardHeader = styled.div`
     width: 100%;
 `;
 
+const CellBoardFooter = styled.div`
+    width: 100%;
+    height: 3.5rem;
+    background-color: white;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    border-top: 1px solid #e5e9f2;
+    padding-left: 3px;
+`;
+
+const CellBoardInputBox = styled.div`
+    height: 75%;
+    background-color: #f8f8f8;
+    flex: 9;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    padding-left: 4px;
+`;
+
+const CellBoardInputBtnBox = styled.div`
+    height: 100%;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+const CellBoardInputBtn = styled.div`
+    width: 80%;
+    border-radius: 50%;
+    border: 1px solid #e5e9f2;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+    
+    &::after {
+        display: block;
+        content: "";
+        padding-bottom: 100%;
+    }
+
+    &:hover {
+        background-color: #e5e9f2;  
+    }
+`;
+
+const AddIconCustom = styled(AddIcon)`
+    color: black;
+`;
+
 const CellBoardCircle = styled.div`
     width: 5rem;
     height: 100%;
@@ -97,7 +158,9 @@ const EventAdderBody = styled.div`
     top: 5.2rem;
     left: 0;
     width: 100%;
-    min-height: 4rem;
+    height: calc(100% - 8.9rem);
+    overflow: overlay;
+    direction: rtl;
     
     &::after {
         display: block;
@@ -120,6 +183,7 @@ const TagBlock = styled.div`
     width: 100%;
     gap: 0.2rem;
     align-items: center;
+    direction: ltr;
 `;
 
 const Tag = styled.span`
@@ -130,6 +194,7 @@ const Tag = styled.span`
     font-size: 1.4rem;
     text-align: center;
     font-family: Roboto, Helvetica, Arial, sans-serif;
+    width: 100%;
 
     ${
         props => props.width && css`
@@ -298,7 +363,7 @@ const SentimentSatisfiedAltIconCustom = styled(SentimentSatisfiedAltIcon)`
     };
 `;
 
-const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn, tags, currentEmoji, tempEvents, onTagDragEnd, removeEventTag, onEventTxtChange, onEventAdderInputKeyDown, setCurrentEmoji }) => {
+const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn, onClickAdderInputBtn, tags, currentEmoji, tempEvents, onTagDragEnd, removeEventTag, onEventTxtChange, onEventAdderInputKeyDown, setCurrentEmoji }) => {
     const [cellBoardWidth, setCellBoardWidth] = useState(0)
     const [emojiPickerWidth, setEmojiPickerWidth] = useState(0)
     const [emojiBtnSize, setEmojiBtnSize] = useState(28)
@@ -307,6 +372,7 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
     const [isPickerRoomOkay, setIsPickerRoomOkay] = useState(false)
     const optionalPortal = useDraggableInPortal();
     const screenSize = useScreenSize();
+    const eventAdderBodyRef = useRef(null);
     const cellBoardRef = useRef(null);
     const emojiPickerRef = useRef(null);
 
@@ -314,11 +380,11 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
     const yoil = selectedDate.getDay();
     const isHoliday =  tags?.filter(tag => tag.tagType === 'holiday').length > 0;
 
-    if (yoil === 6) color = "blue";
+    if (yoil === 6) color = "blue"; 
     if (yoil === 0) color = "red";
     if (isHoliday) color = "red";
 
-    const updateCellBoardWidth = useCallback((e) => {
+    const updateCellBoardWidth = useCallback(() => {
             if (cellBoardRef.current) {
                 const { width } = cellBoardRef.current.getBoundingClientRect();
                 setCellBoardWidth(width);
@@ -379,6 +445,21 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
         }
     }, [screenSize])
 
+    useEffect(() => {
+        const clWidth = eventAdderBodyRef.current?.clientWidth;
+        const offWidth = eventAdderBodyRef.current?.offsetWidth
+
+        if (cellBoardRef.current) {
+            const { width } = cellBoardRef.current.getBoundingClientRect();
+
+            if (clWidth !== offWidth) {
+                setCellBoardWidth(width - scrollbarWidth());
+            } else {
+                setCellBoardWidth(width);
+            }
+        }
+    }, [tempEvents])
+
     return (
         <EventModalBlock>
             <FlushBlock>
@@ -407,6 +488,16 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
                                 </EmojiLink>
                             </EmojiBlock>
                         </CellBoardHeader>
+                        <CellBoardFooter>
+                            <CellBoardInputBox>
+                                <EventAdderInput value={eventTxt} placeholder={`${selectedDate.getMonth()+1}월 ${selectedDate.getDate()}일에 일정추가`} onChange={onEventTxtChange} onKeyDown={onEventAdderInputKeyDown} />
+                            </CellBoardInputBox>
+                            <CellBoardInputBtnBox>
+                                <CellBoardInputBtn>
+                                    <AddIconCustom onClick={onClickAdderInputBtn}/>
+                                </CellBoardInputBtn>
+                            </CellBoardInputBtnBox>
+                        </CellBoardFooter>
                     </CellBoardContent>
                 </CellBoard>
                 <InvisibleCellBoard>
@@ -435,7 +526,7 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
                         />
                     </EmojiPickerBlock>}
                 </InvisibleCellBoard>
-                <EventAdderBody>
+                <EventAdderBody ref={eventAdderBodyRef}>
                     {!isPickerRoomOkay && 
                     <EmojiPickerBlock ref={emojiPickerRef} isVisible={isEmojiPickerVisible} modalWidth={cellBoardWidth} width={emojiPickerWidth}>
                         <Picker 
@@ -462,7 +553,7 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
                     <DragDropContext onDragEnd={onTagDragEnd}>
                         <Droppable droppableId="list-container">
                             {(provided) => (
-                                <div ref={provided.innerRef} {...provided.droppableProps}>
+                                <div ref={provided.innerRef} {...provided.droppableProps} style={{ direction: "ltr" }}>
                                     {tempEvents?.map((tag, index) => (
                                         <Draggable key={index} draggableId={index.toString()} index={index}>
                                             {optionalPortal((provided) => (
@@ -485,7 +576,6 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
                             )}
                         </Droppable>
                     </DragDropContext>
-                    <EventAdderInput value={eventTxt} placeholder="태그를 입력하세요.." onChange={onEventTxtChange} onKeyDown={onEventAdderInputKeyDown} />
                     <div ref={eventAdderEndRef}></div>
                 </EventAdderBody>
             </CellBoardBlock>
