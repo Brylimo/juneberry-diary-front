@@ -21,6 +21,16 @@ export const getEventTagsByMonth = async (year, month) => {
     return res.data;
 }
 
+export const getEmojisByMonth = async (year, month) => {
+    const res = await client.get('/cal/getEmojisByMonth', { 
+        params: {
+            year: year,
+            month: month
+        }
+    });
+    return res.data;
+}
+
 export const addEventTagList = async ({ selectedDate, events }) => {
     const year = selectedDate.getFullYear();
     const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);
@@ -62,6 +72,15 @@ export const addOneTodo = async ({ selectedDate, groupName, content, position, c
     const day = ('0' + selectedDate.getDate()).slice(-2);
 
     const res = await client.post('/cal/addOneTodo', { date: `${year}-${month}-${day}`, groupName, content, position, chk });
+    return res.data;
+}
+
+export const addDayEmoji = async ({ selectedDate, emojiCodeArray }) => {
+    const year = selectedDate.getFullYear();
+    const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2);
+    const day = ('0' + selectedDate.getDate()).slice(-2);
+
+    const res = await client.post('/cal/addDayEmoji', { date: `${year}-${month}-${day}`, emojiCodeArray  });
     return res.data;
 }
 

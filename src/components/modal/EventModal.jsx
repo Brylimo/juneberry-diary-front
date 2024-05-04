@@ -298,14 +298,13 @@ const SentimentSatisfiedAltIconCustom = styled(SentimentSatisfiedAltIcon)`
     };
 `;
 
-const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn, tags, tempEvents, onTagDragEnd, removeEventTag, onEventTxtChange, onEventAdderInputKeyDown }) => {
+const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn, tags, currentEmoji, tempEvents, onTagDragEnd, removeEventTag, onEventTxtChange, onEventAdderInputKeyDown, setCurrentEmoji }) => {
     const [cellBoardWidth, setCellBoardWidth] = useState(0)
     const [emojiPickerWidth, setEmojiPickerWidth] = useState(0)
     const [emojiBtnSize, setEmojiBtnSize] = useState(28)
     const [emojiSize, setEmojiSize] = useState(20)
     const [isEmojiPickerVisible, setIsEmojiPickerVisible] = useState(false)
     const [isPickerRoomOkay, setIsPickerRoomOkay] = useState(false)
-    const [currentEmoji, setCurrentEmoji] = useState(null)
     const optionalPortal = useDraggableInPortal();
     const screenSize = useScreenSize();
     const cellBoardRef = useRef(null);
@@ -404,7 +403,7 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
                                     href="javascript:void(0);"
                                     onClick={() => setIsEmojiPickerVisible(!isEmojiPickerVisible)}
                                 >
-                                    { currentEmoji ? <Emoji>{currentEmoji.native}</Emoji> : <SentimentSatisfiedAltIconCustom isVisible={isEmojiPickerVisible}/>}
+                                    { currentEmoji?.length > 0 ? <Emoji>{String.fromCodePoint(...currentEmoji)}</Emoji> : <SentimentSatisfiedAltIconCustom isVisible={isEmojiPickerVisible}/>}
                                 </EmojiLink>
                             </EmojiBlock>
                         </CellBoardHeader>
@@ -412,11 +411,11 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
                 </CellBoard>
                 <InvisibleCellBoard>
                     <InvisibleCellBoardHeader>
-                        <ClearBlock isVisible={!!currentEmoji}>
+                        <ClearBlock isVisible={!!currentEmoji?.length}>
                             <ClearLine>
                                 <DottedLine />
                             </ClearLine>
-                            <ClearIconBlock onClick={() => setCurrentEmoji(null)}/>
+                            <ClearIconBlock onClick={() => setCurrentEmoji([])}/>
                         </ClearBlock>
                     </InvisibleCellBoardHeader>
                     { isPickerRoomOkay && 
@@ -427,7 +426,10 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
                             emojiButtonSize={emojiBtnSize} 
                             previewPosition="none" 
                             onEmojiSelect={(e) => {
-                                setCurrentEmoji(e);
+                                const symbol = e.unified.split("-");
+                                const codeArray = [];
+                                symbol.forEach((sym) => codeArray.push("0x" + sym));
+                                setCurrentEmoji(codeArray);
                                 setIsEmojiPickerVisible(!isEmojiPickerVisible)
                             }} 
                         />
@@ -442,7 +444,10 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
                             emojiButtonSize={emojiBtnSize}
                             previewPosition="none" 
                             onEmojiSelect={(e) => {
-                                setCurrentEmoji(e);
+                                const symbol = e.unified.split("-");
+                                const codeArray = [];
+                                symbol.forEach((sym) => codeArray.push("0x" + sym));
+                                setCurrentEmoji(codeArray);
                                 setIsEmojiPickerVisible(!isEmojiPickerVisible)
                             }} 
                         />

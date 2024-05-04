@@ -2,8 +2,9 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from "react-redux"
 import { useQueryClient } from '@tanstack/react-query';
 import { useAddEventTagListMutation } from "../../hooks/mutations/useAddEventTagListMutation";
+import { useAddDayEmojiMutation } from '../../hooks/mutations/useAddDayEmojiMutation';
 import EventModal from '../../components/modal/EventModal';
-import { changeEventTags } from '../../modules/cal';
+import { changeEmoji, changeEventTags } from '../../modules/cal';
 
 const EventModalForm = ({ selectedDate }) => {
     const dispatch = useDispatch();
@@ -13,14 +14,19 @@ const EventModalForm = ({ selectedDate }) => {
     const { eventHash: { [selectedDate.getDate()]: events } } = useSelector(({ cal }) => ({
         eventHash: cal.eventHash
     }));
+    const { emojiHash: { [selectedDate.getDate()]: emojiCodeArray } } = useSelector(({ cal }) => ({
+        emojiHash: cal.emojiHash
+    }));
 
     const [ eventTxt, setEventTxt ] = useState('');
     const [ tempEvents, setTempEvents ] = useState([]);
+    const [ currentEmoji, setCurrentEmoji ] = useState([])
     const [ eventAdderActive, setEventAdderActive ] = useState(false);
     const [ dndActive, setDndActive ] = useState(false);
     
     const queryClient = useQueryClient();
     const { mutate: addEventTagListMutate } = useAddEventTagListMutation();
+    const { mutate: addDayEmojiMutate } = useAddDayEmojiMutation();
 
     const eventAdderEndRef = useRef(null);
 
@@ -68,7 +74,29 @@ const EventModalForm = ({ selectedDate }) => {
                 }
             )
         }
-    }, [tempEvents, events, selectedDate, addEventTagListMutate, queryClient, dispatch]);
+        if (currentEmoji?.length || emojiCodeArray?.length) {
+            addDayEmojiMutate(
+                {
+                    selectedDate,
+                    emojiCodeArray: currentEmoji
+                },
+                {
+                    onSuccess: () => {
+                        dispatch(
+                            changeEmoji({
+                                key: selectedDate.getDate(),
+                                value: currentEmoji
+                            })
+                        )
+                        queryClient.invalidateQueries(["getEmojisByMonth"]);
+                    },
+                    onError: () => {
+                        return;
+                    }
+                }
+            )
+        }
+    }, [tempEvents, events, emojiCodeArray, currentEmoji, selectedDate, addEventTagListMutate, addDayEmojiMutate, queryClient, dispatch]);
 
     const removeEventTag = (index) => {
         const removedEventAdderTagList = tempEvents.filter((_, i) => {
@@ -82,6 +110,10 @@ const EventModalForm = ({ selectedDate }) => {
     }, [events]);
 
     useEffect(() => {
+        setCurrentEmoji(emojiCodeArray || []);
+    }, [emojiCodeArray]);
+
+    useEffect(() => {
         if (eventAdderActive && !dndActive) {
             eventAdderEndRef.current.scrollIntoView({ behavior: 'smooth' });
         }
@@ -93,12 +125,14 @@ const EventModalForm = ({ selectedDate }) => {
             eventTxt={eventTxt}
             eventAdderEndRef={eventAdderEndRef}
             tags={tags}
+            currentEmoji={currentEmoji}
             tempEvents={tempEvents}
             onClickFlushBtn={onClickFlushBtn}
             onTagDragEnd={onTagDragEnd}
             removeEventTag={removeEventTag}
             onEventTxtChange={onEventTxtChange}
             onEventAdderInputKeyDown={onEventAdderInputKeyDown}
+            setCurrentEmoji={setCurrentEmoji}
         />
     )
 }

@@ -38,12 +38,21 @@ const CellInner = styled.div`
     height: 100%;
 `;
 
-const CellCircle = styled.div`
+const CellHeader = styled.div`
     position: absolute;
     top: 0;
     left: 0;
     height: 2.3rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+`;
+
+const CellCircle = styled.div`
     width: 2.3rem;
+    height: 100%;
     text-align: center;
     line-height: 2.3rem;
     border-radius: 50%;
@@ -53,6 +62,18 @@ const CellCircle = styled.div`
             color: white;    
         `
     };
+`;
+
+const CellEmojiBlock = styled.div`
+    height: 80%;
+    width: 1.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 0.8rem;
+    ${({ theme }) => theme.xs`
+        margin-right: 0;
+    `};
 `;
 
 const TagBlock = styled.div`
@@ -92,7 +113,7 @@ const CellTag = styled.div`
     `};
 `;
 
-const CellBox = ({ dayObj, onSelect, isSelected, isSameMonth, events }) => {
+const CellBox = ({ dayObj, onSelect, isSelected, isSameMonth, events, emoji }) => {
     const dayx = dayObj["date"];
     const yoil = dayObj["date"].getDay();
     const isHoliday = dayObj["tags"]?.filter(tag => tag.tagType === 'holiday').length > 0;
@@ -118,9 +139,14 @@ const CellBox = ({ dayObj, onSelect, isSelected, isSameMonth, events }) => {
     return (
         <Cell color={color} bgColor={bgColor} isSameMonth={isSameMonth} onClick={onSelect}>
             <CellInner>
-                <CellCircle isToday={isSameDay(dayx, new Date())} >
-                    {format(dayx, 'd')}
-                </CellCircle >
+                <CellHeader>
+                    <CellCircle isToday={isSameDay(dayx, new Date())}>
+                        {format(dayx, 'd')}
+                    </CellCircle>
+                    <CellEmojiBlock>
+                        {emoji?.length > 0 && String.fromCodePoint(...emoji)}
+                    </CellEmojiBlock>
+                </CellHeader>
                 <TagBlock>
                     {
                         dayObj["tags"]?.map(tag => {

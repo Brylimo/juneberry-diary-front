@@ -4,13 +4,15 @@ import CalendarBody from '../../components/cal/CalendarBody';
 import { useDispatch } from "react-redux";
 import { useGetEventTagsByMonthQuery } from '../../hooks/queries/useGetEventTagsByMonthQuery';
 import { useGetTagsByMonthQuery } from '../../hooks/queries/useGetTagsByMonthQuery';
-import { storeEvents, storeTags } from '../../modules/cal';
+import { storeEvents, storeTags, storeEmojis } from '../../modules/cal';
+import { useGetEmojisByMonthQuery } from '../../hooks/queries/useGetEmojisByMonthQuery';
 
 const CalendarBodyForm = ({ currentMonth, selectedDate, setSelectedDate, setModalActive }) => {
     const dispatch = useDispatch();
     const [dayList, setDayList] = useState([]);
     const { data: eventTagData } = useGetEventTagsByMonthQuery(currentMonth.getFullYear(), currentMonth.getMonth() + 1);
     const { data: tagData } = useGetTagsByMonthQuery(currentMonth.getFullYear(), currentMonth.getMonth() + 1);
+    const { data: emojiData } = useGetEmojisByMonthQuery(currentMonth.getFullYear(), currentMonth.getMonth() + 1);
 
     const monthStart = startOfMonth(currentMonth); // 오늘이 속한 달의 시작일
     const monthEnd = endOfMonth(monthStart); // 오늘이 속한 달의 마지막일
@@ -68,6 +70,21 @@ const CalendarBodyForm = ({ currentMonth, selectedDate, setSelectedDate, setModa
             );
         }
     }, [eventTagData, dispatch])
+
+    useEffect(() => {
+        if (emojiData) {
+            let emojiHash = {};
+            emojiData.forEach(obj => {
+                emojiHash[obj.date[2]] = obj.emojiCodeArray
+            });
+    
+            dispatch(
+                storeEmojis({
+                    emojiHash: emojiHash
+                })
+            );
+        }
+    }, [emojiData, dispatch])
 
     return <CalendarBody 
                 currentMonth={currentMonth}

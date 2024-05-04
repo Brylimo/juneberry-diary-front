@@ -8,6 +8,9 @@ const CellBoxForm = ({ dayObj, selectedDate, setSelectedDate, setModalActive, is
     const { eventHash } = useSelector(({ cal }) => ({
         eventHash: cal.eventHash
     }));
+    const { emojiHash } = useSelector(({ cal }) => ({
+        emojiHash: cal.emojiHash
+    }));
     const { todoActive } = useSelector(({ cal }) => ({
         todoActive: cal.todoActive
     }));
@@ -15,6 +18,7 @@ const CellBoxForm = ({ dayObj, selectedDate, setSelectedDate, setModalActive, is
     const dayx = dayObj["date"];
     const date = dayx.getDate();
     const events = isSameMonth ? eventHash[date] : undefined;
+    const emoji = isSameMonth ? emojiHash[date] : undefined;
 
     const onSelect = useCallback(() => {
         if (selectedDate.getTime() !== dayx.getTime()) {
@@ -35,6 +39,7 @@ const CellBoxForm = ({ dayObj, selectedDate, setSelectedDate, setModalActive, is
         isSelected={isSelected}
         isSameMonth={isSameMonth}
         events={events}
+        emoji={emoji}
     />;
 }
 
