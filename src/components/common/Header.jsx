@@ -181,36 +181,6 @@ const ArrowDropDownIconWrapper = styled(ArrowDropDownIcon)`
     `};
 `;
 
-const TodoBtnBlock = styled.div`
-    cursor: pointer;
-    width: 4rem;
-    height: 4rem;
-    border-radius: 5px;
-    background-color: #fffff0;
-    transition: background-color 0.3 ease, box-shadow 0.3s ease;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    line-height: 4rem;
-
-    &:hover {
-        background-color: #ffffff;
-        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    &:active {
-        background-color: #bdc3c7;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.2);
-        transform: scale(0.9);
-    }
-`;
-
-const TodoBtnImg = styled.img`
-    width: 60%;
-    height: 60%;
-    object-fit: cover;
-    vertical-align: middle;
-`;
-
 const IOSSpan = styled.span`
     font-size: 18px;
     ${({ theme }) => theme.sm`
@@ -218,9 +188,9 @@ const IOSSpan = styled.span`
     `};
 `;
 
-const IOSSwitch = styled((props) => (
+const IOSSwitch = styled(({bgColor, ...props}) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
-  ))(({ theme }) => ({
+  ))(({ theme, bgColor }) => ({
     width: 42,
     height: 26,
     padding: 0,
@@ -233,7 +203,7 @@ const IOSSwitch = styled((props) => (
         transform: 'translateX(16px)',
         color: '#fff',
         '& + .MuiSwitch-track': {
-          backgroundColor: '#65C466',
+          backgroundColor: bgColor,
           opacity: 1,
           border: 0,
         },
@@ -262,7 +232,42 @@ const IOSSwitch = styled((props) => (
       backgroundColor: '#E9E9EA',
       opacity: 1,
     },
-  }));
+}));
+
+const PublishUtilityBlock = styled.div`
+    display: flex;
+    gap: 4px;
+    height: 100%;
+    width: 130px;
+    align-items: center;
+    margin-left: 2rem;
+    ${({ theme }) => theme.sm`
+        margin-left: 1rem;
+    `};
+    ${({ theme }) => theme.xxs`
+        margin-left: 0.5rem;
+    `};
+`;
+
+const PublishBtn = styled.button`
+    flex: 1;
+    height: 65%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: white;
+    padding: 3px;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
+    border-radius: 4px;
+    letter-spacing: 1px;
+    font-weight: 300;
+    font-family: "Source Sans Pro", sans-serif;
+    ${props => props.bgColor &&
+        css`
+            background-color: ${props.bgColor};
+        `
+    }
+`;
 
 const Header = ({ todoActive, onLogout, onClickTodoBtn }) => {
     const { pathname } = useLocation();
@@ -321,18 +326,29 @@ const Header = ({ todoActive, onLogout, onClickTodoBtn }) => {
                     </FlagTopLeftBlock>
                 </FlagTopBlock>
                 <FlagBottomBlock>
-                    <FlagBottomNav>
-                        <FlagBottomUl>
-                            <FlagLi active={pathname === "/geo/map"} onClick={onClickMapFlag}>map</FlagLi>
-                            <FlagLi active={pathname === "/cal/calendar"} onClick={onClickCalendarFlag}>calendar</FlagLi>
-                            <FlagLi active={pathname === "/post/publish"} onClick={onClickPostFlag}>post</FlagLi>
-                        </FlagBottomUl>
-                    </FlagBottomNav>
+                    {pathname === "/post/publish" ? 
+                        (<PublishUtilityBlock>
+                            <PublishBtn bgColor={"#f6f6f7"}>save</PublishBtn>
+                            <PublishBtn bgColor={"#8df198"}>publish</PublishBtn>
+                        </PublishUtilityBlock>)
+                        : (<FlagBottomNav>
+                            <FlagBottomUl>
+                                <FlagLi active={pathname === "/geo/map"} onClick={onClickMapFlag}>map</FlagLi>
+                                <FlagLi active={pathname === "/cal/calendar"} onClick={onClickCalendarFlag}>calendar</FlagLi>
+                                <FlagLi active={pathname === "/post/publish"} onClick={onClickPostFlag}>post</FlagLi>
+                            </FlagBottomUl>
+                        </FlagBottomNav>)}
                     <FlagBottomUtilityBlock>
                         {pathname === "/cal/calendar" ? 
                         (<>
                             <IOSSpan>Todo</IOSSpan>
-                            <IOSSwitch sx={{ m: 1 }} onChange={onClickTodoBtn} checked={todoActive}/>
+                            <IOSSwitch sx={{ m: 1 }} bgColor={"#65C466"} onChange={onClickTodoBtn} checked={todoActive}/>
+                        </>) 
+                        : ''}
+                        {pathname === "/post/publish" ? 
+                        (<>
+                            <IOSSpan>preview</IOSSpan>
+                            <IOSSwitch sx={{ m: 1 }} bgColor={"#9775fa"} onChange={onClickTodoBtn} checked={todoActive}/>
                         </>) 
                         : ''}
                     </FlagBottomUtilityBlock>

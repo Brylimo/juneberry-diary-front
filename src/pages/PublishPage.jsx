@@ -1,10 +1,10 @@
-import Editor from "../components/post/Editor";
+import EditorForm from "../containers/post/EditorForm";
 
 const PublishPage = () => {
 
     return (
         <div style={{ position: 'relative', height: '100%' }}>
-            <Editor />
+            <EditorForm />
         </div>
     );
 }

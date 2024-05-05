@@ -1,6 +1,6 @@
-import React, { useRef, useEffect } from 'react';
-import Quill from 'quill';
-import 'quill/dist/quill.bubble.css';
+import React, { useState } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import styled from 'styled-components';
 
 const FrameWrapper = styled.div`
@@ -30,7 +30,7 @@ const EditorPage = styled.div`
 `;
 
 const TitleInput = styled.input`
-    font-size: 3rem;
+    font-size: 2rem;
     outline: none;
     padding-bottom: 0.5rem;
     border: none;
@@ -64,31 +64,28 @@ const QuillWrapper = styled.div`
     }
 `;
 
-const Editor = () => {
-    const quillElement = useRef(null);
-    const quillInstance = useRef(null);
+const Editor = ({ onChangeField, title, body }) => {
+    const [quillText, setQuillText] = useState("");
 
-    useEffect(() => {
-        quillInstance.current = new Quill(quillElement.current, {
-            theme: "bubble",
-            placeholder: "내용을 작성하세요...",
-            modules: {
-                toolbar: [
-                    [{ header: '1'}, {header: '2'}],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    [{ list: "ordered" }, { list: 'bullet' }],
-                    ['blockquote', 'code-block', 'link', 'image'],
-                ],
-            },    
-        });
-    }, []);
+    const onChangeTitle = e => {
+        onChangeField({ key: 'title', value: e.target.value });
+    }
 
     return (
         <FrameWrapper>
             <EditorPage>
-                <TitleInput placeholder='제목' />
+                <TitleInput 
+                    placeholder='제목' 
+                    onChange={onChangeTitle}
+                    value={title}
+                />
                 <QuillWrapper>
-                    <div ref={quillElement} />
+                    {/*<ReactQuill
+                        theme="snow"
+                        value={quillText}
+                        onChange={e => setQuillText(e)}
+                        placeholder='내용을 입력하세요'
+                    />*/}
                 </QuillWrapper>
             </EditorPage>
         </FrameWrapper>
