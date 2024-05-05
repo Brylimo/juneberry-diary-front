@@ -400,23 +400,15 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
 
     useEffect(() => {
         window.addEventListener('resize', updateCellBoardWidth);
+        window.addEventListener('resize', updateInvisibleCellBoardWidth);
         updateCellBoardWidth();
+        updateInvisibleCellBoardWidth();
 
         return () => {
             window.removeEventListener('resize', updateCellBoardWidth);
+            window.removeEventListener('resize', updateInvisibleCellBoardWidth);
         }
     }, [])
-
-    useEffect(() => {
-        if (isEmojiPickerVisible) {
-            window.addEventListener('resize', updateInvisibleCellBoardWidth);
-            updateInvisibleCellBoardWidth();
-
-            return () => {
-                window.removeEventListener('resize', updateInvisibleCellBoardWidth);
-            }
-        }
-    }, [isEmojiPickerVisible])
 
     useEffect(() => {
         if (cellBoardWidth >= 280) {

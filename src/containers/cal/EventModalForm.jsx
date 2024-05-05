@@ -122,7 +122,7 @@ const EventModalForm = ({ selectedDate }) => {
 
     useEffect(() => {
         if (isScrollDown) {
-            eventAdderEndRef.current.scrollIntoView({ behavior: 'smooth' });
+            eventAdderEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
         } else {
             setIsScrollDown(true)
         }
