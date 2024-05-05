@@ -334,8 +334,8 @@ const EmojiPickerBlock = styled.div`
     position: fixed;
     z-index: 9999999;
     ${
-        props => (!props.isRoomOkay && (props.modalWidth && props.width)) && css`
-            transform: translate(calc(${props.modalWidth}px - ${props.width}px), -1.2rem)
+        props => (!props.isRoomOkay && props.invWidth) && css`
+            transform: translate(-${props.invWidth}px, -1.2rem)
         `
     };
     ${
@@ -365,7 +365,7 @@ const SentimentSatisfiedAltIconCustom = styled(SentimentSatisfiedAltIcon)`
 
 const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn, onClickAdderInputBtn, tags, currentEmoji, tempEvents, onTagDragEnd, removeEventTag, onEventTxtChange, onEventAdderInputKeyDown, setCurrentEmoji }) => {
     const [cellBoardWidth, setCellBoardWidth] = useState(0)
-    const [emojiPickerWidth, setEmojiPickerWidth] = useState(0)
+    const [invisibleCellBoardWidth, setInvisibleCellBoardWidth] = useState(0)
     const [emojiBtnSize, setEmojiBtnSize] = useState(28)
     const [emojiSize, setEmojiSize] = useState(20)
     const [isEmojiPickerVisible, setIsEmojiPickerVisible] = useState(false)
@@ -374,7 +374,7 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
     const screenSize = useScreenSize();
     const eventAdderBodyRef = useRef(null);
     const cellBoardRef = useRef(null);
-    const emojiPickerRef = useRef(null);
+    const invisibleCellBoardRef = useRef(null);
 
     let color = "#21252a";
     const yoil = selectedDate.getDay();
@@ -391,10 +391,10 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
             }
     }, [])
 
-    const updateEmojiPickerWidth = useCallback((e) => {
-        if (emojiPickerRef.current) {
-            const { width } = emojiPickerRef.current.getBoundingClientRect();
-            setEmojiPickerWidth(width);
+    const updateInvisibleCellBoardWidth = useCallback((e) => {
+        if (invisibleCellBoardRef.current) {
+            const { width } = invisibleCellBoardRef.current.getBoundingClientRect();
+            setInvisibleCellBoardWidth(width);
         }
     }, [])
 
@@ -409,11 +409,11 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
 
     useEffect(() => {
         if (isEmojiPickerVisible) {
-            window.addEventListener('resize', updateEmojiPickerWidth);
-            updateEmojiPickerWidth();
+            window.addEventListener('resize', updateInvisibleCellBoardWidth);
+            updateInvisibleCellBoardWidth();
 
             return () => {
-                window.removeEventListener('resize', updateEmojiPickerWidth);
+                window.removeEventListener('resize', updateInvisibleCellBoardWidth);
             }
         }
     }, [isEmojiPickerVisible])
@@ -500,7 +500,7 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
                         </CellBoardFooter>
                     </CellBoardContent>
                 </CellBoard>
-                <InvisibleCellBoard>
+                <InvisibleCellBoard ref={invisibleCellBoardRef}>
                     <InvisibleCellBoardHeader>
                         <ClearBlock isVisible={!!currentEmoji?.length}>
                             <ClearLine>
@@ -510,7 +510,7 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
                         </ClearBlock>
                     </InvisibleCellBoardHeader>
                     { isPickerRoomOkay && 
-                    <EmojiPickerBlock ref={emojiPickerRef} isVisible={isEmojiPickerVisible} isRoomOkay={isPickerRoomOkay} modalWidth={cellBoardWidth} width={emojiPickerWidth}>
+                    <EmojiPickerBlock isVisible={isEmojiPickerVisible} isRoomOkay={isPickerRoomOkay} invWidth={invisibleCellBoardWidth}>
                         <Picker 
                             data={data}
                             emojiSize = {emojiSize}
@@ -528,7 +528,7 @@ const EventModal = ({ selectedDate, eventTxt, eventAdderEndRef, onClickFlushBtn,
                 </InvisibleCellBoard>
                 <EventAdderBody ref={eventAdderBodyRef}>
                     {!isPickerRoomOkay && 
-                    <EmojiPickerBlock ref={emojiPickerRef} isVisible={isEmojiPickerVisible} modalWidth={cellBoardWidth} width={emojiPickerWidth}>
+                    <EmojiPickerBlock isVisible={isEmojiPickerVisible} invWidth={invisibleCellBoardWidth}>
                         <Picker 
                             data={data}
                             emojiSize = {emojiSize}

@@ -25,7 +25,6 @@ const ModalWrapper = styled.div`
 `;
 
 const ModalContent = styled.div`
-    overflow: auto;
     width: 50rem; 
     min-height: 60px;
     color: rgba(0, 0, 0, 0.87);
@@ -132,13 +131,13 @@ const Modal = ({ activeState, setActiveState, headerTxt, headerColor, headerFont
         <>
             {activeState && 
                 (<ModalBlock>
-                    <Draggable
+                    <ModalWrapper>
+                        <Draggable
                         nodeRef={nodeRef}
                         onDrag={(e, data) => trackPos(data)}
                         cancel=".ignore-click"                    
-                    >
-                        <ModalWrapper ref={nodeRef}>
-                            <ModalContent>
+                        >
+                            <ModalContent ref={nodeRef}>
                                 <ModalHeader>
                                     <ModalHeaderTxt color={headerColor} family={headerFontFamily}>{headerTxt}</ModalHeaderTxt>
                                     <ModalHeaderBtnWrapper>
@@ -152,8 +151,8 @@ const Modal = ({ activeState, setActiveState, headerTxt, headerColor, headerFont
                                     <CloseBtn onClick={onClickCloseBtn} className='ignore-click'>닫기</CloseBtn>
                                 </ModalFooter>
                             </ModalContent>
-                        </ModalWrapper>
-                    </Draggable>
+                        </Draggable>
+                    </ModalWrapper>
                 </ModalBlock>)
             }
         </>
