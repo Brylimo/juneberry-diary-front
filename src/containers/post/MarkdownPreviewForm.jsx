@@ -3,7 +3,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import MarkdownPrevew from '../../components/post/MarkdownPreview';
 
 const MarkdownPreviewForm = () => {
-    return <MarkdownPrevew />
+    const dispatch = useDispatch();
+    const { title, mrkdown } = useSelector(({ publish }) => ({
+        title: publish.title,
+        mrkdown: publish.mrkdown
+    }));
+
+    return <MarkdownPrevew title={title} mrkdown={mrkdown} />
 }
 
 export default MarkdownPreviewForm;

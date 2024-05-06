@@ -1,5 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { unified } from 'unified';
+import markdown from 'remark-parse';
+import remarkRehype from "remark-rehype";
+import remarkBreak from "remark-breaks";
+import html from "rehype-stringify";
+import sanitize from "sanitize-html";
 
 const PublishPage = styled.div`
     width: 893px;
@@ -15,7 +21,6 @@ const PublishPage = styled.div`
 `;
 
 const PreviewTitle = styled.div`
-    font-size: 2rem;
     outline: none;
     padding-bottom: 0.5rem;
     border: none;
@@ -24,12 +29,106 @@ const PreviewTitle = styled.div`
     width: 100%;
     background: transparent;
     font-size: 32px;
+    font-family: monospace;
+    min-height: 46px;
 `;
 
-const MarkdownPrevew = () => {
+const MarkdonwRenderBlock = styled.div`
+    font-size: 16px;
+    font-family: monospace;
+
+    & menu, ol, ul {
+        list-style: auto;
+        list-style-position: inside;
+    }
+`;
+
+const sanitizeEventScript = (htmlString) => {
+    return htmlString.replace(/ on\w+="[^"]*"/g, '');
+}
+
+const filter = (html) => {
+    const eventSanitizedString = sanitizeEventScript(html);
+    return sanitize(eventSanitizedString, {
+        allowedTags: [
+            'h1',
+            'h2',
+            'h3',
+            'h4',
+            'h5',
+            'h6',
+            'blockquote',
+            'p',
+            'a',
+            'ul',
+            'ol',
+            'nl',
+            'li',
+            'b',
+            'i',
+            'strong',
+            'em',
+            'strike',
+            'code',
+            'hr',
+            'br',
+            'div',
+            'table',
+            'thead',
+            'caption',
+            'tbody',
+            'tr',
+            'th',
+            'td',
+            'pre',
+            'iframe',
+            'span',
+            'img',
+            'del',
+            'input',
+          ],
+          allowedAttributes: {
+            a: ['href', 'name', 'target'],
+            img: ['src'],
+            iframe: ['src', 'allow', 'allowfullscreen', 'scrolling', 'class'],
+            '*': ['class', 'id', 'aria-hidden'],
+            span: ['style'],
+            input: ['type'],
+            ol: ['start'],
+          },
+          allowedStyles: {
+            '*': {
+              // Match HEX and RGB
+              color: [
+                /^#(0x)?[0-9a-f]+$/i,
+                /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/,
+              ],
+              'text-align': [/^left$/, /^right$/, /^center$/],
+            }
+          },
+          allowedIframeHostnames: ['www.youtube.com', 'codesandbox.io', 'codepen.io']
+    })
+}
+
+const MarkdownPrevew = ({ title, mrkdown }) => {
+    const [htmlTxt, setHtmlTxt] = useState(
+        filter(
+          unified()
+            .use(remarkBreak)
+            .use(markdown)
+            .use(remarkRehype, { allowDangerousHtml: true })
+            .use(html)
+            .processSync(mrkdown)
+            .toString()
+        )
+    );
+
     return (
         <PublishPage>
-            <PreviewTitle>hi</PreviewTitle>
+            <PreviewTitle>{title}</PreviewTitle>
+            <MarkdonwRenderBlock
+                dangerouslySetInnerHTML={{ __html: htmlTxt }}
+            />
         </PublishPage>
     )
 }

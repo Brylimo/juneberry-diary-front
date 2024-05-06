@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import styled from 'styled-components';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import styled, { css } from 'styled-components';
 import CodeMirror from '@uiw/react-codemirror';
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { languages } from '@codemirror/language-data';
@@ -20,18 +20,30 @@ const PublishPage = styled.div`
     }
 `;
 
-const TitleInput = styled.input`
-    font-size: 2rem;
+const TitleTextarea = styled.textarea`
     outline: none;
-    padding-bottom: 0.5rem;
+    padding: 0 0 0.5rem 0;
     border: none;
     border-bottom: 1px solid #e5e9f2;
     margin-bottom: 2rem;
     width: 100%;
     background: transparent;
     font-size: 32px;
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: normal;
+    resize: none;
+    overflow: hidden;
+    min-height: 46px;
+
     &::placeholder {
         color: #999999;
+    }
+
+    ${props =>
+        props.titleHeight && css`
+            height: ${props.titleHeight}
+        `
     }
 `;
 
@@ -71,20 +83,37 @@ const myTheme = createTheme({
 });
 
 const MarkdownEditor = ({ onChangeField, title, mrkdown }) => {
+    const [titleHeight, setTitleHeight] = useState(0)
+    const titleElement = useRef(null)
+
     const onChangeTitle = e => {
         onChangeField({ key: 'title', value: e.target.value });
     }
 
     const onChangeMrkdown = useCallback((val, viewUpdate) => {
-        onChangeField({ key: 'markdown', value: val})
-    }, [])
+        onChangeField({ key: 'mrkdown', value: val})
+    }, [onChangeField])
+
+    useEffect(() => {
+        if (titleElement.current) {
+            const { scrollHeight, clientHeight } = titleElement.current;
+            console.log(scrollHeight)
+            if (scrollHeight !== clientHeight) {
+                setTitleHeight(`${scrollHeight}px`);
+            } else {
+                setTitleHeight(`${scrollHeight - 37}px`);
+            }
+        }
+    }, [title])
 
     return (
         <PublishPage>
-            <TitleInput 
-                placeholder='제목' 
+            <TitleTextarea
+                ref={titleElement}
+                placeholder='제목'
                 onChange={onChangeTitle}
                 value={title}
+                titleHeight={titleHeight}
             />
             <CodeMirrorBlock>
                 <CodeMirror   
@@ -97,6 +126,7 @@ const MarkdownEditor = ({ onChangeField, title, mrkdown }) => {
                         highlightSelectionMatches: false,
                     }}
                     theme={myTheme}
+                    value={mrkdown}
                     extensions={[markdown({ base: markdownLanguage, codeLanguages: languages }), EditorView.lineWrapping]}
                     onChange={onChangeMrkdown}
                 />

@@ -116,7 +116,7 @@ const AuthTemplate = ({ type, children }) => {
             <LogoBox type={type}>
                 <LogoCell>
                     <LogoImg src="/logo.svg"></LogoImg>
-                    <LogoSlogan>Make your day with happy choices :)</LogoSlogan>
+                    <LogoSlogan>Fill your day with joyful memories :)</LogoSlogan>
                 </LogoCell>
             </LogoBox>
             <AuthBox type={type}>
