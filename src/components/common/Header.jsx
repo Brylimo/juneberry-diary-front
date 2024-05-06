@@ -269,7 +269,7 @@ const PublishBtn = styled.button`
     }
 `;
 
-const Header = ({ todoActive, onLogout, onClickTodoBtn }) => {
+const Header = ({ todoActive, previewActive, onLogout, onClickTodoBtn, onClickPreviewBtn }) => {
     const { pathname } = useLocation();
     const navigate = useNavigate();
 
@@ -348,7 +348,7 @@ const Header = ({ todoActive, onLogout, onClickTodoBtn }) => {
                         {pathname === "/post/publish" ? 
                         (<>
                             <IOSSpan>preview</IOSSpan>
-                            <IOSSwitch sx={{ m: 1 }} bgColor={"#9775fa"} onChange={onClickTodoBtn} checked={todoActive}/>
+                            <IOSSwitch sx={{ m: 1 }} bgColor={"#9775fa"} onChange={onClickPreviewBtn} checked={previewActive}/>
                         </>) 
                         : ''}
                     </FlagBottomUtilityBlock>

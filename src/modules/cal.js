@@ -28,7 +28,7 @@ export const changeEmoji = createAction(
         value
     })
 );
-export const toggleTodoActive = createAction(TOGGLE_TODOACTIVE);    
+export const toggleTodoActive = createAction(TOGGLE_TODOACTIVE);
 export const initializeEventHash = createAction(INITIALIZE_EVENTHASH);
 export const initializeEmojiHash = createAction(INITIALIZE_EMOJIHASH);
 export const initializeTagHash = createAction(INITIALIZE_TAGHASH);

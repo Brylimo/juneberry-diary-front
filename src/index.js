@@ -10,7 +10,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import createSagaMiddleware from 'redux-saga';
 import rootReducer from './modules';
-//import { composeWithDevTools } from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
 import './index.css';
 
@@ -18,7 +18,9 @@ const sagaMiddleware = createSagaMiddleware();
 const logger = createLogger();
 
 const store = createStore(
-  rootReducer
+  rootReducer,
+  composeWithDevTools(
+  )
 );
 
 const queryClient = new QueryClient();
