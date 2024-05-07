@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { unified } from 'unified';
-import markdown from 'remark-parse';
+import remarkParse from 'remark-parse';
 import remarkRehype from "remark-rehype";
 import remarkBreak from "remark-breaks";
-import html from "rehype-stringify";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
+import rehypeStringify from "rehype-stringify";
 import sanitize from "sanitize-html";
 
 const PublishPage = styled.div`
     width: 893px;
     margin: 0 auto;
     background-color: #fffcfb;
-    padding: 6rem 5rem 0 5rem;
+    padding: 8rem 5rem 0 5rem;
     height: 100%;
     flex: 1;
 
@@ -36,6 +39,8 @@ const PreviewTitle = styled.div`
 const MarkdonwRenderBlock = styled.div`
     font-size: 16px;
     font-family: monospace;
+    word-break: normal;
+    word-wrap: break-word;
 
     & menu, ol, ul {
         list-style: auto;
@@ -114,15 +119,19 @@ const MarkdownPrevew = ({ title, mrkdown }) => {
     const [htmlTxt, setHtmlTxt] = useState(
         filter(
           unified()
+            .use(remarkParse)
             .use(remarkBreak)
-            .use(markdown)
+            .use(remarkGfm)
             .use(remarkRehype, { allowDangerousHtml: true })
-            .use(html)
+            .use(rehypeRaw)
+            .use(rehypeSanitize)
+            .use(rehypeStringify)
             .processSync(mrkdown)
             .toString()
-        )
+        )   
     );
 
+    console.log(htmlTxt)
     return (
         <PublishPage>
             <PreviewTitle>{title}</PreviewTitle>

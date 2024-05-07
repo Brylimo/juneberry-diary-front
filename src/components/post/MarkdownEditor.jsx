@@ -6,12 +6,13 @@ import { languages } from '@codemirror/language-data';
 import { EditorView } from '@codemirror/view';
 import { createTheme } from '@uiw/codemirror-themes';
 import { tags as t } from '@lezer/highlight';
+import Toolbar from './Toolbar';
 
 const PublishPage = styled.div`
     width: 893px;
     margin: 0 auto;
     background-color: #fffcfb;
-    padding: 6rem 5rem 0 5rem;
+    padding: 4.5rem 5rem 0 5rem;
     height: 100%;
     flex: 1;
 
@@ -56,7 +57,7 @@ const CodeMirrorBlock = styled.div`
             outline: none !important;
         }
     }
-`
+`;
 
 const myTheme = createTheme({
     dark: 'light',
@@ -107,31 +108,34 @@ const MarkdownEditor = ({ onChangeField, title, mrkdown }) => {
     }, [title])
 
     return (
-        <PublishPage>
-            <TitleTextarea
-                ref={titleElement}
-                placeholder='제목'
-                onChange={onChangeTitle}
-                value={title}
-                titleHeight={titleHeight}
-            />
-            <CodeMirrorBlock>
-                <CodeMirror   
-                    height="100%"
-                    placeholder='내용을 입력하세요..'
-                    basicSetup={{
-                        lineNumbers: false,
-                        foldGutter: false,
-                        highlightActiveLine: false,
-                        highlightSelectionMatches: false,
-                    }}
-                    theme={myTheme}
-                    value={mrkdown}
-                    extensions={[markdown({ base: markdownLanguage, codeLanguages: languages }), EditorView.lineWrapping]}
-                    onChange={onChangeMrkdown}
+        <>
+            <Toolbar />
+            <PublishPage>
+                <TitleTextarea
+                    ref={titleElement}
+                    placeholder='제목'
+                    onChange={onChangeTitle}
+                    value={title}
+                    titleHeight={titleHeight}
                 />
-            </CodeMirrorBlock>
-        </PublishPage>
+                <CodeMirrorBlock>
+                    <CodeMirror   
+                        height="100%"
+                        placeholder='내용을 입력하세요..'
+                        basicSetup={{
+                            lineNumbers: false,
+                            foldGutter: false,
+                            highlightActiveLine: false,
+                            highlightSelectionMatches: false,
+                        }}
+                        theme={myTheme}
+                        value={mrkdown}
+                        extensions={[markdown({ base: markdownLanguage, codeLanguages: languages }), EditorView.lineWrapping]}
+                        onChange={onChangeMrkdown}
+                    />
+                </CodeMirrorBlock>
+            </PublishPage>
+        </>
     )
 }
 
