@@ -14,6 +14,8 @@ const ToolbarBlock = styled.div`
     align-items: center;
     padding: 0 2rem;
     gap: 0.5rem;
+    position: fixed;
+    z-index: 500000;
 `;
 
 const ToolbarItem = styled.div`

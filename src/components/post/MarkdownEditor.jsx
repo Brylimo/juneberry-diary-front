@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
-import CodeMirror from '@uiw/react-codemirror';
+import CodeMirror, { useCodeMirror } from '@uiw/react-codemirror';
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { languages } from '@codemirror/language-data';
 import { EditorView } from '@codemirror/view';
@@ -12,7 +12,7 @@ const PublishPage = styled.div`
     width: 893px;
     margin: 0 auto;
     background-color: #fffcfb;
-    padding: 4.5rem 5rem 0 5rem;
+    padding: 7.5rem 5rem 0 5rem;
     height: 100%;
     flex: 1;
 
@@ -95,10 +95,14 @@ const MarkdownEditor = ({ onChangeField, title, mrkdown }) => {
         onChangeField({ key: 'mrkdown', value: val})
     }, [onChangeField])
 
+    const onToolbarItemClick = useCallback(() => {
+
+    }, [])
+
     useEffect(() => {
         if (titleElement.current) {
             const { scrollHeight, clientHeight } = titleElement.current;
-            console.log(scrollHeight)
+            
             if (scrollHeight !== clientHeight) {
                 setTitleHeight(`${scrollHeight}px`);
             } else {

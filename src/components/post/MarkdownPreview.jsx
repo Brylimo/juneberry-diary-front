@@ -14,7 +14,7 @@ const PublishPage = styled.div`
     width: 893px;
     margin: 0 auto;
     background-color: #fffcfb;
-    padding: 8rem 5rem 0 5rem;
+    padding: 7.5rem 5rem 0 5rem;
     height: 100%;
     flex: 1;
 

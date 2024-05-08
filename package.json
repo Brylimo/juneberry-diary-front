@@ -59,6 +59,8 @@
     "sanitize-html": "^2.13.0",
     "styled-components": "^6.1.2",
     "unified": "^11.0.4",
+    "unist-builder": "^4.0.0",
+    "unist-util-visit": "^5.0.0",
     "web-vitals": "^2.1.0"
   },
   "scripts": {

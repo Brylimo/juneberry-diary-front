@@ -21,10 +21,7 @@ const initialState = {
 
 const publish = handleActions(
     {
-        [INITIALIZE]: state => ({
-            ...initialState,
-            previewActive: state.previewActive
-        }),
+        [INITIALIZE]: state => initialState,
         [CHANGE_FIELD]: (state, { payload: {key, value} }) => ({
             ...state,
             [key]: value,
