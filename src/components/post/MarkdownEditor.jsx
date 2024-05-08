@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
-import CodeMirror, { useCodeMirror } from '@uiw/react-codemirror';
+import CodeMirror from '@uiw/react-codemirror';
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { languages } from '@codemirror/language-data';
 import { EditorView } from '@codemirror/view';
@@ -86,6 +86,7 @@ const myTheme = createTheme({
 const MarkdownEditor = ({ onChangeField, title, mrkdown }) => {
     const [titleHeight, setTitleHeight] = useState(0)
     const titleElement = useRef(null)
+    const codemirrorRef = useRef(null)
 
     const onChangeTitle = e => {
         onChangeField({ key: 'title', value: e.target.value });
@@ -95,8 +96,36 @@ const MarkdownEditor = ({ onChangeField, title, mrkdown }) => {
         onChangeField({ key: 'mrkdown', value: val})
     }, [onChangeField])
 
-    const onToolbarItemClick = useCallback(() => {
+    const onToolbarItemClick = useCallback((mode) => {
+        const codemirror = codemirrorRef.current;
+        if (!codemirror) return;
 
+        const view = codemirror.view.viewState;
+        const cursor = view.state.selection.main.head;
+        const curLineObj = view.state.doc.lineAt(cursor);
+        const selection = {
+            from: view.state.selection.main.from,
+            to: view.state.selection.main.to
+        }
+        const line = view.state.doc.text[curLineObj.number - 1];
+
+        const controllers = {
+            ...[1, 2, 3, 4]
+                .map((number) => () => {
+                    const characters = '#'.repeat(number);
+                    const plain = line.replace(/#{1,6} /, '')
+                    codemirror.view.dispatch({ changes: {from: curLineObj.from, to: curLineObj.to, insert: `${characters} ${plain}`} })
+                })
+                .reduce((headingHandlers, handler, index) => {
+                    return Object.assign(headingHandlers, {
+                        [`heading${index + 1}`]: handler,
+                    });
+                }, {}),
+        }
+        const controller = controllers[mode];
+        if (!controller) return;
+
+        controller()
     }, [])
 
     useEffect(() => {
@@ -113,7 +142,7 @@ const MarkdownEditor = ({ onChangeField, title, mrkdown }) => {
 
     return (
         <>
-            <Toolbar />
+            <Toolbar onToolbarItemClick={onToolbarItemClick} />
             <PublishPage>
                 <TitleTextarea
                     ref={titleElement}
@@ -124,6 +153,7 @@ const MarkdownEditor = ({ onChangeField, title, mrkdown }) => {
                 />
                 <CodeMirrorBlock>
                     <CodeMirror   
+                        ref={codemirrorRef}
                         height="100%"
                         placeholder='내용을 입력하세요..'
                         basicSetup={{

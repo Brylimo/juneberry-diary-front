@@ -15,7 +15,7 @@ const ToolbarBlock = styled.div`
     padding: 0 2rem;
     gap: 0.5rem;
     position: fixed;
-    z-index: 500000;
+    z-index: 31;
 `;
 
 const ToolbarItem = styled.div`
@@ -82,25 +82,25 @@ const FormatQuoteIconCustom = styled(FormatQuoteIcon)`
     } 
 `;
 
-const Toolbar = () => {
+const Toolbar = ({ onToolbarItemClick }) => {
     return (
     <ToolbarBlock>
-        <ToolbarItem>
+        <ToolbarItem onClick={() => onToolbarItemClick('heading1')}>
             <Heading>
                 H<span>1</span>
             </Heading>
         </ToolbarItem>
-        <ToolbarItem>
+        <ToolbarItem onClick={() => onToolbarItemClick('heading2')}>
             <Heading>
                 H<span>2</span>
             </Heading>
         </ToolbarItem>
-        <ToolbarItem>
+        <ToolbarItem onClick={() => onToolbarItemClick('heading3')}>
             <Heading>
                 H<span>3</span>
             </Heading>
         </ToolbarItem>
-        <ToolbarItem>
+        <ToolbarItem onClick={() => onToolbarItemClick('heading4')}>
             <Heading>
                 H<span>4</span>
             </Heading>
