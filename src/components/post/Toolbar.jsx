@@ -106,13 +106,13 @@ const Toolbar = ({ onToolbarItemClick }) => {
             </Heading>
         </ToolbarItem>
         <Bar />
-        <ToolbarItem>
+        <ToolbarItem onClick={() => onToolbarItemClick('bold')}>
             <FormatBoldIconCustom />
         </ToolbarItem>
-        <ToolbarItem>
+        <ToolbarItem onClick={() => onToolbarItemClick('italic')}>
             <FormatItalicIconCustom  />
         </ToolbarItem>
-        <ToolbarItem>
+        <ToolbarItem onClick={() => onToolbarItemClick('strike')}>
             <FormatStrikethroughIconCustom />
         </ToolbarItem>
         <Bar />

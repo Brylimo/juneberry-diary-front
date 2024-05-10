@@ -103,7 +103,7 @@ const MarkdownEditor = ({ onChangeField, title, mrkdown }) => {
         const view = codemirror.view.viewState;
         const cursor = view.state.selection.main.head;
         const curLineObj = view.state.doc.lineAt(cursor);
-        const selection = {
+        const selectionObj = {
             from: view.state.selection.main.from,
             to: view.state.selection.main.to
         }
@@ -115,12 +115,64 @@ const MarkdownEditor = ({ onChangeField, title, mrkdown }) => {
                     const characters = '#'.repeat(number);
                     const plain = line.replace(/#{1,6} /, '')
                     codemirror.view.dispatch({ changes: {from: curLineObj.from, to: curLineObj.to, insert: `${characters} ${plain}`} })
+                    codemirror.view.focus();
                 })
                 .reduce((headingHandlers, handler, index) => {
                     return Object.assign(headingHandlers, {
                         [`heading${index + 1}`]: handler,
                     });
                 }, {}),
+            bold: () => {
+                const selectedTxt = view.state.sliceDoc(selectionObj.from, selectionObj.to)
+                if (selectedTxt.length > 0) {
+                    if (/\*\*(.*)\*\*/.test(selectedTxt)) {
+                        const filterdSelectedTxt = selectedTxt.replace(/\*\*/g, '')
+                        codemirror.view.dispatch(view.state.replaceSelection(filterdSelectedTxt))
+                        codemirror.view.dispatch({ selection: {anchor: selectionObj.from, head: selectionObj.to - 4}})    
+                    } else{
+                        codemirror.view.dispatch(view.state.replaceSelection(`**${selectedTxt}**`))
+                        codemirror.view.dispatch({ selection: {anchor: selectionObj.from, head: selectionObj.to + 4}})
+                    }
+                } else {
+                    codemirror.view.dispatch(view.state.replaceSelection('**텍스트**'))
+                    codemirror.view.dispatch({ selection: {anchor: selectionObj.from + 2, head: selectionObj.to + 5}})
+                }
+                codemirror.view.focus();
+            },
+            italic: () => {
+                const selectedTxt = view.state.sliceDoc(selectionObj.from, selectionObj.to)
+                if (selectedTxt.length > 0) {
+                    if (/\*(.*)\*/.test(selectedTxt)) {
+                        const filterdSelectedTxt = selectedTxt.replace(/\*/g, '')
+                        codemirror.view.dispatch(view.state.replaceSelection(filterdSelectedTxt))
+                        codemirror.view.dispatch({ selection: {anchor: selectionObj.from, head: selectionObj.to - 2}})    
+                    } else{
+                        codemirror.view.dispatch(view.state.replaceSelection(`*${selectedTxt}*`))
+                        codemirror.view.dispatch({ selection: {anchor: selectionObj.from, head: selectionObj.to + 2}})
+                    }
+                } else {
+                    codemirror.view.dispatch(view.state.replaceSelection('*텍스트*'))
+                    codemirror.view.dispatch({ selection: {anchor: selectionObj.from + 1, head: selectionObj.to + 4}})
+                }
+                codemirror.view.focus();
+            },
+            strike: () => {
+                const selectedTxt = view.state.sliceDoc(selectionObj.from, selectionObj.to)
+                if (selectedTxt.length > 0) {
+                    if (/\~(.*)\~/.test(selectedTxt)) {
+                        const filterdSelectedTxt = selectedTxt.replace(/^~/, '').replace(/~$/, '')
+                        codemirror.view.dispatch(view.state.replaceSelection(filterdSelectedTxt))
+                        codemirror.view.dispatch({ selection: {anchor: selectionObj.from, head: selectionObj.to - 2}})    
+                    } else{
+                        codemirror.view.dispatch(view.state.replaceSelection(`~${selectedTxt}~`))
+                        codemirror.view.dispatch({ selection: {anchor: selectionObj.from, head: selectionObj.to + 2}})
+                    }
+                } else {
+                    codemirror.view.dispatch(view.state.replaceSelection('~텍스트~'))
+                    codemirror.view.dispatch({ selection: {anchor: selectionObj.from + 1, head: selectionObj.to + 4}})
+                }
+                codemirror.view.focus();
+            }
         }
         const controller = controllers[mode];
         if (!controller) return;
