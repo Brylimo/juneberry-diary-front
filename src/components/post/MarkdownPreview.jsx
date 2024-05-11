@@ -131,7 +131,6 @@ const MarkdownPrevew = ({ title, mrkdown }) => {
         )   
     );
 
-    console.log(htmlTxt)
     return (
         <PublishPage>
             <PreviewTitle>{title}</PreviewTitle>

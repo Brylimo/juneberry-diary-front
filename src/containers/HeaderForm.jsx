@@ -25,7 +25,6 @@ const HeaderForm = () => {
     }, [dispatch]);
 
     const onClickPreviewBtn = useCallback(e => {
-        console.log("kk", previewActive)
         dispatch(togglePreviewActive());
     }, [dispatch])
 

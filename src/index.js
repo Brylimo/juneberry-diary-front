@@ -18,9 +18,7 @@ const sagaMiddleware = createSagaMiddleware();
 const logger = createLogger();
 
 const store = createStore(
-  rootReducer,
-  composeWithDevTools(
-  )
+  rootReducer
 );
 
 const queryClient = new QueryClient();

@@ -4,6 +4,7 @@ import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 import FormatStrikethroughIcon from '@mui/icons-material/FormatStrikethrough';
 import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
+import CodeIcon from '@mui/icons-material/Code';
 
 const ToolbarBlock = styled.div`
     width: 100%;
@@ -82,6 +83,14 @@ const FormatQuoteIconCustom = styled(FormatQuoteIcon)`
     } 
 `;
 
+const CodeIconCustom = styled(CodeIcon)`
+    font-size: 2.3rem;
+    color: #868E96;
+    &:hover {
+        color: #802480;
+    } 
+`;
+
 const Toolbar = ({ onToolbarItemClick }) => {
     return (
     <ToolbarBlock>
@@ -116,8 +125,11 @@ const Toolbar = ({ onToolbarItemClick }) => {
             <FormatStrikethroughIconCustom />
         </ToolbarItem>
         <Bar />
-        <ToolbarItem>   
+        <ToolbarItem onClick={() => onToolbarItemClick('quote')}>
             <FormatQuoteIconCustom />
+        </ToolbarItem>
+        <ToolbarItem onClick={() => onToolbarItemClick('code')}>
+            <CodeIconCustom />
         </ToolbarItem>
     </ToolbarBlock>);
 };

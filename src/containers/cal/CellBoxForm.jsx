@@ -25,7 +25,6 @@ const CellBoxForm = ({ dayObj, selectedDate, setSelectedDate, setModalActive, is
             dispatch(initializeTodoHash())
             setSelectedDate(dayx)
         }
-        console.log(todoActive)
         if (todoActive === false) {
             setModalActive(true)
         } else {
