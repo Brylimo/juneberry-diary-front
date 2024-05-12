@@ -58,6 +58,10 @@ const CodeMirrorBlock = styled.div`
 
     & .cm-editor {
         font-size: 16px;
+        & .cm-scroller {
+            overflow: hidden;
+        }
+
         &.cm-focused {
             outline: none !important;
         }
@@ -279,14 +283,28 @@ const MarkdownEditor = ({ onChangeField, title, mrkdown }) => {
             code: () => {
                 const selectedTxt = view.state.sliceDoc(selectionObj.from, selectionObj.to)
                 if (selectedTxt.length === 0) {
-                    codemirror.view.dispatch(view.state.replaceSelection('```\n코드를 입력하세요\n```'))
-                    codemirror.view.dispatch({ selection: {anchor: selectionObj.from + 4, head: selectionObj.to + 13}})
+                    if (cursor !== 0) {
+                        codemirror.view.dispatch(view.state.replaceSelection('\n```\n코드를 입력하세요\n```'))
+                        codemirror.view.dispatch({ selection: {anchor: selectionObj.from + 5, head: selectionObj.to + 14}})
+                    } else {
+                        codemirror.view.dispatch(view.state.replaceSelection('```\n코드를 입력하세요\n```'))
+                        codemirror.view.dispatch({ selection: {anchor: selectionObj.from + 4, head: selectionObj.to + 13}})
+                    }
                 } else {
-                    codemirror.view.dispatch(view.state.replaceSelection(
-                        `\`\`\`
+                    if (selectionObj.from !== 0) {
+                        codemirror.view.dispatch(view.state.replaceSelection(
+                            `
+\`\`\`
 ${selectedTxt}
 \`\`\``))
-                    codemirror.view.dispatch({ selection: {anchor: selectionObj.from + 4, head: selectionObj.to + 4}})
+                        codemirror.view.dispatch({ selection: {anchor: selectionObj.from + 5, head: selectionObj.to + 5}})
+                    } else {
+                        codemirror.view.dispatch(view.state.replaceSelection(
+                            `\`\`\`
+${selectedTxt}
+\`\`\``))
+                        codemirror.view.dispatch({ selection: {anchor: selectionObj.from + 4, head: selectionObj.to + 4}})
+                    }
                 }
                 codemirror.view.focus();
             },
