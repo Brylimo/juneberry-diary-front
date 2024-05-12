@@ -11,5 +11,5 @@ export default HighlightStyle.define([
   { tag: t.strong, fontFamily: 'monospace', fontWeight: 'bold' },
   { tag: t.monospace, fontFamily: 'monospace' },
   { tag: t.content, fontFamily: 'monospace' },
-  { tag: t.meta, color: 'darkgrey' },
+  { tag: t.meta, color: 'darkgrey' }
 ]);

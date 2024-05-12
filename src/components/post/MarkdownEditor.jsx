@@ -100,6 +100,10 @@ const CodeMirrorBlock = styled.div`
         & .cm-markdoc-renderBlock p {
             margin: 3px;
         }
+
+        & .cm-markdoc-renderBlock img {
+            width: 100%;
+        }
           
         & .cm-markdoc-tag {
             color: darkgray;
@@ -285,6 +289,9 @@ ${selectedTxt}
                     codemirror.view.dispatch({ selection: {anchor: selectionObj.from + 4, head: selectionObj.to + 4}})
                 }
                 codemirror.view.focus();
+            },
+            link: () => {
+                
             }
         }
         const controller = controllers[mode];

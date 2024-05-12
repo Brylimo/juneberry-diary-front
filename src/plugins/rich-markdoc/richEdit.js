@@ -7,7 +7,8 @@ const tokenElement = [
   'StrongEmphasis',
   'FencedCode',
   'Link',
-  'Image'
+  'Image',
+  'Strikethrough'
 ];
 
 const tokenHidden = [
@@ -17,6 +18,7 @@ const tokenHidden = [
   'CodeMark',
   'CodeInfo',
   'URL',
+  'StrikethroughMark'
 ];
 
 const decorationHidden = Decoration.mark({ class: 'cm-markdoc-hidden' });
@@ -40,6 +42,7 @@ export default class RichEditPlugin {
       syntaxTree(view.state).iterate({
         from, to,
         enter(node) {
+          console.log("a", node.name)
           if (node.name === 'MarkdocTag')
             widgets.push(decorationTag.range(node.from, node.to));
 

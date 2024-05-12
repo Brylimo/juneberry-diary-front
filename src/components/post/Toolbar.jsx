@@ -5,6 +5,8 @@ import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 import FormatStrikethroughIcon from '@mui/icons-material/FormatStrikethrough';
 import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import CodeIcon from '@mui/icons-material/Code';
+import InsertLinkIcon from '@mui/icons-material/InsertLink';
+import PhotoIcon from '@mui/icons-material/Photo';
 
 const ToolbarBlock = styled.div`
     width: 100%;
@@ -91,6 +93,22 @@ const CodeIconCustom = styled(CodeIcon)`
     } 
 `;
 
+const InsertLinkIconCustom = styled(InsertLinkIcon)`
+    font-size: 2.3rem;
+    color: #868E96;
+    &:hover {
+        color: #802480;
+    } 
+`;
+
+const PhotoIconCustom = styled(PhotoIcon)`
+    font-size: 2.3rem;
+    color: #868E96;
+    &:hover {
+        color: #802480;
+    } 
+`;
+
 const Toolbar = ({ onToolbarItemClick }) => {
     return (
     <ToolbarBlock>
@@ -127,6 +145,12 @@ const Toolbar = ({ onToolbarItemClick }) => {
         <Bar />
         <ToolbarItem onClick={() => onToolbarItemClick('quote')}>
             <FormatQuoteIconCustom />
+        </ToolbarItem>
+        <ToolbarItem onClick={() => onToolbarItemClick('link')}>
+            <InsertLinkIconCustom />
+        </ToolbarItem>
+        <ToolbarItem onClick={() => onToolbarItemClick('photo')}>
+            <PhotoIconCustom />
         </ToolbarItem>
         <ToolbarItem onClick={() => onToolbarItemClick('code')}>
             <CodeIconCustom />

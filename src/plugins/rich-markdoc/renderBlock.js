@@ -10,7 +10,9 @@ class RenderBlockWidget extends WidgetType {
     super();
 
     const document = markdoc.parse(source);
+    console.log("dd", document)
     const transformed = markdoc.transform(document, config);
+    console.log("ee", transformed)
     this.rendered = markdoc.renderers.html(transformed);
   }
 
