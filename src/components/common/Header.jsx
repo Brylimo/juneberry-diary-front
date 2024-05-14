@@ -267,6 +267,14 @@ const PublishBtn = styled.button`
             background-color: ${props.bgColor};
         `
     }
+
+    &:hover {
+        ${props => props.hoverColor &&
+            css`
+                background-color: ${props.hoverColor};
+            `
+        }
+    }
 `;
 
 const Header = ({ todoActive, previewActive, onLogout, onClickTodoBtn, onClickPreviewBtn }) => {
@@ -328,8 +336,8 @@ const Header = ({ todoActive, previewActive, onLogout, onClickTodoBtn, onClickPr
                 <FlagBottomBlock>
                     {pathname === "/post/publish" ? 
                         (<PublishUtilityBlock>
-                            <PublishBtn bgColor={"#f6f6f7"}>save</PublishBtn>
-                            <PublishBtn bgColor={"#8df198"}>publish</PublishBtn>
+                            <PublishBtn bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>save</PublishBtn>
+                            <PublishBtn bgColor={"#8df198"} hoverColor={"#7ac884"}>publish</PublishBtn>
                         </PublishUtilityBlock>)
                         : (<FlagBottomNav>
                             <FlagBottomUl>

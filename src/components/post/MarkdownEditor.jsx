@@ -8,6 +8,7 @@ import { defaultHighlightStyle, syntaxHighlighting } from '@codemirror/language'
 import { createTheme } from '@uiw/codemirror-themes';
 import { tags as t } from '@lezer/highlight';
 import Toolbar from './Toolbar';
+import AddLink from './AddLink';
 import richEditor from '../../plugins/rich-markdoc';
 import config from '../../configs/markdoc'
 import { Table } from '@lezer/markdown';
@@ -55,6 +56,7 @@ const TitleTextarea = styled.textarea`
 
 const CodeMirrorBlock = styled.div`
     height: 100%;
+    position: relative;
 
     & .cm-editor {
         font-size: 16px;
@@ -182,8 +184,16 @@ const myTheme = createTheme({
 
 const MarkdownEditor = ({ onChangeField, title, mrkdown }) => {
     const [titleHeight, setTitleHeight] = useState(0)
+    const [linkBoxInfo, setLinkBoxInfo] = useState({
+        top: 0,
+        left: 0,
+        isActive: false
+    })
+    const [linkTxt, setLinkTxt] = useState('');
     const titleElement = useRef(null)
+    const codemirrorBlockRef = useRef(null)
     const codemirrorRef = useRef(null)
+    const addLinkBlockRef = useRef(null)
 
     const onChangeTitle = e => {
         onChangeField({ key: 'title', value: e.target.value });
@@ -192,6 +202,16 @@ const MarkdownEditor = ({ onChangeField, title, mrkdown }) => {
     const onChangeMrkdown = useCallback((val, viewUpdate) => {
         onChangeField({ key: 'mrkdown', value: val})
     }, [onChangeField])
+
+    const onClickAddLinkCancel = useCallback(() => {
+        setLinkTxt("")
+        setLinkBoxInfo(prevState => {
+            return {
+                ...prevState,
+                isActive: false
+            }
+        })
+    }, [setLinkBoxInfo])
 
     const onToolbarItemClick = useCallback((mode) => {
         const codemirror = codemirrorRef.current;
@@ -204,7 +224,13 @@ const MarkdownEditor = ({ onChangeField, title, mrkdown }) => {
             from: view.state.selection.main.from,
             to: view.state.selection.main.to
         }
-        const line = view.state.doc.text[curLineObj.number - 1];
+
+        let line = ""
+        if (view.state.doc.lines <= 32) {
+            line = view.state.doc.text[curLineObj.number - 1];
+        } else {
+            line = view.state.doc.children[parseInt((curLineObj.number - 1) / 32)].text[(curLineObj.number - 1) % 32]
+        }
 
         const controllers = {
             ...[1, 2, 3, 4]
@@ -309,7 +335,15 @@ ${selectedTxt}
                 codemirror.view.focus();
             },
             link: () => {
+                const {top, left} = codemirror.view.coordsAtPos(cursor)
+                const lineHeight = codemirror.view.defaultLineHeight;
+                const scrollHeight = window.pageYOffset !== undefined ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
                 
+                setLinkBoxInfo({
+                    top: (top + lineHeight + scrollHeight - codemirrorBlockRef.current.offsetTop - 80) + '',
+                    left: (left - codemirrorBlockRef.current.offsetLeft) + '',
+                    isActive: true
+                })
             }
         }
         const controller = controllers[mode];
@@ -317,6 +351,17 @@ ${selectedTxt}
 
         controller()
     }, [])
+
+    const onClickAddLinkSubmit = useCallback((e) => {
+        const codemirror = codemirrorRef.current;
+        if (!codemirror) return;
+
+        const view = codemirror.view.viewState;
+        const cursor = view.state.selection.main.head;
+        const curLineObj = view.state.doc.lineAt(cursor);
+
+        alert(linkTxt)
+    }, [linkTxt])
 
     useEffect(() => {
         if (titleElement.current) {
@@ -341,7 +386,18 @@ ${selectedTxt}
                     value={title}
                     titleHeight={titleHeight}
                 />
-                <CodeMirrorBlock>
+                <CodeMirrorBlock ref={codemirrorBlockRef}>
+                    {linkBoxInfo.isActive && 
+                        <AddLink 
+                            linkTxt={linkTxt} 
+                            top={linkBoxInfo.top} 
+                            left={linkBoxInfo.left} 
+                            addLinkBlockRef={addLinkBlockRef} 
+                            onClickAddLinkSubmit={onClickAddLinkSubmit} 
+                            onClickAddLinkCancel={onClickAddLinkCancel}
+                            setLinkTxt={setLinkTxt}
+                        />
+                    }
                     <CodeMirror   
                         ref={codemirrorRef}
                         height="100%"

@@ -14,6 +14,7 @@ const FrameWrapper = styled.div`
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 `;
 
 const Editor = ({ previewActive }) => {
