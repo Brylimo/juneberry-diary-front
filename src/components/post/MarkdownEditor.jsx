@@ -352,16 +352,26 @@ ${selectedTxt}
         controller()
     }, [])
 
-    const onClickAddLinkSubmit = useCallback((e) => {
+    const onClickAddLinkSubmit = useCallback((link) => {
         const codemirror = codemirrorRef.current;
         if (!codemirror) return;
 
         const view = codemirror.view.viewState;
-        const cursor = view.state.selection.main.head;
-        const curLineObj = view.state.doc.lineAt(cursor);
+        const selectionObj = {
+            from: view.state.selection.main.from,
+            to: view.state.selection.main.to
+        }
 
-        alert(linkTxt)
-    }, [linkTxt])
+        const selectedTxt = view.state.sliceDoc(selectionObj.from, selectionObj.to)
+        if (selectedTxt.length === 0) {
+            codemirror.view.dispatch(view.state.replaceSelection(`[링크](${link})`))
+            codemirror.view.dispatch({ selection: {anchor: selectionObj.from + 1, head: selectionObj.to + 3}})
+        } else {
+            codemirror.view.dispatch(view.state.replaceSelection(`[${selectedTxt}](${link})`))
+        }
+        onClickAddLinkCancel()
+        codemirror.view.focus();
+    }, [onClickAddLinkCancel])
 
     useEffect(() => {
         if (titleElement.current) {

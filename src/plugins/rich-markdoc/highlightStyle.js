@@ -6,7 +6,7 @@ export default HighlightStyle.define([
   { tag: t.heading2, fontWeight: 'bold', fontFamily: 'monospace', fontSize: '28px', textDecoration: 'none !important' },
   { tag: t.heading3, fontWeight: 'bold', fontFamily: 'monospace', fontSize: '24px', textDecoration: 'none !important' },
   { tag: t.heading4, fontWeight: 'bold', fontFamily: 'monospace', fontSize: '22px', textDecoration: 'none !important' },
-  { tag: t.link, fontFamily: 'monospace', textDecoration: 'underline', color: 'blue' },
+  { tag: t.link, fontFamily: 'monospace', textDecoration: 'none !important', color: '#54a0ff' },
   { tag: t.emphasis, fontFamily: 'monospace', fontStyle: 'italic' },
   { tag: t.strong, fontFamily: 'monospace', fontWeight: 'bold' },
   { tag: t.monospace, fontFamily: 'monospace' },

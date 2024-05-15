@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styled, {css} from 'styled-components';
 import OutsideClickHandler from 'react-outside-click-handler';
 import CheckIcon from '@mui/icons-material/Check';
 
 const AddLinkBlock = styled.div`
     position: absolute;
-    width: 20rem;
+    width: 18rem;
     top: 0;
     left: 0;
     z-index: 20;
@@ -29,7 +29,7 @@ const AddLinkBlock = styled.div`
     }
     ${props =>
         props.isActive && css`
-            border: 2px solid #6FFAFC;
+            border: 2px solid #54a0ff;
             background-color: #F6FCFC;
         `
     }
@@ -43,6 +43,7 @@ const AddLinkInput = styled.input`
     border: none;
     outline: none;
     padding: 2px;
+    border-radius: 10px;
 `;
 
 const CheckIconBlock = styled.div`
@@ -65,6 +66,17 @@ const CheckIconCustom = styled(CheckIcon)`
 const AddLink = ({linkTxt, top, left, addLinkBlockRef, onClickAddLinkSubmit, onClickAddLinkCancel, setLinkTxt}) => {
     const [chkBtnActive, setChkBtnActive] = useState(false)
 
+    const onSubmitLink = useCallback((e) => {
+        e.preventDefault()
+        onClickAddLinkSubmit(linkTxt)
+    }, [onClickAddLinkSubmit, linkTxt])
+
+    const onAddLinkInputKeyDown = useCallback(e => {
+        if (e.key === "Enter" && e.nativeEvent.isComposing === false && linkTxt.trim() !== '') {
+            onSubmitLink(e)
+        }
+    }, [onSubmitLink, linkTxt])
+
     useEffect(() => {
         addLinkBlockRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }, [addLinkBlockRef])
@@ -81,9 +93,9 @@ const AddLink = ({linkTxt, top, left, addLinkBlockRef, onClickAddLinkSubmit, onC
         <OutsideClickHandler onOutsideClick={onClickAddLinkCancel}>
             <AddLinkBlock ref={addLinkBlockRef} top={top} left={left} isActive={chkBtnActive}>
                 <AddLinkInputBox>
-                    <AddLinkInput placeholder='링크를 입력하세요' value={linkTxt} onChange={e=>setLinkTxt(e.target.value)} />
+                    <AddLinkInput placeholder='링크를 입력하세요' value={linkTxt} onKeyDown={onAddLinkInputKeyDown} onChange={e=>setLinkTxt(e.target.value)} />
                     <CheckIconBlock>
-                        <CheckIconCustom isActive={chkBtnActive} onClick={onClickAddLinkSubmit} />
+                        <CheckIconCustom isActive={chkBtnActive} onClick={onSubmitLink} />
                     </CheckIconBlock>
                 </AddLinkInputBox>
             </AddLinkBlock>
