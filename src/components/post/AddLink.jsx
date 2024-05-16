@@ -13,7 +13,7 @@ const AddLinkBlock = styled.div`
     border: 2px solid #d0d7de;
     box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
     background-color: #ffffff;
-    padding: 6px 0 6px 6px;
+    padding: 6px 3px 6px 6px;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -44,6 +44,7 @@ const AddLinkInput = styled.input`
     outline: none;
     padding: 2px;
     border-radius: 10px;
+    width: 100%;
 `;
 
 const CheckIconBlock = styled.div`

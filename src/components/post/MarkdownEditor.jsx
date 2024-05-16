@@ -13,6 +13,7 @@ import richEditor from '../../plugins/rich-markdoc';
 import config from '../../configs/markdoc'
 import { Table } from '@lezer/markdown';
 import { markdownLanguage } from '@codemirror/lang-markdown';
+import { useImgUpload } from '../../hooks/useImgUpload';
 
 const PublishPage = styled.div`
     width: 893px;
@@ -190,6 +191,7 @@ const MarkdownEditor = ({ onChangeField, title, mrkdown }) => {
         isActive: false
     })
     const [linkTxt, setLinkTxt] = useState('');
+    const [imgFile, imgUpload] = useImgUpload();
     const titleElement = useRef(null)
     const codemirrorBlockRef = useRef(null)
     const codemirrorRef = useRef(null)
@@ -344,6 +346,9 @@ ${selectedTxt}
                     left: (left - codemirrorBlockRef.current.offsetLeft) + '',
                     isActive: true
                 })
+            },
+            image: () => {
+                imgUpload()
             }
         }
         const controller = controllers[mode];

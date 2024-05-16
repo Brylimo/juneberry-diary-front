@@ -149,7 +149,7 @@ const Toolbar = ({ onToolbarItemClick }) => {
         <ToolbarItem onClick={() => onToolbarItemClick('link')}>
             <InsertLinkIconCustom />
         </ToolbarItem>
-        <ToolbarItem onClick={() => onToolbarItemClick('photo')}>
+        <ToolbarItem onClick={() => onToolbarItemClick('image')}>
             <PhotoIconCustom />
         </ToolbarItem>
         <ToolbarItem onClick={() => onToolbarItemClick('code')}>
