@@ -12,6 +12,7 @@ import createSagaMiddleware from 'redux-saga';
 import rootReducer from './modules';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
+import { HelmetProvider } from 'react-helmet-async';
 import './index.css';
 
 const sagaMiddleware = createSagaMiddleware();
@@ -27,7 +28,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <HelmetProvider>
+          <App />
+        </HelmetProvider>
       </QueryClientProvider>
     </Provider>
 );

@@ -1,6 +1,7 @@
 import React, {useCallback} from 'react';
 import styled from "styled-components";
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const NotFoundWrapper = styled.div`
     display: flex;
@@ -82,24 +83,29 @@ const NotFoundPage = () => {
 
 
     return (
-        <NotFoundWrapper>
-            <NotFoundBlock>
-                <NotFoundMainEmoj>
-                    (˘･_･˘)
-                </NotFoundMainEmoj>
-                <NotFoundMainNoti>
-                    페이지가 존재하지 않습니다
-                </NotFoundMainNoti>
-                <NotFoundSubNoti>
-                    요청하신 주소가 잘못되었거나 변경된 것 같습니다.<br/>
-                    다시 한번 확인해 주세요.
-                </NotFoundSubNoti>
-                <NotFoundBtnBlock>
-                    <GoBackBtn onClick={onClickGoBackBtn}>뒤로 가기</GoBackBtn>
-                    <GoMainBtn onClick={onClickGoMainBtn}>메인 화면 가기</GoMainBtn>
-                </NotFoundBtnBlock>
-            </NotFoundBlock>
-        </NotFoundWrapper>
+        <>
+            <Helmet>
+                <title>page not found</title>
+            </Helmet>
+            <NotFoundWrapper>
+                <NotFoundBlock>
+                    <NotFoundMainEmoj>
+                        (˘･_･˘)
+                    </NotFoundMainEmoj>
+                    <NotFoundMainNoti>
+                        페이지가 존재하지 않습니다
+                    </NotFoundMainNoti>
+                    <NotFoundSubNoti>
+                        요청하신 주소가 잘못되었거나 변경된 것 같습니다.<br/>
+                        다시 한번 확인해 주세요.
+                    </NotFoundSubNoti>
+                    <NotFoundBtnBlock>
+                        <GoBackBtn onClick={onClickGoBackBtn}>뒤로 가기</GoBackBtn>
+                        <GoMainBtn onClick={onClickGoMainBtn}>메인 화면 가기</GoMainBtn>
+                    </NotFoundBtnBlock>
+                </NotFoundBlock>
+            </NotFoundWrapper>
+        </>
     );
 };
 

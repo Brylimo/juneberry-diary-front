@@ -53,7 +53,7 @@ const TContentTimeCell = styled.div`
 `;
 
 const TodoWrapper = styled.div`
-    padding-right: 2rem;
+    padding-right: 0.8rem;
     width: 100%;
     height: 100%;
     ${({ theme }) => theme.xs`

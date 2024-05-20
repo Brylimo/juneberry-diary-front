@@ -7,6 +7,7 @@ import Button from '../components/common/Button';
 import { XYZ } from 'ol/source';
 import TileLayer from '../../node_modules/ol/layer/Tile';
 import SideBar from '../components/geo/SideBar';
+import { Helmet } from 'react-helmet-async';
 
 const MapPage = () => {
     const [mapObj, setMapObj] = useState({});
@@ -36,10 +37,15 @@ const MapPage = () => {
         };
     }, []);
     return (
-        <div style={{ position: 'relative', height: '100%' }}>
-            <SideBar></SideBar>
-            <div id="vmap" style={{ width: '100%', height: 'calc(100vh - 8rem)', position: 'absolute', top: '8rem' }}></div>
-        </div>        
+        <>
+            <Helmet>
+                <title>juneberrydiary - map</title>
+            </Helmet>
+            <div style={{ position: 'relative', height: '100%' }}>
+                <SideBar></SideBar>
+                <div id="vmap" style={{ width: '100%', height: 'calc(100vh - 8rem)', position: 'absolute', top: '8rem' }}></div>
+            </div>
+        </>        
     );
 }
 
