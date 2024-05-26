@@ -183,7 +183,7 @@ const myTheme = createTheme({
     ],
 });
 
-const MarkdownEditor = ({ onChangeField, title, mrkdown }) => {
+const MarkdownEditor = ({ onChangeField, title, mrkdown, postId }) => {
     const [titleHeight, setTitleHeight] = useState(0)
     const [linkBoxInfo, setLinkBoxInfo] = useState({
         top: 0,
@@ -191,11 +191,15 @@ const MarkdownEditor = ({ onChangeField, title, mrkdown }) => {
         isActive: false
     })
     const [linkTxt, setLinkTxt] = useState('');
+    const [imgBlobUrl, setImgBlobUrl] = useState(null);
     const [imgFile, imgUpload] = useImgUpload();
     const titleElement = useRef(null)
     const codemirrorBlockRef = useRef(null)
     const codemirrorRef = useRef(null)
     const addLinkBlockRef = useRef(null)
+    const postIdRef = useRef(postId)
+    const titleRef = useRef(title)
+    const contentRef = useRef(mrkdown)
 
     const onChangeTitle = e => {
         onChangeField({ key: 'title', value: e.target.value });
@@ -378,6 +382,22 @@ ${selectedTxt}
         codemirror.view.focus();
     }, [onClickAddLinkCancel])
 
+    const uploadImage = useCallback(
+        async (imgFile) => {
+            if (!imgFile) return
+            /*let id = postIdRef.current;
+            if (!id) {
+                const title = titleRef.current || '';
+                const content = contentRef.current || '';
+
+            }
+            if (!id) return*/
+            const url = URL.createObjectURL(imgFile)
+            setImgBlobUrl(url)
+            
+        }, []
+    );
+
     useEffect(() => {
         if (titleElement.current) {
             const { scrollHeight, clientHeight } = titleElement.current;
@@ -389,6 +409,20 @@ ${selectedTxt}
             }
         }
     }, [title])
+
+    useEffect(() => {
+        if (!imgFile) return;
+        uploadImage(imgFile)
+    }, [imgFile, uploadImage])
+
+    useEffect(() => {
+        postIdRef.current = postId;
+    }, [postId])
+
+    useRef(() => {
+        contentRef.current = mrkdown
+        titleRef.current = title
+    }, [mrkdown, title])
 
     return (
         <>
