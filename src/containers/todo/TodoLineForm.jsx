@@ -158,4 +158,4 @@ const TodoLineForm = ({ index, selectedDate }) => {
     />
 }
 
-export default TodoLineForm;
+export default React.memo(TodoLineForm);

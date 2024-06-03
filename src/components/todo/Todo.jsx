@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from "styled-components";
 import { useBbox } from '../../hooks/useBbox';
-import TodoHeader from './TodoHeader';
+import TodoHeaderForm from '../../containers/todo/TodoHeaderForm';
 import TodoLineForm from '../../containers/todo/TodoLineForm';
 
 const TodoContent = styled.div`
@@ -47,7 +47,7 @@ const TContentTimeCell = styled.div`
         border-top: 1px solid #999999;
     }
 
-    &:nth-child(n + 161) {
+    &:nth-child(n + 162) {
         border-bottom: 1px solid #999999;
     }
 `;
@@ -98,7 +98,7 @@ const Todo = ({ selectedDate }) => {
 
     return (
         <TodoContent>
-            <TodoHeader selectedDate={selectedDate}/>
+            <TodoHeaderForm selectedDate={selectedDate}/>
             <TContentFrame>
                 <TContentBody>
                     <TodoWrapper>

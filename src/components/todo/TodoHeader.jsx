@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled, {css} from "styled-components";
 import useDebounce from '../../hooks/useDebounce';
 import { useUpdateTodayTxtMutation } from '../../hooks/mutations/useUpdateTodayTxtMutation';
@@ -150,24 +150,25 @@ const BeatLoaderWrapper = styled.div`
     width: 27px;
 `;
 
-const TodoHeader = ({ selectedDate }) => {
-    const [todayTxt, setTodayTxt] = useState('');
-    const [isPending, debouncedValue] = useDebounce(todayTxt, 1000);
-    const [debouncedValueUpdated, setDebouncedValueUpdated] = useState(false);
-    const { data: todayTxtData } = useGetTodayTxtQuery(selectedDate);
-    const { mutate: updateTodayTxtMutate, isPending: apiPending } = useUpdateTodayTxtMutation();
-    const queryClient = useQueryClient();
+const TodoHeader = ({ selectedDate, isTyping, todayText, onFocusTodayTxtInput, setTodayText }) => {
+    //const [debouncedValueUpdated, setDebouncedValueUpdated] = useState(false);
+    //const { mutate: updateTodayTxtMutate, isPending: apiPending } = useUpdateTodayTxtMutation();
+    //const queryClient = useQueryClient();
 
+    //const mounted = useRef(false);
     const week = ["Sun", "Mon", "Thu", "Wed", "Thurs", "Fri", "Sat"];
 
-    useEffect(() => {
+    /*useEffect(() => {
         if (todayTxtData) {
+            console.log("b")
             setTodayTxt(todayTxtData.todayTxt);
         }
     }, [todayTxtData]);
 
     useEffect(() => {
+        console.log("a")
         if (debouncedValueUpdated && debouncedValue && !isPending) {
+            console.log("t", debouncedValue)
             updateTodayTxtMutate(
                 {
                     selectedDate,
@@ -178,6 +179,7 @@ const TodoHeader = ({ selectedDate }) => {
                         queryClient.invalidateQueries({
                             queryKey : ["getTodayTxt", {selectedDate}]
                         })
+                        console.log("okay")
                     },
                     onError: () => {
                         toast.error("글 저장에 실패했습니다.");
@@ -191,9 +193,14 @@ const TodoHeader = ({ selectedDate }) => {
 
     useEffect(() => {
         if (debouncedValue !== todayTxt) {
-            setDebouncedValueUpdated(true);
+            if (mounted.current) {
+                console.log("stat", debouncedValue)
+                setDebouncedValueUpdated(true);
+            } else {
+                mounted.current = true
+            }
         }
-    }, [debouncedValue, todayTxt]);
+    }, [debouncedValue, todayTxt]);*/
 
     return (
         <THeaderFrame>
@@ -212,15 +219,13 @@ const TodoHeader = ({ selectedDate }) => {
                         <THeaderTitleSpan>TODAY.</THeaderTitleSpan>
                         <THeaderTodayBlock>
                             <THeaderInput 
-                                value={todayTxt} 
+                                value={todayText} 
                                 placeholder="what's up?" 
-                                onInput={e=>{
-                                    setTodayTxt(e.target.value)
-                                    setDebouncedValueUpdated(true);
-                                }} 
+                                onChange={e=>setTodayText(e.target.value)} 
+                                onInput={onFocusTodayTxtInput}
                             />
                             <BeatLoaderWrapper>
-                                {(isPending || apiPending) && debouncedValueUpdated ? <BeatLoader color="#36d7b7" size="5" /> : null}
+                                {isTyping ? <BeatLoader color="#36d7b7" size="5" /> : null}
                             </BeatLoaderWrapper>
                         </THeaderTodayBlock>
                     </THeaderLong>
@@ -236,4 +241,4 @@ const TodoHeader = ({ selectedDate }) => {
     );
 }
 
-export default TodoHeader;
+export default React.memo(TodoHeader);

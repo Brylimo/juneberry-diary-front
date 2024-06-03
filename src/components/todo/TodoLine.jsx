@@ -15,6 +15,10 @@ const TodoLineBlock = styled.div`
     font-family: slowslow, 'Schoolbell', cursive;
     font-size: 2.3rem;
     position: relative;
+
+    &:last-child {
+        border-bottom: none;
+    }
 `;
 
 const TodoLineGroup = styled.div`
@@ -202,4 +206,4 @@ const TodoLine = ({
     );
 }
 
-export default TodoLine;
+export default React.memo(TodoLine);
