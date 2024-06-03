@@ -10,7 +10,7 @@ const TodoForm = ({ selectedDate }) => {
     const dispatch = useDispatch();
     const queryClient = useQueryClient();
     const { data: todoList } = useGetTodosByDayQuery(selectedDate.getFullYear(), selectedDate.getMonth() + 1, selectedDate.getDate());
-    const { data: todayTxt } = useGetTodayTxtQuery(selectedDate);
+    const { data: todayTxtData } = useGetTodayTxtQuery(selectedDate);
 
     useEffect(() => {
         if (todoList) {
@@ -28,14 +28,14 @@ const TodoForm = ({ selectedDate }) => {
                 queryKey : ["getTodosByDay", {year: selectedDate.getFullYear(), month: selectedDate.getMonth() + 1, day: selectedDate.getDate()}]
             });
         }
-        if (todayTxt) {
+        if (todayTxtData) {
             dispatch(
                 storeTodayTxt({
-                    todayTxt: todayTxt
+                    todayTxt: todayTxtData?.todayTxt
                 })
             )
         }
-    }, [todoList, todayTxt, dispatch]);
+    }, [todoList, todayTxtData, dispatch]);
 
     return <Todo selectedDate={selectedDate} />;
 }

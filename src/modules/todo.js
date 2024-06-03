@@ -36,7 +36,10 @@ const todo = handleActions(
             produce(state, draft => {
                 draft.todoHash[key] = value;
             }),    
-        [INITIALIZE_TODOHASH]: state => initialState
+        [INITIALIZE_TODOHASH]: (state) => ({
+            ...state,
+            todoHash: initialState.todoHash
+        })
     }, 
     initialState
 );

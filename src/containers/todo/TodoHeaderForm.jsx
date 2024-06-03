@@ -5,6 +5,7 @@ import { useUpdateTodayTxtMutation } from '../../hooks/mutations/useUpdateTodayT
 import { toast } from 'react-toastify';
 import { useQueryClient } from '@tanstack/react-query';
 import TodoHeader from '../../components/todo/TodoHeader';
+import { storeTodayTxt } from '../../modules/todo';
 
 const TodoHeaderForm = ({ selectedDate }) => {
     const dispatch = useDispatch();
@@ -14,43 +15,68 @@ const TodoHeaderForm = ({ selectedDate }) => {
 
     const [todayText, setTodayText] = useState('');
     const [pendingActive, setPendingActive] = useState(true);
+    const [focusActive, setFocusActive] = useState(false);
     const [isPending, debouncedValue] = useDebounce(todayText, 1000);
     const { mutate: updateTodayTxtMutate, isPending: apiPending } = useUpdateTodayTxtMutation();
     const queryClient = useQueryClient();
 
-    const onFocusTodoInput = useCallback(() => {
+    const onFocusTodayTxtInput = useCallback(() => {
         setPendingActive(true);
+        setFocusActive(true);
     }, [])
 
     useEffect(() => {
-        updateTodayTxtMutate(
-            {
-                selectedDate,
-                todayTxt: debouncedValue
-            },
-            {
-                onSuccess: (res) => {
-                    queryClient.invalidateQueries({
-                        queryKey : ["getTodayTxt", {selectedDate}]
-                    })
+        if (focusActive) {
+            updateTodayTxtMutate(
+                {
+                    selectedDate,
+                    todayTxt: debouncedValue
                 },
-                onError: () => {
-                    toast.error("글 저장에 실패했습니다.");
-                    return;
+                {
+                    onSuccess: (res) => {
+                        queryClient.invalidateQueries({
+                            queryKey : ["getTodayTxt", {selectedDate}]
+                        })
+                        dispatch(
+                            storeTodayTxt({
+                                todayTxt: res?.data?.todayTxt
+                            })
+                        )
+                    },
+                    onError: () => {
+                        toast.error("오늘의 한마디 저장에 실패했습니다.");
+                        return;
+                    }
                 }
-            }
-        )
+            )
+        }
+        if (!pendingActive) setPendingActive(true)
+        return () => setFocusActive(false)
     }, [debouncedValue])
 
     useEffect(() => {
-        setTodayText(todayTxt)
+        if (!focusActive || !todayTxt || ((isPending || apiPending) && pendingActive)) {
+            setTodayText(todayTxt || '')
+            setPendingActive(false)
+            if (isPending && pendingActive) {
+                setFocusActive(false)
+            }
+        }
     }, [todayTxt])
+
+    useEffect(() => {
+        setTodayText(todayTxt || '')
+        setPendingActive(false)
+        if (isPending && pendingActive) {
+            setFocusActive(false)
+        }
+    }, [selectedDate])
 
     return <TodoHeader 
         selectedDate={selectedDate}
         isTyping={(isPending || apiPending) && pendingActive}
         todayText={todayText}
-        onFocusTodoInput={onFocusTodoInput}
+        onFocusTodayTxtInput={onFocusTodayTxtInput}
         setTodayText={setTodayText}
     />
 }

@@ -1,11 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import styled, {css} from "styled-components";
-import useDebounce from '../../hooks/useDebounce';
-import { useUpdateTodayTxtMutation } from '../../hooks/mutations/useUpdateTodayTxtMutation';
 import { BeatLoader } from 'react-spinners';
-import { toast } from 'react-toastify';
-import { useQueryClient } from '@tanstack/react-query';
-import { useGetTodayTxtQuery } from '../../hooks/queries/useGetTodayTxtQuery';
 
 const THeaderFrame = styled.div`
     width: 100%;
@@ -151,56 +146,7 @@ const BeatLoaderWrapper = styled.div`
 `;
 
 const TodoHeader = ({ selectedDate, isTyping, todayText, onFocusTodayTxtInput, setTodayText }) => {
-    //const [debouncedValueUpdated, setDebouncedValueUpdated] = useState(false);
-    //const { mutate: updateTodayTxtMutate, isPending: apiPending } = useUpdateTodayTxtMutation();
-    //const queryClient = useQueryClient();
-
-    //const mounted = useRef(false);
     const week = ["Sun", "Mon", "Thu", "Wed", "Thurs", "Fri", "Sat"];
-
-    /*useEffect(() => {
-        if (todayTxtData) {
-            console.log("b")
-            setTodayTxt(todayTxtData.todayTxt);
-        }
-    }, [todayTxtData]);
-
-    useEffect(() => {
-        console.log("a")
-        if (debouncedValueUpdated && debouncedValue && !isPending) {
-            console.log("t", debouncedValue)
-            updateTodayTxtMutate(
-                {
-                    selectedDate,
-                    todayTxt: debouncedValue
-                },
-                {
-                    onSuccess: (res) => {
-                        queryClient.invalidateQueries({
-                            queryKey : ["getTodayTxt", {selectedDate}]
-                        })
-                        console.log("okay")
-                    },
-                    onError: () => {
-                        toast.error("글 저장에 실패했습니다.");
-                        return;
-                    }
-                }
-            )
-        }
-        setDebouncedValueUpdated(false);
-    }, [debouncedValue, debouncedValueUpdated, updateTodayTxtMutate])
-
-    useEffect(() => {
-        if (debouncedValue !== todayTxt) {
-            if (mounted.current) {
-                console.log("stat", debouncedValue)
-                setDebouncedValueUpdated(true);
-            } else {
-                mounted.current = true
-            }
-        }
-    }, [debouncedValue, todayTxt]);*/
 
     return (
         <THeaderFrame>
@@ -220,7 +166,7 @@ const TodoHeader = ({ selectedDate, isTyping, todayText, onFocusTodayTxtInput, s
                         <THeaderTodayBlock>
                             <THeaderInput 
                                 value={todayText} 
-                                placeholder="what's up?" 
+                                placeholder="오늘의 한마디" 
                                 onChange={e=>setTodayText(e.target.value)} 
                                 onInput={onFocusTodayTxtInput}
                             />
