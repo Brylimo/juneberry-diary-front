@@ -14,6 +14,8 @@ import config from '../../configs/markdoc'
 import { Table } from '@lezer/markdown';
 import { markdownLanguage } from '@codemirror/lang-markdown';
 import { useImgUpload } from '../../hooks/useImgUpload';
+import { useUploadImageMutation } from '../../hooks/mutations/useUploadImageMutation';
+import { toast } from 'react-toastify';
 
 const PublishPage = styled.div`
     width: 893px;
@@ -200,6 +202,8 @@ const MarkdownEditor = ({ onChangeField, title, mrkdown, postId }) => {
     const postIdRef = useRef(postId)
     const titleRef = useRef(title)
     const contentRef = useRef(mrkdown)
+
+    const { mutate: uploadImageMutate } = useUploadImageMutation();
 
     const onChangeTitle = e => {
         onChangeField({ key: 'title', value: e.target.value });
@@ -394,8 +398,23 @@ ${selectedTxt}
             if (!id) return*/
             const url = URL.createObjectURL(imgFile)
             setImgBlobUrl(url)
+
+            uploadImageMutate(
+                {
+                    editorImg: imgFile
+                },
+                {
+                    onSuccess: (res) => {
+                        console.log("star", res)
+                    },
+                    onError: () => {
+                        toast.error("이미지 저장에 실패했습니다.")
+                        return;
+                    }
+                }
+            )
             
-        }, []
+        }, [uploadImageMutate]
     );
 
     useEffect(() => {
