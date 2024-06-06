@@ -21,5 +21,5 @@ export const useImgUpload = () => {
         return promise;
     }, [])
 
-    return [imgFile, imgUpload]
+    return [imgFile, imgUpload, setImgFile]
 };

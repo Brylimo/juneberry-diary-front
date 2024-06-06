@@ -194,7 +194,8 @@ const MarkdownEditor = ({ onChangeField, title, mrkdown, postId }) => {
     })
     const [linkTxt, setLinkTxt] = useState('');
     const [imgBlobUrl, setImgBlobUrl] = useState(null);
-    const [imgFile, imgUpload] = useImgUpload();
+    const [imagePath, setImagePath] = useState(null);
+    const [imgFile, imgUpload, setImgFile] = useImgUpload();
     const titleElement = useRef(null)
     const codemirrorBlockRef = useRef(null)
     const codemirrorRef = useRef(null)
@@ -247,7 +248,7 @@ const MarkdownEditor = ({ onChangeField, title, mrkdown, postId }) => {
                 .map((number) => () => {
                     const characters = '#'.repeat(number);
                     const plain = line.replace(/#{1,6} /, '')
-                    codemirror.view.dispatch({ changes: {from: curLineObj.from, to: curLineObj.to, insert: `${characters} ${plain}`} })
+                    codemirror.view.dispatch(view.state.replaceSelection(`${characters} ${plain}`))
                     codemirror.view.focus();
                 })
                 .reduce((headingHandlers, handler, index) => {
@@ -405,17 +406,52 @@ ${selectedTxt}
                 },
                 {
                     onSuccess: (res) => {
-                        console.log("star", res)
+                        setImagePath(res?.data.imagePath)
+                        setImgFile(null)
                     },
                     onError: () => {
                         toast.error("이미지 저장에 실패했습니다.")
+                        setImgFile(null)
                         return;
                     }
                 }
             )
-            
         }, [uploadImageMutate]
     );
+
+    const appendImageBlobUrl = useCallback(imgBlobUrl => {
+        const codemirror = codemirrorRef.current;
+        if (!codemirror) return;
+
+        const view = codemirror.view.viewState;
+        const cursor = view.state.selection.main.head;
+        const curLoc = view.state.doc.lineAt(cursor);
+        const selectionObj = {
+            from: view.state.selection.main.from,
+            to: view.state.selection.main.to
+        }
+
+        if (curLoc.from - selectionObj.from) {
+            codemirror.view.dispatch(view.state.replaceSelection(`\n![업로드중..](${imgBlobUrl})`))
+        } else {
+            codemirror.view.dispatch(view.state.replaceSelection(`![업로드중..](${imgBlobUrl})`))
+        }    
+        codemirror.view.focus();
+    }, [])
+
+    const appendImagePath = useCallback(imagePath => {
+        const codemirror = codemirrorRef.current;
+        if (!codemirror) return;
+        
+        const view = codemirror.view.viewState;
+        const lines = view.state.doc.text
+        const lineIdx = lines.findIndex(line => line.includes('![업로드중..]'))
+        if (lineIdx === -1) return
+
+        const targetLineObj = view.state.doc.line(lineIdx + 1)
+        codemirror.view.dispatch({ changes: { from: targetLineObj.from, to: targetLineObj.to, insert: `![](${imagePath})\n` }})
+        codemirror.view.focus();
+    }, [])
 
     useEffect(() => {
         if (titleElement.current) {
@@ -432,7 +468,20 @@ ${selectedTxt}
     useEffect(() => {
         if (!imgFile) return;
         uploadImage(imgFile)
+        
     }, [imgFile, uploadImage])
+
+    useEffect(() => {
+        if (imgBlobUrl) {
+            appendImageBlobUrl(imgBlobUrl)
+        }
+    }, [imgBlobUrl, appendImageBlobUrl])
+
+    useEffect(() => {
+        if (imagePath) {
+            appendImagePath(imagePath)
+        }
+    }, [imagePath, appendImagePath])
 
     useEffect(() => {
         postIdRef.current = postId;
@@ -503,4 +552,4 @@ ${selectedTxt}
     )
 }
 
-export default MarkdownEditor;
+export default React.memo(MarkdownEditor);
