@@ -13,16 +13,19 @@ export const togglePreviewActive = createAction(TOGGLE_PREVIEWACTIVE);
 
 const initialState = {
     previewActive: false,
+    saveActive: false,
+    submitActive: false,
     title: '',
     mrkdown: '',
     html: '',
+    postId: '',
     tags: [],
 }
 
 const publish = handleActions(
     {
         [INITIALIZE]: state => initialState,
-        [CHANGE_FIELD]: (state, { payload: {key, value} }) => ({
+            [CHANGE_FIELD]: (state, { payload: {key, value} }) => ({
             ...state,
             [key]: value,
         }),

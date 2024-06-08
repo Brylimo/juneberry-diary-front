@@ -277,7 +277,15 @@ const PublishBtn = styled.button`
     }
 `;
 
-const Header = ({ todoActive, previewActive, onLogout, onClickTodoBtn, onClickPreviewBtn }) => {
+const Header = ({ 
+    todoActive, 
+    previewActive, 
+    onLogout, 
+    onClickTodoBtn, 
+    onClickPreviewBtn, 
+    onClickPostSave, 
+    onClickPostSubmit 
+}) => {
     const { pathname } = useLocation();
     const navigate = useNavigate();
 
@@ -336,8 +344,8 @@ const Header = ({ todoActive, previewActive, onLogout, onClickTodoBtn, onClickPr
                 <FlagBottomBlock>
                     {pathname === "/post/publish" ? 
                         (<PublishUtilityBlock>
-                            <PublishBtn bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>save</PublishBtn>
-                            <PublishBtn bgColor={"#8df198"} hoverColor={"#7ac884"}>publish</PublishBtn>
+                            <PublishBtn onClick={onClickPostSave} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>save</PublishBtn>
+                            <PublishBtn onClick={onClickPostSubmit} bgColor={"#8df198"} hoverColor={"#7ac884"}>publish</PublishBtn>
                         </PublishUtilityBlock>)
                         : (<FlagBottomNav>
                             <FlagBottomUl>
