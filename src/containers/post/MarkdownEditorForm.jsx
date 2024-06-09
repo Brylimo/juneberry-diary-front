@@ -1,18 +1,22 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import MarkdownEditor from '../../components/post/MarkdownEditor';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeField } from '../../modules/publish';
+import { changeField, storePost } from '../../modules/publish';
 import { useUploadImageMutation } from '../../hooks/mutations/useUploadImageMutation';
-import { useAddPostMutation } from '../../hooks/mutations/useAddPostMutation';import { useNavigate } from 'react-router-dom';
+import { useAddPostMutation } from '../../hooks/mutations/useAddPostMutation';
+import { useUpdatePostMutation } from '../../hooks/mutations/useUpdatePostMutation';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useImgUpload } from '../../hooks/useImgUpload';
 import { toast } from 'react-toastify';
+import { useGetTempPostQuery } from '../../hooks/queries/useGetTempPostQuery';
 
 const MarkdownEditorForm = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate()
-    const { saveActive, submitActive, title, mrkdown, postId } = useSelector(({ publish }) => ({
+    const navigate = useNavigate();
+    const { saveActive, submitActive, isTemp, title, mrkdown, postId } = useSelector(({ publish }) => ({
         saveActive: publish.saveActive,
         submitActive: publish.submitActive,
+        isTemp: publish.isTemp,
         title: publish.title,
         mrkdown: publish.mrkdown,
         postId: publish.postId
@@ -27,15 +31,20 @@ const MarkdownEditorForm = () => {
     const [linkTxt, setLinkTxt] = useState('');
     const [imgBlobUrl, setImgBlobUrl] = useState(null);
     const [imagePath, setImagePath] = useState(null);
-    
+    const [apiEnabled, setApiEnabled] = useState(false);
+    const [searchParams, setSearchParams] = useSearchParams();
+
     const codemirrorRef = useRef(null)
     const codemirrorBlockRef = useRef(null)
     const postIdRef = useRef(postId)
     const titleRef = useRef(title)
     const contentRef = useRef(mrkdown)
 
+    const { data: tempPost } = useGetTempPostQuery(searchParams.get("id"), apiEnabled)
+
     const { mutate: uploadImageMutate } = useUploadImageMutation();
     const { mutateAsync: addPostMutateAsync } = useAddPostMutation();
+    const { mutate: updatePostMutate } = useUpdatePostMutation();
 
     const onChangeField = useCallback(payload => 
         dispatch(changeField(payload)), [dispatch]);
@@ -85,6 +94,7 @@ const MarkdownEditorForm = () => {
 
             uploadImageMutate(
                 {
+                    postId: id,
                     editorImg: imgFile
                 },
                 {
@@ -99,7 +109,7 @@ const MarkdownEditorForm = () => {
                     }
                 }
             )
-        }, [uploadImageMutate]
+        }, [uploadImageMutate, setImgFile, onChangeField, addPostMutateAsync, navigate]
     );
 
     const onToolbarItemClick = useCallback((mode) => {
@@ -297,14 +307,73 @@ ${selectedTxt}
         const targetLineObj = view.state.doc.line(lineIdx + 1)
         codemirror.view.dispatch({ changes: { from: targetLineObj.from, to: targetLineObj.to, insert: `![](${imagePath})\n` }})
         codemirror.view.focus();
-    }, []) 
+    }, [])
+    
+    const saveDraft = useCallback(
+        async ()=> {
+            const title = titleRef.current || '';
+            const content = contentRef.current || '';
+
+            if (!title || !content) {
+                toast.error("제목 또는 내용이 비어있습니다.")
+                return
+            }
+
+            let id = postIdRef.current;
+            if (!id) {
+                await addPostMutateAsync(
+                    {
+                        date: new Date(),
+                        title: title,
+                        content: content,
+                        isTemp: true
+                    },
+                    {
+                        onSuccess: (res) => {
+                            id = res.data.id
+                            onChangeField({ key: 'postId', value: id });
+                            navigate(`/post/publish?id=${id}`)
+                            toast.success("포스트가 임시저장되었습니다.")
+                        },
+                        onError: () => {
+                            toast.error("포스트 저장에 실패했습니다.")
+                            return;
+                        }
+                    }
+                )
+                return;
+            }
+
+            if (isTemp) {
+                updatePostMutate(
+                {
+                    postId: id,
+                    title: title,
+                    content: content
+                },
+                {
+                    onSuccess: (res) => {
+                        toast.success("포스트가 임시저장되었습니다.")
+                    },
+                    onError: () => {
+                        toast.error("포스트 저장에 실패했습니다.")
+                        return;
+                    }
+                })
+            }
+        }, 
+        [isTemp, navigate, addPostMutateAsync, onChangeField])
+
+    useEffect(()=> {
+        if (Array.from(searchParams.keys()).length > 0 && searchParams.get("id")) {
+            setApiEnabled(true)
+        }
+    }, [searchParams])
 
     useEffect(() => {
         if (!imgFile) return;
         uploadImage(imgFile)
-        
     }, [imgFile, uploadImage])
-
 
     useEffect(() => {
         if (imgBlobUrl) {
@@ -328,11 +397,22 @@ ${selectedTxt}
     }, [mrkdown, title])
 
     useEffect(() => {
+        if (tempPost && !Array.isArray(tempPost)) { 
+            dispatch(storePost({
+                id: tempPost.id,
+                title: tempPost.title,
+                mrkdown: tempPost.content,
+                isTemp: tempPost.isTemp
+            }))
+        }
+    }, [tempPost, dispatch])
+
+    useEffect(() => {
         if (saveActive) {
-            alert("hi")
+            saveDraft()
             onChangeField({ key: 'saveActive', value: false})
         }
-    }, [saveActive, onChangeField])
+    }, [saveActive, onChangeField, saveDraft])
 
     useEffect(() => {
         if (submitActive) {

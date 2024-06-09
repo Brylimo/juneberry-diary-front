@@ -1,11 +1,27 @@
 import client from './client';
 
-export const uploadImg = async ({editorImg}) => {
+export const uploadImg = async ({editorImg, postId}) => {
     const config = {
         headers: { 'Content-Type': 'multipart/form-data' },
     };
 
-    const res = await client.post('/post/uploadImage', { editorImg }, config);
+    const res = await client.post('/post/uploadPostImage', { editorImg, postId }, config);
+    return res.data;
+}
+
+export const getTempPost = async (id) => {
+    const res = await client.get('/post/getTempPost', {
+        params: {
+            id: id
+        }
+    })
+    return res.data;
+}
+
+export const updatePost = async ({ postId, title, content }) => {
+    const res = await client.post('/post/updatePost', {
+        postId, title, content
+    })
     return res.data;
 }
 
