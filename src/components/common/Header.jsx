@@ -277,6 +277,45 @@ const PublishBtn = styled.button`
     }
 `;
 
+const SaveBtnBlock = styled.div`
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 65%;
+    border: none;
+    outline: none;
+    background-color: #f6f6f7;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
+    border-radius: 4px;
+    letter-spacing: 1px;
+    font-weight: 300;
+    font-family: "Source Sans Pro", sans-serif;
+`;
+
+const SaveBtn = styled.button`
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    font-weight: 300;
+    font-family: "Source Sans Pro", sans-serif;
+    background-color: transparent;
+    height: 100%;
+    border-radius: 4px;
+
+    &:hover {
+        background-color: #e0e0e0;
+    }
+`;
+
+const SaveBtnLine = styled.div`
+    width: 1px;
+    height: 100%;
+    background-color: #d0d7de;
+`;
+
 const Header = ({ 
     todoActive, 
     previewActive, 
@@ -344,7 +383,11 @@ const Header = ({
                 <FlagBottomBlock>
                     {pathname === "/post/publish" ? 
                         (<PublishUtilityBlock>
-                            <PublishBtn onClick={onClickPostSave} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>save</PublishBtn>
+                            <SaveBtnBlock>
+                                <SaveBtn onClick={onClickPostSave}>save</SaveBtn>
+                                <SaveBtnLine/>
+                                <SaveBtn>100</SaveBtn>
+                            </SaveBtnBlock>
                             <PublishBtn onClick={onClickPostSubmit} bgColor={"#8df198"} hoverColor={"#7ac884"}>publish</PublishBtn>
                         </PublishUtilityBlock>)
                         : (<FlagBottomNav>
@@ -361,12 +404,12 @@ const Header = ({
                             <IOSSwitch sx={{ m: 1 }} bgColor={"#65C466"} onChange={onClickTodoBtn} checked={todoActive}/>
                         </>) 
                         : ''}
-                        {pathname === "/post/publish" ? 
+                        {/*pathname === "/post/publish" ? 
                         (<>
                             <IOSSpan>preview</IOSSpan>
                             <IOSSwitch sx={{ m: 1 }} bgColor={"#9775fa"} onChange={onClickPreviewBtn} checked={previewActive}/>
                         </>) 
-                        : ''}
+                        : ''*/}
                     </FlagBottomUtilityBlock>
                 </FlagBottomBlock>
             </HeaderFlagBlock>
