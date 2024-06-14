@@ -42,7 +42,7 @@ const MarkdownEditorForm = () => {
 
     const { data: tempPost } = useGetTempPostQuery(searchParams.get("id"), apiEnabled)
 
-    const { mutate: uploadImageMutate } = useUploadImageMutation();
+    const { mutateAsync: uploadImageMutateAsync } = useUploadImageMutation();
     const { mutateAsync: addPostMutateAsync } = useAddPostMutation();
     const { mutate: updatePostMutate } = useUpdatePostMutation();
 
@@ -62,7 +62,11 @@ const MarkdownEditorForm = () => {
     const uploadImage = useCallback(
         async (imgFile) => {
             if (!imgFile) return
+
+            const MAX_WAIT_TIME = 3000;
+            const POLL_INTERVAL = 100;
             let id = postIdRef.current;
+            
             if (!id) {
                 const title = titleRef.current || '';
                 const content = contentRef.current || '';
@@ -78,7 +82,7 @@ const MarkdownEditorForm = () => {
                         onSuccess: (res) => {
                             id = res.data.id
                             onChangeField({ key: 'postId', value: id });
-                            navigate(`/post/publish?id=${id}`)
+                            navigate(`/post/publish?id=${id}`, { replace: true })
                         },
                         onError: () => {
                             toast.error("포스트 저장에 실패했습니다.")
@@ -86,13 +90,22 @@ const MarkdownEditorForm = () => {
                         }
                     }
                 )
+
+                const startTime = Date.now();
+                while (!tempPost) { // polling meaningless and return
+                    if (Date.now() - startTime > MAX_WAIT_TIME) {
+                        return
+                    }
+                    
+                    await new Promise(resolve => setTimeout(resolve, POLL_INTERVAL));
+                }
             }
             if (!id) return
 
             const url = URL.createObjectURL(imgFile)
             setImgBlobUrl(url)
 
-            uploadImageMutate(
+            await uploadImageMutateAsync(
                 {
                     postId: id,
                     editorImg: imgFile
@@ -109,7 +122,7 @@ const MarkdownEditorForm = () => {
                     }
                 }
             )
-        }, [uploadImageMutate, setImgFile, onChangeField, addPostMutateAsync, navigate]
+        }, [uploadImageMutateAsync, setImgFile, onChangeField, addPostMutateAsync, navigate, tempPost]
     );
 
     const onToolbarItemClick = useCallback((mode) => {
@@ -288,9 +301,9 @@ ${selectedTxt}
         }
 
         if (curLoc.from - selectionObj.from) {
-            codemirror.view.dispatch(view.state.replaceSelection(`\n![업로드중..](${imgBlobUrl})`))
+            codemirror.view.dispatch(view.state.replaceSelection(`\n![업로드중..](${imgBlobUrl})\n`))
         } else {
-            codemirror.view.dispatch(view.state.replaceSelection(`![업로드중..](${imgBlobUrl})`))
+            codemirror.view.dispatch(view.state.replaceSelection(`![업로드중..](${imgBlobUrl})\n`))
         }    
         codemirror.view.focus();
     }, [])
@@ -305,7 +318,7 @@ ${selectedTxt}
         if (lineIdx === -1) return
 
         const targetLineObj = view.state.doc.line(lineIdx + 1)
-        codemirror.view.dispatch({ changes: { from: targetLineObj.from, to: targetLineObj.to, insert: `![](${imagePath})\n` }})
+        codemirror.view.dispatch({ changes: { from: targetLineObj.from, to: targetLineObj.to, insert: `![](${imagePath})` }})
         codemirror.view.focus();
     }, [])
     
@@ -332,7 +345,7 @@ ${selectedTxt}
                         onSuccess: (res) => {
                             id = res.data.id
                             onChangeField({ key: 'postId', value: id });
-                            navigate(`/post/publish?id=${id}`)
+                            navigate(`/post/publish?id=${id}`, { replace: true })
                             toast.success("포스트가 임시저장되었습니다.")
                         },
                         onError: () => {
