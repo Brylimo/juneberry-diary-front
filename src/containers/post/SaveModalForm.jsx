@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { storePost } from '../../modules/publish';
 import SaveModal from '../../components/post/SaveModal';
 
 const SaveModalForm = ({activeState, setActiveState}) => {
@@ -8,10 +9,20 @@ const SaveModalForm = ({activeState, setActiveState}) => {
         tempCnt: post.tempCnt
     }))
 
+    const onClickTempCard = useCallback((item) => {
+        dispatch(storePost({
+            id: item.id,
+            title: item.title,
+            mrkdown: item.content,
+            isTemp: item.isTemp
+        }))
+        setActiveState(false);
+    }, [setActiveState, dispatch]);
+
     return <SaveModal
-        tempCnt={tempCnt}
-        activeState={activeState} 
+        tempCnt={tempCnt} 
         setActiveState={setActiveState}
+        onClickTempCard={onClickTempCard}
     />
 }
 

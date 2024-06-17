@@ -1,7 +1,6 @@
 import React, { useCallback, useState, useRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import Menu from './Menu';
-import SaveModal from '../post/SaveModal';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Switch from '@mui/material/Switch';

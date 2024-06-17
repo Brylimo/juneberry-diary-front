@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useInView } from 'react-intersection-observer';
 import { useGetTempPostListQuery } from '../../hooks/queries/useGetTempPostListQuery';
@@ -83,10 +83,29 @@ const ModalHeaderBtnWrapper = styled.div`
 `;
 
 const ModalBody = styled.div`
-    padding: 2rem 0;
+    padding: 2rem 10%;
     height: calc(100vh - 63px);
     overflow: auto;
+    background-color: white;
 `
+
+const TempCard = styled.div`
+    padding: 30px;
+    cursor: pointer;
+    border-bottom: 1px solid #e5e9f2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+`;
+
+const TempCardTitle = styled.span`
+    font-size: 25px;    
+`;
+
+const TempCardDate = styled.span`
+    font-size: 16px;
+    color: #B6B6B6;
+`;
 
 const CloseIconBtn = styled.button`
     background-color: transparent;
@@ -109,14 +128,13 @@ const ArrowBackIconCore = styled(ArrowBackIcon)`
     }
 `
 
-const SaveModal = ({tempCnt, activeState, setActiveState}) => {
-    const [page, setPage] = useState(1)
+const SaveModal = ({tempCnt, setActiveState, onClickTempCard}) => {
+    const [page, setPage] = useState(0)
     const [tempItems, setTempItems] = useState([])
-    const { data: tempPostList } = useGetTempPostListQuery(page)
+    const { data: tempPostList } = useGetTempPostListQuery(page, 10)
     
-    const { ref, inView } = useInView({
-        threshold: 0.1
-    })
+    const { ref, inView } = useInView()
+    const mounted = useRef(false)
 
     const onClickCloseBtn = useCallback((e) => {
         setActiveState(false);
@@ -130,7 +148,11 @@ const SaveModal = ({tempCnt, activeState, setActiveState}) => {
 
     useEffect(() => {
         if (inView) {
-            setPage(prev => prev + 1)
+            if (mounted.current) {
+                setPage(prev => prev + 1)
+            } else {
+                mounted.current = true
+            }
         }
     }, [inView])
 
@@ -149,7 +171,10 @@ const SaveModal = ({tempCnt, activeState, setActiveState}) => {
                     </ModalHeader>
                     <ModalBody>
                         {tempItems.map((item, index) => (
-                            <div key={index}>{item.title}</div>
+                            <TempCard key={index} onClick={() => onClickTempCard(item)}>
+                                <TempCardTitle>{item.title}</TempCardTitle>
+                                <TempCardDate>{item.updatedDateTime}</TempCardDate>
+                            </TempCard>
                         ))}
                         <div ref={ref}></div>
                     </ModalBody>

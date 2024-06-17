@@ -23,8 +23,13 @@ export const getTempPostCnt = async () => {
     return res.data;
 }
 
-export const getTempPostList = async (start) => {
-    const res = await client.get('/post/getTempPostList', { start })
+export const getTempPostList = async (page, size) => {
+    const res = await client.get('/post/getTempPostList', {
+        params: {
+            page: page,
+            size: size
+        }
+    })
     return res.data;
 }
 
