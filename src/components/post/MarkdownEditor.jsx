@@ -13,6 +13,7 @@ import richEditor from '../../plugins/rich-markdoc';
 import config from '../../configs/markdoc'
 import { Table } from '@lezer/markdown';
 import { markdownLanguage } from '@codemirror/lang-markdown';
+import SaveModalForm from '../../containers/post/SaveModalForm';
 
 const PublishPage = styled.div`
     width: 893px;
@@ -182,7 +183,8 @@ const myTheme = createTheme({
     ],
 });
 
-const MarkdownEditor = ({ 
+const MarkdownEditor = ({
+    tempCntActive, 
     onChangeField,
     title, 
     mrkdown,
@@ -191,6 +193,7 @@ const MarkdownEditor = ({
     codemirrorRef,
     codemirrorBlockRef,
     setLinkTxt,
+    setTempCntActive,
     onToolbarItemClick,
     onClickAddLinkSubmit,
     onClickAddLinkCancel 
@@ -275,6 +278,7 @@ const MarkdownEditor = ({
                     />
                 </CodeMirrorBlock>
             </PublishPage>
+            {tempCntActive && <SaveModalForm activeState={tempCntActive} setActiveState={setTempCntActive} />}
         </>
     )
 }

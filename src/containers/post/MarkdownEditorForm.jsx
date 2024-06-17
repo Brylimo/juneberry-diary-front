@@ -13,9 +13,10 @@ import { useGetTempPostQuery } from '../../hooks/queries/useGetTempPostQuery';
 const MarkdownEditorForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { saveActive, submitActive, isTemp, title, mrkdown, postId } = useSelector(({ publish }) => ({
+    const { saveActive, submitActive, tempCntActive, isTemp, title, mrkdown, postId } = useSelector(({ publish }) => ({
         saveActive: publish.saveActive,
         submitActive: publish.submitActive,
+        tempCntActive: publish.tempCntActive,
         isTemp: publish.isTemp,
         title: publish.title,
         mrkdown: publish.mrkdown,
@@ -45,6 +46,9 @@ const MarkdownEditorForm = () => {
     const { mutateAsync: uploadImageMutateAsync } = useUploadImageMutation();
     const { mutateAsync: addPostMutateAsync } = useAddPostMutation();
     const { mutate: updatePostMutate } = useUpdatePostMutation();
+
+    const setTempCntActive = useCallback(status =>
+        dispatch(changeField({key: 'tempCntActive', value: status})), [dispatch]);
 
     const onChangeField = useCallback(payload => 
         dispatch(changeField(payload)), [dispatch]);
@@ -433,7 +437,8 @@ ${selectedTxt}
         }
     }, [submitActive, onChangeField])
 
-    return <MarkdownEditor 
+    return <MarkdownEditor
+        tempCntActive={tempCntActive} 
         onChangeField={onChangeField} 
         title={title}
         mrkdown={mrkdown}
@@ -442,6 +447,7 @@ ${selectedTxt}
         codemirrorRef={codemirrorRef}
         codemirrorBlockRef={codemirrorBlockRef}
         setLinkTxt={setLinkTxt}
+        setTempCntActive={setTempCntActive}
         onToolbarItemClick={onToolbarItemClick}
         onClickAddLinkSubmit={onClickAddLinkSubmit}
         onClickAddLinkCancel={onClickAddLinkCancel}

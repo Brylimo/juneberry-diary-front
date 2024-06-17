@@ -1,6 +1,7 @@
 import React, { useCallback, useState, useRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import Menu from './Menu';
+import SaveModal from '../post/SaveModal';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Switch from '@mui/material/Switch';
@@ -262,6 +263,7 @@ const PublishBtn = styled.button`
     letter-spacing: 1px;
     font-weight: 300;
     font-family: "Source Sans Pro", sans-serif;
+    padding: 0 6px;
     ${props => props.bgColor &&
         css`
             background-color: ${props.bgColor};
@@ -319,11 +321,13 @@ const SaveBtnLine = styled.div`
 const Header = ({ 
     todoActive, 
     previewActive, 
+    tempCnt,
     onLogout, 
     onClickTodoBtn, 
     onClickPreviewBtn, 
     onClickPostSave, 
-    onClickPostSubmit 
+    onClickPostSubmit,
+    onClickTempCnt 
 }) => {
     const { pathname } = useLocation();
     const navigate = useNavigate();
@@ -386,7 +390,7 @@ const Header = ({
                             <SaveBtnBlock>
                                 <SaveBtn onClick={onClickPostSave}>save</SaveBtn>
                                 <SaveBtnLine/>
-                                <SaveBtn>100</SaveBtn>
+                                <SaveBtn onClick={onClickTempCnt}>{tempCnt}</SaveBtn>
                             </SaveBtnBlock>
                             <PublishBtn onClick={onClickPostSubmit} bgColor={"#8df198"} hoverColor={"#7ac884"}>publish</PublishBtn>
                         </PublishUtilityBlock>)
@@ -404,12 +408,11 @@ const Header = ({
                             <IOSSwitch sx={{ m: 1 }} bgColor={"#65C466"} onChange={onClickTodoBtn} checked={todoActive}/>
                         </>) 
                         : ''}
-                        {/*pathname === "/post/publish" ? 
+                        {pathname === "/post/publish" ? 
                         (<>
-                            <IOSSpan>preview</IOSSpan>
-                            <IOSSwitch sx={{ m: 1 }} bgColor={"#9775fa"} onChange={onClickPreviewBtn} checked={previewActive}/>
+                            <IOSSpan>임시저장: 21시 30분</IOSSpan>
                         </>) 
-                        : ''*/}
+                        : ''}
                     </FlagBottomUtilityBlock>
                 </FlagBottomBlock>
             </HeaderFlagBlock>

@@ -17,6 +17,7 @@ const initialState = {
     previewActive: false,
     saveActive: false,
     submitActive: false,
+    tempCntActive: false,
     isTemp: false,
     title: '',
     mrkdown: '',

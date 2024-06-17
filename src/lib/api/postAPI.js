@@ -18,6 +18,16 @@ export const getTempPost = async (id) => {
     return res.data;
 }
 
+export const getTempPostCnt = async () => {
+    const res = await client.get('/post/getTempPostCnt', {})
+    return res.data;
+}
+
+export const getTempPostList = async (start) => {
+    const res = await client.get('/post/getTempPostList', { start })
+    return res.data;
+}
+
 export const updatePost = async ({ postId, title, content }) => {
     const res = await client.post('/post/updatePost', {
         postId, title, content
