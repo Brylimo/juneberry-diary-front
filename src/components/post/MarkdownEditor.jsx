@@ -278,7 +278,7 @@ const MarkdownEditor = ({
                     />
                 </CodeMirrorBlock>
             </PublishPage>
-            {tempCntActive && <SaveModalForm activeState={tempCntActive} setActiveState={setTempCntActive} />}
+            {tempCntActive && <SaveModalForm setActiveState={setTempCntActive} />}
         </>
     )
 }
