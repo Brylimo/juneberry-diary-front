@@ -5,8 +5,8 @@ import Editor from '../../components/post/Editor';
 
 const EditorForm = () => {
     const dispatch = useDispatch();
-    const { previewActive } = useSelector(({ publish }) => ({
-        previewActive: publish.previewActive
+    const { submitActive } = useSelector(({ publish }) => ({
+        submitActive: publish.submitActive
     }))
 
     useEffect(() => {
@@ -15,7 +15,7 @@ const EditorForm = () => {
         }
     }, [dispatch])
 
-    return <Editor previewActive={previewActive} />
+    return <Editor submitActive={submitActive} />
 }
 
 export default EditorForm;

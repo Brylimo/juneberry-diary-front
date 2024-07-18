@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import MarkdownEditorForm from '../../containers/post/MarkdownEditorForm';
-import MarkdownPreviewForm from '../../containers/post/MarkdownPreviewForm';
+import MarkdownConfirmForm from '../../containers/post/MarkdownConfirmForm';
 
 const FrameWrapper = styled.div`
     width: 100%;
@@ -17,10 +17,10 @@ const FrameWrapper = styled.div`
     overflow: hidden;
 `;
 
-const Editor = ({ previewActive }) => {
+const Editor = ({ submitActive }) => {
     return (
         <FrameWrapper>
-            {previewActive ? <MarkdownPreviewForm /> : <MarkdownEditorForm /> }
+            {submitActive ? <MarkdownConfirmForm /> : <MarkdownEditorForm /> }
         </FrameWrapper>
     );
 };

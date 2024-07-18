@@ -5,7 +5,8 @@ import {
     CalendarPage,
     LoginPage,
     RegisterPage,
-    NotFoundPage
+    NotFoundPage,
+    ProfilePage
 } from './pages'
 import { ProtectedRoute } from "./containers/route/ProtectedRoute";
 import { AuthRoute } from "./containers/route/AuthRoute";
@@ -28,6 +29,9 @@ function Router() {
                     </Route>
                     <Route path="/post/*" element={<Layout />}>
                         <Route path="publish" element={<PublishPage/>} />
+                    </Route>
+                    <Route path="/user/*" element={<Layout />}>
+                        <Route path="profile" element={<ProfilePage/>} />
                     </Route>
                     <Route path="*" element={<NotFoundPage />} />
                 </Route>

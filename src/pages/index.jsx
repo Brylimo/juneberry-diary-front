@@ -3,5 +3,6 @@ export { default as RegisterPage } from './RegisterPage';
 export { default as MapPage } from './MapPage';
 export { default as PublishPage } from './PublishPage';
 export { default as CalendarPage } from './CalendarPage';
+export { default as ProfilePage } from './ProfilePage';
 
 export { default as NotFoundPage } from './NotFoundPage';

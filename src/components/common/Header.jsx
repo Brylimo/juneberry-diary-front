@@ -334,6 +334,10 @@ const Header = ({
     const [view, setView] = useState(false);
     const dropdownElement = useRef(null);
 
+    const onClickMyPage = useCallback(e => {
+        navigate('/user/profile');
+    }, [navigate])
+
     const onClickMapFlag = useCallback(e => {
         navigate('/geo/map');
     }, [navigate]);
@@ -376,7 +380,7 @@ const Header = ({
                         {view && <div ref={dropdownElement}>
                             <DropdownBlock>
                                 <DropdownMenuBlock>
-                                    <DropdownMenu>마이페이지</DropdownMenu>
+                                    <DropdownMenu onClick={onClickMyPage}>마이페이지</DropdownMenu>
                                     <DropdownMenu onClick={onLogout}>로그아웃</DropdownMenu>
                                 </DropdownMenuBlock>
                             </DropdownBlock>

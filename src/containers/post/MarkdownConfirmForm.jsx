@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import MarkdownPrevew from '../../components/post/MarkdownPreview';
+import MarkdownConfirm from '../../components/post/MarkdownConfirm';
 
 function replaceEmptyLinesWithBr(text) {
     const lines = text.split('\n');
@@ -14,14 +14,14 @@ function replaceEmptyLinesWithBr(text) {
     return processedText;
 }
 
-const MarkdownPreviewForm = () => {
+const MarkdownConfirmForm = () => {
     const dispatch = useDispatch();
     const { title, mrkdown } = useSelector(({ publish }) => ({
         title: publish.title,
         mrkdown: publish.mrkdown
     }));
 
-    return <MarkdownPrevew title={title} mrkdown={replaceEmptyLinesWithBr(mrkdown)} />
+    return <MarkdownConfirm title={title} mrkdown={replaceEmptyLinesWithBr(mrkdown)} />
 }
 
-export default MarkdownPreviewForm;
+export default MarkdownConfirmForm;

@@ -115,7 +115,7 @@ const filter = (html) => {
     })
 }
 
-const MarkdownPrevew = ({ title, mrkdown }) => {
+const MarkdownConfirm = ({ title, mrkdown }) => {
     const [htmlTxt, setHtmlTxt] = useState(
         filter(
           unified()
@@ -141,4 +141,4 @@ const MarkdownPrevew = ({ title, mrkdown }) => {
     )
 }
 
-export default MarkdownPrevew;
+export default MarkdownConfirm;
