@@ -249,7 +249,7 @@ const PublishUtilityBlock = styled.div`
     `};
 `;
 
-const PublishBtn = styled.button`
+const CommonBtn = styled.button`
     flex: 1;
     height: 65%;
     border: none;
@@ -319,14 +319,14 @@ const SaveBtnLine = styled.div`
 
 const Header = ({ 
     todoActive, 
-    previewActive, 
+    submitActive, 
     tempCnt,
     postUpdateDt,
     onLogout, 
     onClickTodoBtn, 
-    onClickPreviewBtn, 
     onClickPostSave, 
     onClickPostSubmit,
+    onClickPostGoBack,
     onClickTempCnt 
 }) => {
     const { pathname } = useLocation();
@@ -389,14 +389,18 @@ const Header = ({
                     </FlagTopLeftBlock>
                 </FlagTopBlock>
                 <FlagBottomBlock>
-                    {pathname === "/post/publish" ? 
+                    {pathname === "/post/publish" && !submitActive ? 
                         (<PublishUtilityBlock>
                             <SaveBtnBlock>
                                 <SaveBtn onClick={onClickPostSave}>save</SaveBtn>
                                 <SaveBtnLine/>
                                 <SaveBtn onClick={onClickTempCnt}>{tempCnt}</SaveBtn>
                             </SaveBtnBlock>
-                            <PublishBtn onClick={onClickPostSubmit} bgColor={"#8df198"} hoverColor={"#7ac884"}>publish</PublishBtn>
+                            <CommonBtn onClick={onClickPostSubmit} bgColor={"#8df198"} hoverColor={"#7ac884"}>publish</CommonBtn>
+                        </PublishUtilityBlock>)
+                        : pathname === "/post/publish" && submitActive ?
+                        (<PublishUtilityBlock>
+                            <CommonBtn onClick={onClickPostGoBack} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>goback</CommonBtn>
                         </PublishUtilityBlock>)
                         : (<FlagBottomNav>
                             <FlagBottomUl>
@@ -412,7 +416,7 @@ const Header = ({
                             <IOSSwitch sx={{ m: 1 }} bgColor={"#65C466"} onChange={onClickTodoBtn} checked={todoActive}/>
                         </>) 
                         : ''}
-                        {pathname === "/post/publish" && postUpdateDt ? 
+                        {pathname === "/post/publish" && !submitActive && postUpdateDt ? 
                         (<>
                             <IOSSpan>임시저장: {postUpdateDt.getHours()}시 {postUpdateDt.getMinutes()}분</IOSSpan>
                         </>) 

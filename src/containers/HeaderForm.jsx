@@ -7,12 +7,15 @@ import { togglePreviewActive, changeField } from '../modules/publish';
 import { changePostField } from '../modules/post';
 import { useLogoutQuery } from '../hooks/queries/useLogoutQuery';
 import { useGetTempPostCntQuery } from '../hooks/queries/useGetTempPostCntQuery';
+import { toast } from 'react-toastify';
 
 const HeaderForm = () => {
     const dispatch = useDispatch();
-    const { todoActive, previewActive, postUpdateDt, tempCnt } = useSelector(({ cal, publish, post }) => ({
+    const { todoActive, submitActive, postTitle, postMrkdown, postUpdateDt, tempCnt } = useSelector(({ cal, publish, post }) => ({
         todoActive: cal.todoActive,
-        previewActive: publish.previewActive,
+        submitActive: publish.submitActive,
+        postTitle: publish.title,
+        postMrkdown: publish.mrkdown,
         postUpdateDt: publish.updateDt,
         tempCnt: post.tempCnt
     }));
@@ -29,16 +32,20 @@ const HeaderForm = () => {
         dispatch(toggleTodoActive());
     }, [dispatch]);
 
-    const onClickPreviewBtn = useCallback(e => {
-        dispatch(togglePreviewActive());
-    }, [dispatch])
-
     const onClickPostSave = useCallback(() => {
         dispatch(changeField({ key: 'saveActive', value: true}))
     }, [dispatch])
 
     const onClickPostSubmit = useCallback(() => {
-        dispatch(changeField({ key: 'submitActive', value: true}))
+        if (postTitle && postMrkdown) {
+            dispatch(changeField({ key: 'submitActive', value: true}))
+        } else {
+            toast.error("제목 또는 내용이 비어있습니다.");
+        }
+    }, [postTitle, postMrkdown, dispatch])
+
+    const onClickPostGoBack = useCallback(() => {
+        dispatch(changeField({ key: 'submitActive', value: false}))
     }, [dispatch])
 
     const onClickTempCnt = useCallback(() => {
@@ -53,14 +60,14 @@ const HeaderForm = () => {
 
     return <Header 
         todoActive={todoActive} 
-        previewActive={previewActive}
+        submitActive={submitActive}
         tempCnt={tempCnt}
         postUpdateDt={postUpdateDt}
         onLogout={onClickLogout} 
         onClickTodoBtn={onClickTodoBtn} 
-        onClickPreviewBtn={onClickPreviewBtn}
         onClickPostSave={onClickPostSave}
-        onClickPostSubmit={onClickPostSubmit} 
+        onClickPostSubmit={onClickPostSubmit}
+        onClickPostGoBack={onClickPostGoBack} 
         onClickTempCnt={onClickTempCnt}
     />;
 }

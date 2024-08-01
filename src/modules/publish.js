@@ -2,7 +2,6 @@ import { createAction, handleActions } from "redux-actions";
 
 const INITIALIZE = 'publish/INITIALIZE';
 const CHANGE_FIELD = 'publish/CHANGE_FIELD';
-const TOGGLE_PREVIEWACTIVE = 'publish/TOGGLE_PREVIEWACTIVE';
 const STORE_POST = 'publish/STORE_POST';
 
 export const initialize = createAction(INITIALIZE);
@@ -10,11 +9,9 @@ export const changeField = createAction(CHANGE_FIELD, ({ key, value }) => ({
     key,
     value
 }));
-export const togglePreviewActive = createAction(TOGGLE_PREVIEWACTIVE);
 export const storePost = createAction(STORE_POST);
 
 const initialState = {
-    previewActive: false,
     saveActive: false,
     submitActive: false,
     tempCntActive: false,
@@ -41,10 +38,6 @@ const publish = handleActions(
         [CHANGE_FIELD]: (state, { payload: {key, value} }) => ({
             ...state,
             [key]: value,
-        }),
-        [TOGGLE_PREVIEWACTIVE]: (state) => ({
-            ...state,
-            previewActive: !state.previewActive
         })
     },
     initialState

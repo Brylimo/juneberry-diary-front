@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import styled, {css} from 'styled-components';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkRehype from "remark-rehype";
@@ -9,14 +9,51 @@ import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
 import sanitize from "sanitize-html";
+import Typography from '../common/Typography';
+
+const MarkdownConfirmWrapper = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+`;
+
+const PostPreviewBlock = styled.div`
+    flex: 1;
+`;
+
+const PostPreview = styled.div`
+    padding: 3rem 2rem 2rem 3rem;
+    height: calc(100vh - 8rem);
+`
+
+const PostConfigBlock = styled.div`
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+`;
+
+const PostConfig = styled.div`
+    padding: 3rem;
+    height: 100%;
+`;
+
+const PreviewLine = styled.div`
+    width: 0.1px;
+    height: calc(100vh - 8rem);
+    background-color: #d0d7de;
+`
 
 const PublishPage = styled.div`
-    width: 893px;
+    width: 100%;
     margin: 0 auto;
+    margin-top: 2rem;
     background-color: #fffcfb;
-    padding: 7.5rem 5rem 0 5rem;
+    padding: 5rem 5rem 0 5rem;
     height: 100%;
     flex: 1;
+    overflow: auto;
+    height: calc(100% - 5rem);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
     @media (max-width: 893px) {
         width: 100%;
@@ -25,15 +62,22 @@ const PublishPage = styled.div`
 
 const PreviewTitle = styled.div`
     outline: none;
-    padding-bottom: 0.5rem;
+    padding: 0, 0, 0.5rem 0;
     border: none;
     border-bottom: 1px solid #e5e9f2;
     margin-bottom: 2rem;
     width: 100%;
     background: transparent;
     font-size: 32px;
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: normal;
+    resize: none;
+    overflow: hidden;
     font-family: monospace;
     min-height: 46px;
+    height: 42px;
+    font-weight: 400;
 `;
 
 const MarkdonwRenderBlock = styled.div`
@@ -46,6 +90,102 @@ const MarkdonwRenderBlock = styled.div`
         list-style: auto;
         list-style-position: inside;
     }
+`;
+
+const PostPreviewHeader = styled.div`
+    font-weight: bold;
+    font-size: 32px;
+    color: cadetblue;
+`;
+
+const PostConfigContent = styled.div`
+    margin-top: 2rem;
+    height: calc(100% - 9rem);
+`;
+
+const PostConfigCell = styled.div`
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 2rem;
+`;
+
+const PostConfigSegBlock = styled.div`
+    flex: 1;
+    display: flex;
+    justify-content: center;
+`
+
+const PostConfigImg = styled.div`
+    background-color: #e9ecef;
+    width: 65%;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    ${
+        props => props.height && css`
+            height: ${props.height}px;    
+        `
+    };
+`;
+
+const ImgImage = styled.img`
+    width: 45%;
+`
+
+const ImgBtn = styled.button`
+    padding: 1rem 0;
+    cursor: pointer;
+    transition: all 0.125s ease-in 0s;
+    background-color: #fff;
+    color: green;
+    border: none;
+    width: 45%;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+
+    &:hover {
+        opacity: 0.7
+    }
+`
+
+const CellHeader = styled.div`
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    width: 109px;
+`
+
+const PostTextarea = styled.textarea`
+    width: 65%;
+    border: none;
+    padding: 1rem;
+    resize: none;
+    outline: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+`
+
+const PostConfigBtnBlock = styled.div`
+    height: 5rem;
+    display: flex;
+    justify-content: center;
+`;
+
+const PostPublishBtn = styled.button`
+    padding: 1rem 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    height: 100%;
+    width: 75%;
+    border-radius: 5px;
 `;
 
 const sanitizeEventScript = (htmlString) => {
@@ -130,14 +270,79 @@ const MarkdownConfirm = ({ title, mrkdown }) => {
             .toString()
         )   
     );
+    const [imgBlockWidth, setImgBlockWidth] = useState(0);
+    const postConfigImgBlockRef = useRef(null);
+
+    const updatePostConfigImgHeight = useCallback(() => {
+        if (postConfigImgBlockRef.current) {
+            const { width } = postConfigImgBlockRef.current.getBoundingClientRect();
+            setImgBlockWidth(width);
+        }
+    }, [])
+
+    useEffect(() => {
+        window.addEventListener('resize', updatePostConfigImgHeight);
+
+        return () => {
+            window.removeEventListener('resize', updatePostConfigImgHeight);
+        }
+    }, [])
 
     return (
-        <PublishPage>
-            <PreviewTitle>{title}</PreviewTitle>
-            <MarkdonwRenderBlock
-                dangerouslySetInnerHTML={{ __html: htmlTxt }}
-            />
-        </PublishPage>
+        <MarkdownConfirmWrapper>
+            <PostPreviewBlock>
+                <PostPreview>
+                    <PostPreviewHeader>
+                        포스트 미리보기
+                    </PostPreviewHeader>
+                    <PublishPage>
+                        <PreviewTitle>{title}</PreviewTitle>
+                        <Typography>
+                            <MarkdonwRenderBlock
+                                dangerouslySetInnerHTML={{ __html: htmlTxt }}
+                            />
+                        </Typography>
+                    </PublishPage>
+                </PostPreview>
+            </PostPreviewBlock>
+            <PreviewLine />
+            <PostConfigBlock>
+                <PostConfig>
+                    <PostPreviewHeader>
+                        포스트 설정
+                    </PostPreviewHeader>
+                    <PostConfigContent>
+                        <PostConfigCell>
+                            <CellHeader>
+                                대표 이미지
+                            </CellHeader>
+                            <PostConfigSegBlock>
+                                <PostConfigImg ref={postConfigImgBlockRef} height={imgBlockWidth * 0.6}>
+                                    <ImgImage alt="img icon" src="/image-icon.svg" />
+                                    <ImgBtn type="button">대표 이미지</ImgBtn>
+                                </PostConfigImg>
+                            </PostConfigSegBlock>
+                        </PostConfigCell>
+                        {/*<PostConfigCell>
+                            <CellHeader>
+                                태그
+                            </CellHeader>
+                            <PostConfigSegBlock>
+                                <PostTextarea placeholder='#태그' rows='8' /> 
+                            </PostConfigSegBlock> 
+                        </PostConfigCell>*/}
+                        <PostConfigCell>
+                            <CellHeader>
+                                설명
+                            </CellHeader>
+                            <PostConfigSegBlock>
+                                <PostTextarea placeholder='포스트를 짧게 소개해보세요.' rows='8' /> 
+                            </PostConfigSegBlock>
+                        </PostConfigCell>
+                    </PostConfigContent> 
+                </PostConfig>
+            </PostConfigBlock>
+        </MarkdownConfirmWrapper>
     )
 }
 
