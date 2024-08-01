@@ -23,17 +23,19 @@ const initialState = {
     mrkdown: '',
     html: '',
     postId: '',
+    updateDt: null,
     tags: [],
 }
 
 const publish = handleActions(
     {
         [INITIALIZE]: state => initialState,
-        [STORE_POST]: (state, { payload: {id, title, mrkdown, isTemp}}) => ({
+        [STORE_POST]: (state, { payload: {id, title, mrkdown, updateDt, isTemp}}) => ({
             ...state,
             postId: id,
             title: title,
             mrkdown: mrkdown,
+            updateDt: updateDt,
             isTemp: isTemp
         }),
         [CHANGE_FIELD]: (state, { payload: {key, value} }) => ({

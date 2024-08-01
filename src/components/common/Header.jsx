@@ -321,6 +321,7 @@ const Header = ({
     todoActive, 
     previewActive, 
     tempCnt,
+    postUpdateDt,
     onLogout, 
     onClickTodoBtn, 
     onClickPreviewBtn, 
@@ -411,9 +412,9 @@ const Header = ({
                             <IOSSwitch sx={{ m: 1 }} bgColor={"#65C466"} onChange={onClickTodoBtn} checked={todoActive}/>
                         </>) 
                         : ''}
-                        {pathname === "/post/publish" ? 
+                        {pathname === "/post/publish" && postUpdateDt ? 
                         (<>
-                            <IOSSpan>임시저장: 21시 30분</IOSSpan>
+                            <IOSSpan>임시저장: {postUpdateDt.getHours()}시 {postUpdateDt.getMinutes()}분</IOSSpan>
                         </>) 
                         : ''}
                     </FlagBottomUtilityBlock>

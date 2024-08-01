@@ -85,7 +85,18 @@ const MarkdownEditorForm = () => {
                     {
                         onSuccess: (res) => {
                             id = res.data.id
+                            const updateDtString = res.data.updateDateTime
+                            const [datePart, timePart] = updateDtString.split(' ')
+                            const [year, month, day] = datePart.split('.').map(Number)
+                            const [hours, minutes] = timePart.split(':').map(Number)
+
+                            let parsedUpdateDt = null
+                            if (year && month && day && hours && minutes) {
+                                parsedUpdateDt = new Date(year, month - 1, day, hours, minutes)
+                            }
+
                             onChangeField({ key: 'postId', value: id });
+                            onChangeField({ key: 'updateDt', value: parsedUpdateDt });
                             navigate(`/post/publish?id=${id}`, { replace: true })
                         },
                         onError: () => {
@@ -348,7 +359,18 @@ ${selectedTxt}
                     {
                         onSuccess: (res) => {
                             id = res.data.id
+                            const updateDtString = res.data.updatedDateTime
+                            const [datePart, timePart] = updateDtString.split(' ')
+                            const [year, month, day] = datePart.split('.').map(Number)
+                            const [hours, minutes] = timePart.split(':').map(Number)
+
+                            let parsedUpdateDt = null
+                            if (year && month && day && hours && minutes) {
+                                parsedUpdateDt = new Date(year, month - 1, day, hours, minutes)
+                            }
+
                             onChangeField({ key: 'postId', value: id });
+                            onChangeField({ key: 'updateDt', value: parsedUpdateDt });
                             navigate(`/post/publish?id=${id}`, { replace: true })
                             toast.success("포스트가 임시저장되었습니다.")
                         },
@@ -370,6 +392,18 @@ ${selectedTxt}
                 },
                 {
                     onSuccess: (res) => {
+                        const updateDtString = res.data.updatedDateTime
+                        const [datePart, timePart] = updateDtString.split(' ')
+                        const [year, month, day] = datePart.split('.').map(Number)
+                        const [hours, minutes] = timePart.split(':').map(Number)
+
+                        let parsedUpdateDt = null
+                        if (year && month && day && hours && minutes) {
+                            parsedUpdateDt = new Date(year, month - 1, day, hours, minutes)
+                        }
+
+                        onChangeField({ key: 'updateDt', value: parsedUpdateDt });
+
                         toast.success("포스트가 임시저장되었습니다.")
                     },
                     onError: () => {
@@ -419,6 +453,7 @@ ${selectedTxt}
                 id: tempPost.id,
                 title: tempPost.title,
                 mrkdown: tempPost.content,
+                updateDt: null,
                 isTemp: tempPost.isTemp
             }))
         }

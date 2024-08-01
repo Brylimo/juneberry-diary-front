@@ -18,6 +18,7 @@ const SaveModalForm = ({setActiveState}) => {
             id: item.id,
             title: item.title,
             mrkdown: item.content,
+            updateDt: null,
             isTemp: item.isTemp
         }))
         setActiveState(false);

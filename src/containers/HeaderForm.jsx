@@ -10,9 +10,10 @@ import { useGetTempPostCntQuery } from '../hooks/queries/useGetTempPostCntQuery'
 
 const HeaderForm = () => {
     const dispatch = useDispatch();
-    const { todoActive, previewActive, tempCnt } = useSelector(({ cal, publish, post }) => ({
+    const { todoActive, previewActive, postUpdateDt, tempCnt } = useSelector(({ cal, publish, post }) => ({
         todoActive: cal.todoActive,
         previewActive: publish.previewActive,
+        postUpdateDt: publish.updateDt,
         tempCnt: post.tempCnt
     }));
     const { logoutRefetch } = useLogoutQuery();
@@ -54,6 +55,7 @@ const HeaderForm = () => {
         todoActive={todoActive} 
         previewActive={previewActive}
         tempCnt={tempCnt}
+        postUpdateDt={postUpdateDt}
         onLogout={onClickLogout} 
         onClickTodoBtn={onClickTodoBtn} 
         onClickPreviewBtn={onClickPreviewBtn}
