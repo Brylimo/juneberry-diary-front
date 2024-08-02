@@ -10,6 +10,7 @@ import rehypeSanitize from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
 import sanitize from "sanitize-html";
 import Typography from '../common/Typography';
+import { useImgUpload } from '../../hooks/useImgUpload';
 
 const MarkdownConfirmWrapper = styled.div`
     width: 100%;
@@ -92,15 +93,43 @@ const MarkdonwRenderBlock = styled.div`
     }
 `;
 
-const PostPreviewHeader = styled.div`
+const PostPreviewHeaderBlock = styled.div`
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+`
+
+const PostPreviewHeader = styled.span`
     font-weight: bold;
     font-size: 32px;
     color: cadetblue;
 `;
 
+const PostConfigMenuBlock = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 7px;
+`
+
+const PostConfigMenu = styled.span`
+    font-size: 18px;
+    font-weight: 400;
+    color: #bbc1c7;
+    cursor: pointer;
+
+    ${
+        props => props.currentMenu && css`
+            color: orange;    
+        `
+    };
+`
+
 const PostConfigContent = styled.div`
     margin-top: 2rem;
     height: calc(100% - 9rem);
+    display: flex;
+    align-items: center;
+
 `;
 
 const PostConfigCell = styled.div`
@@ -112,7 +141,10 @@ const PostConfigCell = styled.div`
 const PostConfigSegBlock = styled.div`
     flex: 1;
     display: flex;
+    flex-direction: column;
+    align-items: end;
     justify-content: center;
+    gap: 5px;
 `
 
 const PostConfigImg = styled.div`
@@ -169,6 +201,27 @@ const PostTextarea = styled.textarea`
     outline: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `
+
+const HashTagBlock = styled.div`
+    width: 65%;
+    border: none;
+    padding: 1rem;
+    outline: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    height: 144px;
+`
+
+const HashTagInput = styled.input`
+    border: none;
+    outline: none;
+    font-family: monospace;
+`;
+
+const TextareaCntSpan = styled.span`
+    font-size: 16px;
+    color: #868E96
+`;
 
 const PostConfigBtnBlock = styled.div`
     height: 5rem;
@@ -256,6 +309,8 @@ const filter = (html) => {
 }
 
 const MarkdownConfirm = ({ title, mrkdown }) => {
+    const [imgFile, imgUpload, setImgFile] = useImgUpload();
+
     const [htmlTxt, setHtmlTxt] = useState(
         filter(
           unified()
@@ -270,7 +325,10 @@ const MarkdownConfirm = ({ title, mrkdown }) => {
             .toString()
         )   
     );
+    const [currentMenu, setCurrentMenu] = useState("thumbnail");
     const [imgBlockWidth, setImgBlockWidth] = useState(0);
+    const [postTxt, setPostTxt] = useState("")
+    const [hashTagTxt, setHashTagTxt] = useState("")
     const postConfigImgBlockRef = useRef(null);
 
     const updatePostConfigImgHeight = useCallback(() => {
@@ -280,21 +338,59 @@ const MarkdownConfirm = ({ title, mrkdown }) => {
         }
     }, [])
 
+    const onClickThumbnailMenu = useCallback(() => {
+        setCurrentMenu("thumbnail")
+    }, []);
+
+    const onClickTagMenu = useCallback(() => {
+        setCurrentMenu("tag")
+    }, []);
+
+    const onClickImgBtn = useCallback(() => {
+        imgUpload()
+    }, [imgUpload])
+
+    const handlePostTxtChange = useCallback((event) => {
+        if (event.target.value?.length <= 150) {
+            setPostTxt(event.target.value)
+        }
+    }, [])
+
+    const handlePostTxtKeyDown = useCallback((event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+        }
+    }, [])
+
+    const handleHashTagTxtChange = useCallback((event) => {
+        setHashTagTxt(event.target.value)
+    }, [])
+
+    const uploadThumbnail = useCallback(
+        async (imgFile) => {
+            if (!imgFile) return
+        }, []
+    )
+
     useEffect(() => {
         window.addEventListener('resize', updatePostConfigImgHeight);
 
         return () => {
             window.removeEventListener('resize', updatePostConfigImgHeight);
         }
-    }, [])
+    }, [updatePostConfigImgHeight])
+
+    useEffect(() => {
+        if (!imgFile) return;
+    }, [imgFile])
 
     return (
         <MarkdownConfirmWrapper>
             <PostPreviewBlock>
                 <PostPreview>
-                    <PostPreviewHeader>
-                        포스트 미리보기
-                    </PostPreviewHeader>
+                    <PostPreviewHeaderBlock>
+                        <PostPreviewHeader>포스트 미리보기</PostPreviewHeader>
+                    </PostPreviewHeaderBlock>
                     <PublishPage>
                         <PreviewTitle>{title}</PreviewTitle>
                         <Typography>
@@ -308,38 +404,61 @@ const MarkdownConfirm = ({ title, mrkdown }) => {
             <PreviewLine />
             <PostConfigBlock>
                 <PostConfig>
-                    <PostPreviewHeader>
-                        포스트 설정
-                    </PostPreviewHeader>
-                    <PostConfigContent>
-                        <PostConfigCell>
-                            <CellHeader>
-                                대표 이미지
-                            </CellHeader>
-                            <PostConfigSegBlock>
-                                <PostConfigImg ref={postConfigImgBlockRef} height={imgBlockWidth * 0.6}>
-                                    <ImgImage alt="img icon" src="/image-icon.svg" />
-                                    <ImgBtn type="button">대표 이미지</ImgBtn>
-                                </PostConfigImg>
-                            </PostConfigSegBlock>
-                        </PostConfigCell>
-                        {/*<PostConfigCell>
-                            <CellHeader>
-                                태그
-                            </CellHeader>
-                            <PostConfigSegBlock>
-                                <PostTextarea placeholder='#태그' rows='8' /> 
-                            </PostConfigSegBlock> 
-                        </PostConfigCell>*/}
-                        <PostConfigCell>
-                            <CellHeader>
-                                설명
-                            </CellHeader>
-                            <PostConfigSegBlock>
-                                <PostTextarea placeholder='포스트를 짧게 소개해보세요.' rows='8' /> 
-                            </PostConfigSegBlock>
-                        </PostConfigCell>
-                    </PostConfigContent> 
+                    <PostPreviewHeaderBlock>
+                        <PostPreviewHeader>포스트 설정</PostPreviewHeader>
+                        <PostConfigMenuBlock>
+                            <PostConfigMenu onClick={onClickThumbnailMenu} currentMenu={currentMenu === 'thumbnail'}>썸네일</PostConfigMenu>
+                            <div style={{ color: 'gray' }}>●</div>
+                            <PostConfigMenu onClick={onClickTagMenu} currentMenu={currentMenu === 'tag'}>설정</PostConfigMenu>
+                        </PostConfigMenuBlock>
+                    </PostPreviewHeaderBlock>
+                    {currentMenu === 'thumbnail' ? 
+                        (<PostConfigContent>
+                            <div style={{ width: '100%' }}>
+                                <PostConfigCell>
+                                    <CellHeader>
+                                        대표 이미지
+                                    </CellHeader>
+                                    <PostConfigSegBlock>
+                                        <PostConfigImg ref={postConfigImgBlockRef} height={imgBlockWidth * 0.6}>
+                                            <ImgImage alt="img icon" src="/image-icon.svg" />
+                                            <ImgBtn type="button" onClick={onClickImgBtn}>대표 이미지</ImgBtn>
+                                        </PostConfigImg>
+                                    </PostConfigSegBlock>
+                                </PostConfigCell>
+                                <PostConfigCell>
+                                    <CellHeader>
+                                        설명
+                                    </CellHeader>
+                                    <PostConfigSegBlock>
+                                        <PostTextarea 
+                                            placeholder='포스트를 짧게 소개해보세요.' 
+                                            rows='8' 
+                                            value={postTxt} 
+                                            onChange={handlePostTxtChange} 
+                                            onKeyDown={handlePostTxtKeyDown} 
+                                        />
+                                        <TextareaCntSpan>{postTxt.length}/150</TextareaCntSpan>
+                                    </PostConfigSegBlock>
+                                </PostConfigCell>
+                            </div>
+                        </PostConfigContent>) :
+                        (<PostConfigContent>
+                            <div style={{ width: '100%' }}>
+                                <PostConfigCell>
+                                    <CellHeader>
+                                        태그 설정
+                                    </CellHeader>
+                                    <PostConfigSegBlock>
+                                        <HashTagBlock>
+                                            <HashTagInput placeholder='태그를 입력하세요.' value={hashTagTxt} onChange={handleHashTagTxtChange} />
+                                        </HashTagBlock> 
+                                        <TextareaCntSpan>0/15</TextareaCntSpan>
+                                    </PostConfigSegBlock> 
+                                </PostConfigCell>
+                            </div>
+                        </PostConfigContent>)
+                    } 
                 </PostConfig>
             </PostConfigBlock>
         </MarkdownConfirmWrapper>
