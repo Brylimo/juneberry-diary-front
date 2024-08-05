@@ -5,7 +5,7 @@ const ProfilePage = () => {
     return (
         <>
             <Helmet>
-                <title>juneberrydiary - profile</title>
+                <title>프로필</title>
             </Helmet>
             <div style={{ position: 'relative', height: '100%' }}>
                 <Profile />  

@@ -6,7 +6,7 @@ const CalendarPage = () => {
     return (
         <>
             <Helmet>
-                <title>juneberrydiary - calendar</title>
+                <title>캘린더</title>
             </Helmet>
             <div style={{ position: 'relative', height: '100%' }}>
                 <CalendarForm/>

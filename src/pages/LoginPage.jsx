@@ -7,7 +7,7 @@ const LoginPage = () => {
     return (
         <>
             <Helmet>
-                <title>juneberrydiary - login</title>
+                <title>로그인</title>
             </Helmet>
             <AuthTemplate type="login" >
                 <LoginForm type="login" />

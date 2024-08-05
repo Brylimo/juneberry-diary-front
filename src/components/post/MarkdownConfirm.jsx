@@ -16,10 +16,15 @@ const MarkdownConfirmWrapper = styled.div`
     width: 100%;
     display: flex;
     flex-direction: row;
+    height: 100%;
 `;
 
 const PostPreviewBlock = styled.div`
     flex: 1;
+
+    @media (max-width: 893px) {
+        display:none;
+    }
 `;
 
 const PostPreview = styled.div`
@@ -36,12 +41,18 @@ const PostConfigBlock = styled.div`
 const PostConfig = styled.div`
     padding: 3rem;
     height: 100%;
+    display: flex;
+    flex-direction: column;
 `;
 
 const PreviewLine = styled.div`
     width: 0.1px;
     height: calc(100vh - 8rem);
     background-color: #d0d7de;
+
+    @media (max-width: 893px) {
+        display:none;
+    }
 `
 
 const PublishPage = styled.div`
@@ -97,6 +108,7 @@ const PostPreviewHeaderBlock = styled.div`
     display: flex;
     flex-direction: row;
     gap: 1rem;
+    justify-content: space-between;
 `
 
 const PostPreviewHeader = styled.span`
@@ -108,7 +120,7 @@ const PostPreviewHeader = styled.span`
 const PostConfigMenuBlock = styled.div`
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 5px;
 `
 
 const PostConfigMenu = styled.span`
@@ -124,12 +136,18 @@ const PostConfigMenu = styled.span`
     };
 `
 
+const PostConfigMenuWrapper = styled.div`
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+`
+
 const PostConfigContent = styled.div`
     margin-top: 2rem;
-    height: calc(100% - 9rem);
     display: flex;
     align-items: center;
-
+    flex: 1;
 `;
 
 const PostConfigCell = styled.div`
@@ -149,7 +167,24 @@ const PostConfigSegBlock = styled.div`
 
 const PostConfigImg = styled.div`
     background-color: #e9ecef;
-    width: 65%;
+    width: 70%;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    ${
+        props => props.height && css`
+            height: ${props.height}px;    
+        `
+    };
+`;
+
+const PostThumbnailImg = styled.div`
+    width: 70%;
     height: 300px;
     display: flex;
     justify-content: center;
@@ -194,7 +229,7 @@ const CellHeader = styled.div`
 `
 
 const PostTextarea = styled.textarea`
-    width: 65%;
+    width: 70%;
     border: none;
     padding: 1rem;
     resize: none;
@@ -202,20 +237,71 @@ const PostTextarea = styled.textarea`
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `
 
-const HashTagBlock = styled.div`
-    width: 65%;
+const HashTagWrapper = styled.div`
+    width: 70%;
     border: none;
     padding: 1rem;
     outline: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: white;
     height: 144px;
+    display: flex;
+    overflow-y: auto;
+`
+
+const ConfigBtnWrapper = styled.div`
+    width: 70%;
+    display: flex;
+    gap: 3rem;
+`
+
+const PostConfigBtn = styled.button`
+    padding: 1.5rem 2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: transparent;
+    border: none;
+    height: 100%;
+    border-radius: 6px;
+    box-shadow: 0 0.8px 1.8px 0 rgba(0,0,0,.2);
+    color: #868E96;
+    font-weight: 400;
+    flex: 1;
+    font-size: 16px;
+    border: 1px solid transparent;
+
+    &:hover {
+        opacity: 0.7;
+    }
+
+    ${
+        props => props.active && css`
+            border: 1px solid cadetblue;
+            color: cadetblue;
+        `
+    };
+`
+
+const HashTagBlock = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    flex-wrap: wrap;
+    height: 25px;
+`
+
+const HashTagInputBlock = styled.div`
+    padding: 0.1rem 0;
+    font-size: 18px;
+    flex: 1;
 `
 
 const HashTagInput = styled.input`
     border: none;
     outline: none;
     font-family: monospace;
+    box-sizing: content-box;
 `;
 
 const TextareaCntSpan = styled.span`
@@ -223,22 +309,31 @@ const TextareaCntSpan = styled.span`
     color: #868E96
 `;
 
-const PostConfigBtnBlock = styled.div`
-    height: 5rem;
-    display: flex;
-    justify-content: center;
-`;
+const HashTagBadge = styled.span`
+    background-color: #F5F5F5;
+    color: green;
+    font-size: 16px;
+    padding: 0.1rem 1.5rem;
+    border-radius: 7px;
+    cursor: default;
+    font-weight: 400;
+`
 
-const PostPublishBtn = styled.button`
-    padding: 1rem 0;
+const PostSelectBtn = styled.button`
+    padding: 1rem 2rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
     height: 100%;
-    width: 75%;
-    border-radius: 5px;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
+    border: none;
+    color: white;
+    font-weight: 400;
+    background-color: rgba(0, 0, 0, 0.8);
+
+    &:hover {
+            background-color: rgba(0, 0, 0, 1);
+    }
 `;
 
 const sanitizeEventScript = (htmlString) => {
@@ -326,9 +421,12 @@ const MarkdownConfirm = ({ title, mrkdown }) => {
         )   
     );
     const [currentMenu, setCurrentMenu] = useState("thumbnail");
+    const [isPublic, setIsPublic] = useState(true);
     const [imgBlockWidth, setImgBlockWidth] = useState(0);
     const [postTxt, setPostTxt] = useState("")
-    const [hashTagTxt, setHashTagTxt] = useState("")
+    const [hashtags, setHashtags] = useState([])
+    const [hashtagTxt, setHashtagTxt] = useState("")
+
     const postConfigImgBlockRef = useRef(null);
 
     const updatePostConfigImgHeight = useCallback(() => {
@@ -345,6 +443,18 @@ const MarkdownConfirm = ({ title, mrkdown }) => {
     const onClickTagMenu = useCallback(() => {
         setCurrentMenu("tag")
     }, []);
+
+    const onClickPublicBtn = useCallback(() => {
+        setIsPublic(true)
+    }, []);
+
+    const onClickPrivateBtn = useCallback(() => {
+        setIsPublic(false)
+    }, []);
+
+    const onClickPublishBtn = useCallback(() => {
+        
+    }, [])
 
     const onClickImgBtn = useCallback(() => {
         imgUpload()
@@ -363,12 +473,26 @@ const MarkdownConfirm = ({ title, mrkdown }) => {
     }, [])
 
     const handleHashTagTxtChange = useCallback((event) => {
-        setHashTagTxt(event.target.value)
+        setHashtagTxt(event.target.value)
     }, [])
+
+    const handleHashTagTxtKeyDown = useCallback((event) => {
+        if (event.key === 'Enter' && event.nativeEvent.isComposing === false && hashtagTxt.trim() !== '') {
+            const regex = /[^\p{L}\p{N}\p{Zs}]/u; // 특수문자 확인
+            const tagTxt = hashtagTxt.trim()
+
+            if (hashtags.length < 15 && !regex.test(tagTxt)) {
+                setHashtags(prev => prev.concat(tagTxt))
+            }
+            setHashtagTxt('')
+        }
+    }, [hashtags, hashtagTxt])
 
     const uploadThumbnail = useCallback(
         async (imgFile) => {
             if (!imgFile) return
+
+
         }, []
     )
 
@@ -382,7 +506,8 @@ const MarkdownConfirm = ({ title, mrkdown }) => {
 
     useEffect(() => {
         if (!imgFile) return;
-    }, [imgFile])
+        uploadThumbnail(imgFile)
+    }, [imgFile, uploadThumbnail])
 
     return (
         <MarkdownConfirmWrapper>
@@ -406,11 +531,14 @@ const MarkdownConfirm = ({ title, mrkdown }) => {
                 <PostConfig>
                     <PostPreviewHeaderBlock>
                         <PostPreviewHeader>포스트 설정</PostPreviewHeader>
-                        <PostConfigMenuBlock>
-                            <PostConfigMenu onClick={onClickThumbnailMenu} currentMenu={currentMenu === 'thumbnail'}>썸네일</PostConfigMenu>
-                            <div style={{ color: 'gray' }}>●</div>
-                            <PostConfigMenu onClick={onClickTagMenu} currentMenu={currentMenu === 'tag'}>설정</PostConfigMenu>
-                        </PostConfigMenuBlock>
+                        <PostConfigMenuWrapper>
+                            <PostConfigMenuBlock>
+                                <PostConfigMenu onClick={onClickThumbnailMenu} currentMenu={currentMenu === 'thumbnail'}>썸네일</PostConfigMenu>
+                                <div style={{ color: 'gray' }}>●</div>
+                                <PostConfigMenu onClick={onClickTagMenu} currentMenu={currentMenu === 'tag'}>설정</PostConfigMenu>
+                            </PostConfigMenuBlock>
+                            <PostSelectBtn onClick={onClickPublishBtn}>발행하기</PostSelectBtn>
+                        </PostConfigMenuWrapper>
                     </PostPreviewHeaderBlock>
                     {currentMenu === 'thumbnail' ? 
                         (<PostConfigContent>
@@ -420,10 +548,12 @@ const MarkdownConfirm = ({ title, mrkdown }) => {
                                         대표 이미지
                                     </CellHeader>
                                     <PostConfigSegBlock>
-                                        <PostConfigImg ref={postConfigImgBlockRef} height={imgBlockWidth * 0.6}>
+                                        {imgFile ? 
+                                        (<PostThumbnailImg ref={postConfigImgBlockRef} height={imgBlockWidth * 0.6} />) :
+                                        (<PostConfigImg ref={postConfigImgBlockRef} height={imgBlockWidth * 0.6}>
                                             <ImgImage alt="img icon" src="/image-icon.svg" />
                                             <ImgBtn type="button" onClick={onClickImgBtn}>대표 이미지</ImgBtn>
-                                        </PostConfigImg>
+                                        </PostConfigImg>)}
                                     </PostConfigSegBlock>
                                 </PostConfigCell>
                                 <PostConfigCell>
@@ -450,11 +580,32 @@ const MarkdownConfirm = ({ title, mrkdown }) => {
                                         태그 설정
                                     </CellHeader>
                                     <PostConfigSegBlock>
-                                        <HashTagBlock>
-                                            <HashTagInput placeholder='태그를 입력하세요.' value={hashTagTxt} onChange={handleHashTagTxtChange} />
-                                        </HashTagBlock> 
-                                        <TextareaCntSpan>0/15</TextareaCntSpan>
+                                        <HashTagWrapper>
+                                            <HashTagBlock>
+                                                {hashtags.map((hashtag, index) => (
+                                                    <HashTagBadge>{hashtag}</HashTagBadge>
+                                                ))}
+                                                <HashTagInputBlock>
+                                                    <HashTagInput 
+                                                        placeholder='태그를 입력하세요.' 
+                                                        value={hashtagTxt} 
+                                                        onChange={handleHashTagTxtChange} 
+                                                        onKeyDown={handleHashTagTxtKeyDown}
+                                                    />
+                                                </HashTagInputBlock>
+                                            </HashTagBlock>
+                                        </HashTagWrapper> 
+                                        <TextareaCntSpan>{hashtags.length}/15</TextareaCntSpan>
                                     </PostConfigSegBlock> 
+                                </PostConfigCell>
+                                <PostConfigCell>
+                                    <CellHeader>공개 설정</CellHeader>
+                                    <PostConfigSegBlock>
+                                        <ConfigBtnWrapper>
+                                            <PostConfigBtn onClick={onClickPublicBtn} active={isPublic}>전체 공개</PostConfigBtn>
+                                            <PostConfigBtn onClick={onClickPrivateBtn} active={!isPublic}>비공개</PostConfigBtn>
+                                        </ConfigBtnWrapper>
+                                    </PostConfigSegBlock>
                                 </PostConfigCell>
                             </div>
                         </PostConfigContent>)

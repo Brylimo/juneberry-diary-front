@@ -21,7 +21,7 @@ const ConfirmFrameWrapper = styled.div`
     position: absolute;
     top: 8rem;
     min-height: calc(100vh - 8rem);
-    height: auto;
+    height: calc(100vh - 8rem);
     box-sizing: border-box;
     overflow: hidden;
     background-color: #F8F9FA;

@@ -7,7 +7,7 @@ const RegisterPage = () => {
     return (
         <>
             <Helmet>
-                <title>juneberrydiary - register</title>
+                <title>회원가입</title>
             </Helmet>
             <AuthTemplate type="register">
                 <RegisterForm />

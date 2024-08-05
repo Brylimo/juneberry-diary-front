@@ -39,7 +39,7 @@ const MapPage = () => {
     return (
         <>
             <Helmet>
-                <title>juneberrydiary - map</title>
+                <title>지도</title>
             </Helmet>
             <div style={{ position: 'relative', height: '100%' }}>
                 <SideBar></SideBar>
