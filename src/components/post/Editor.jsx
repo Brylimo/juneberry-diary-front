@@ -27,7 +27,7 @@ const ConfirmFrameWrapper = styled.div`
     background-color: #F8F9FA;
 `
 
-const Editor = ({ submitActive }) => {
+const Editor = ({ tempPost, submitActive }) => {
     if (submitActive) {
         return (
         <ConfirmFrameWrapper>
@@ -36,7 +36,7 @@ const Editor = ({ submitActive }) => {
     } else {
         return (
         <EditorFrameWrapper>
-            <MarkdownEditorForm />
+            <MarkdownEditorForm tempPost={tempPost} />
         </EditorFrameWrapper>)
     }
 };

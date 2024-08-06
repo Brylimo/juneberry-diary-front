@@ -150,6 +150,39 @@ const PostConfigContent = styled.div`
     flex: 1;
 `;
 
+const PostConfigCellWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+
+const PostConfigCellInfo = styled.div`
+    display: flex;
+    justify-content: end;
+`
+
+const PostConifgCellLinkBlock = styled.div`
+    display: flex;
+    gap: 5px;
+    width: calc((100% - 109px) * 0.7);
+`
+
+const PostConfigCellLink = styled.span`
+    font-size: 16px;
+    cursor: pointer;
+    color: #868E96;
+    opacity: 0.8;
+
+    &:hover {
+        opacity: 1;
+    }
+`
+
+const PostConfigCellSpan = styled.span`
+    font-size: 16px;
+    line-height: 16px;
+    color: #868E96;
+`
+
 const PostConfigCell = styled.div`
     display: flex;
     flex-direction: row;
@@ -183,7 +216,7 @@ const PostConfigImg = styled.div`
     };
 `;
 
-const PostThumbnailImg = styled.div`
+const PostThumbnailImg = styled.img`
     width: 70%;
     height: 300px;
     display: flex;
@@ -403,7 +436,7 @@ const filter = (html) => {
     })
 }
 
-const MarkdownConfirm = ({ title, mrkdown }) => {
+const MarkdownConfirm = ({ title, description, mrkdown, isPublic, onChangeField, onClickPublishBtn }) => {
     const [imgFile, imgUpload, setImgFile] = useImgUpload();
 
     const [htmlTxt, setHtmlTxt] = useState(
@@ -421,9 +454,7 @@ const MarkdownConfirm = ({ title, mrkdown }) => {
         )   
     );
     const [currentMenu, setCurrentMenu] = useState("thumbnail");
-    const [isPublic, setIsPublic] = useState(true);
     const [imgBlockWidth, setImgBlockWidth] = useState(0);
-    const [postTxt, setPostTxt] = useState("")
     const [hashtags, setHashtags] = useState([])
     const [hashtagTxt, setHashtagTxt] = useState("")
 
@@ -445,26 +476,22 @@ const MarkdownConfirm = ({ title, mrkdown }) => {
     }, []);
 
     const onClickPublicBtn = useCallback(() => {
-        setIsPublic(true)
-    }, []);
+        onChangeField({ key: 'isPublic', value: true });
+    }, [onChangeField]);
 
     const onClickPrivateBtn = useCallback(() => {
-        setIsPublic(false)
-    }, []);
-
-    const onClickPublishBtn = useCallback(() => {
-        
-    }, [])
+        onChangeField({ key: 'isPublic', value: false });
+    }, [onChangeField]);
 
     const onClickImgBtn = useCallback(() => {
         imgUpload()
     }, [imgUpload])
 
-    const handlePostTxtChange = useCallback((event) => {
+    const handleDescriptionChange = useCallback((event) => {
         if (event.target.value?.length <= 150) {
-            setPostTxt(event.target.value)
+            onChangeField({ key: 'description', value: event.target.value })
         }
-    }, [])
+    }, [onChangeField])
 
     const handlePostTxtKeyDown = useCallback((event) => {
         if (event.key === 'Enter') {
@@ -488,13 +515,13 @@ const MarkdownConfirm = ({ title, mrkdown }) => {
         }
     }, [hashtags, hashtagTxt])
 
-    const uploadThumbnail = useCallback(
-        async (imgFile) => {
-            if (!imgFile) return
+    const handleThumbnailReUpload = useCallback((event) => {
+        imgUpload();
+    }, [imgUpload])
 
-
-        }, []
-    )
+    const handleThumbnailDelete = useCallback((event) => {
+        setImgFile(null);
+    }, [setImgFile])
 
     useEffect(() => {
         window.addEventListener('resize', updatePostConfigImgHeight);
@@ -503,11 +530,6 @@ const MarkdownConfirm = ({ title, mrkdown }) => {
             window.removeEventListener('resize', updatePostConfigImgHeight);
         }
     }, [updatePostConfigImgHeight])
-
-    useEffect(() => {
-        if (!imgFile) return;
-        uploadThumbnail(imgFile)
-    }, [imgFile, uploadThumbnail])
 
     return (
         <MarkdownConfirmWrapper>
@@ -534,7 +556,7 @@ const MarkdownConfirm = ({ title, mrkdown }) => {
                         <PostConfigMenuWrapper>
                             <PostConfigMenuBlock>
                                 <PostConfigMenu onClick={onClickThumbnailMenu} currentMenu={currentMenu === 'thumbnail'}>썸네일</PostConfigMenu>
-                                <div style={{ color: 'gray' }}>●</div>
+                                <div style={{ color: 'gray' }}>•</div>
                                 <PostConfigMenu onClick={onClickTagMenu} currentMenu={currentMenu === 'tag'}>설정</PostConfigMenu>
                             </PostConfigMenuBlock>
                             <PostSelectBtn onClick={onClickPublishBtn}>발행하기</PostSelectBtn>
@@ -543,19 +565,28 @@ const MarkdownConfirm = ({ title, mrkdown }) => {
                     {currentMenu === 'thumbnail' ? 
                         (<PostConfigContent>
                             <div style={{ width: '100%' }}>
-                                <PostConfigCell>
-                                    <CellHeader>
-                                        대표 이미지
-                                    </CellHeader>
-                                    <PostConfigSegBlock>
-                                        {imgFile ? 
-                                        (<PostThumbnailImg ref={postConfigImgBlockRef} height={imgBlockWidth * 0.6} />) :
-                                        (<PostConfigImg ref={postConfigImgBlockRef} height={imgBlockWidth * 0.6}>
-                                            <ImgImage alt="img icon" src="/image-icon.svg" />
-                                            <ImgBtn type="button" onClick={onClickImgBtn}>대표 이미지</ImgBtn>
-                                        </PostConfigImg>)}
-                                    </PostConfigSegBlock>
-                                </PostConfigCell>
+                                <PostConfigCellWrapper>
+                                    {imgFile && (<PostConfigCellInfo>
+                                        <PostConifgCellLinkBlock>
+                                            <PostConfigCellLink onClick={handleThumbnailReUpload}>재업로드</PostConfigCellLink>
+                                            <PostConfigCellSpan>•</PostConfigCellSpan>
+                                            <PostConfigCellLink onClick={handleThumbnailDelete}>삭제</PostConfigCellLink>
+                                        </PostConifgCellLinkBlock>
+                                    </PostConfigCellInfo>)}
+                                    <PostConfigCell>
+                                        <CellHeader>
+                                            대표 이미지
+                                        </CellHeader>
+                                        <PostConfigSegBlock>
+                                            {imgFile ? 
+                                            (<PostThumbnailImg ref={postConfigImgBlockRef} src={URL.createObjectURL(imgFile)} height={imgBlockWidth * 0.6} />) :
+                                            (<PostConfigImg ref={postConfigImgBlockRef} height={imgBlockWidth * 0.6}>
+                                                <ImgImage alt="img icon" src="/image-icon.svg" />
+                                                <ImgBtn type="button" onClick={onClickImgBtn}>대표 이미지</ImgBtn>
+                                            </PostConfigImg>)}
+                                        </PostConfigSegBlock>
+                                    </PostConfigCell>
+                                </PostConfigCellWrapper>
                                 <PostConfigCell>
                                     <CellHeader>
                                         설명
@@ -564,11 +595,11 @@ const MarkdownConfirm = ({ title, mrkdown }) => {
                                         <PostTextarea 
                                             placeholder='포스트를 짧게 소개해보세요.' 
                                             rows='8' 
-                                            value={postTxt} 
-                                            onChange={handlePostTxtChange} 
+                                            value={description} 
+                                            onChange={handleDescriptionChange} 
                                             onKeyDown={handlePostTxtKeyDown} 
                                         />
-                                        <TextareaCntSpan>{postTxt.length}/150</TextareaCntSpan>
+                                        <TextareaCntSpan>{description.length}/150</TextareaCntSpan>
                                     </PostConfigSegBlock>
                                 </PostConfigCell>
                             </div>
@@ -616,4 +647,4 @@ const MarkdownConfirm = ({ title, mrkdown }) => {
     )
 }
 
-export default MarkdownConfirm;
+export default React.memo(MarkdownConfirm);

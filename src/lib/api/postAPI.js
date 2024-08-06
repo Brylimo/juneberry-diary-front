@@ -33,9 +33,9 @@ export const getTempPostList = async (page, size) => {
     return res.data;
 }
 
-export const updatePost = async ({ postId, title, content }) => {
+export const updatePost = async ({ postId, title, description, content, isTemp, isPublic }) => {
     const res = await client.post('/post/updatePost', {
-        postId, title, content
+        postId, title, description, content, isTemp, isPublic
     })
     return res.data;
 }

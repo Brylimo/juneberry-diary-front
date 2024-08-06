@@ -1,16 +1,15 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import MarkdownEditor from '../../components/post/MarkdownEditor';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeField, storePost } from '../../modules/publish';
+import { changeField } from '../../modules/publish';
 import { useUploadImageMutation } from '../../hooks/mutations/useUploadImageMutation';
 import { useAddPostMutation } from '../../hooks/mutations/useAddPostMutation';
 import { useUpdatePostMutation } from '../../hooks/mutations/useUpdatePostMutation';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useImgUpload } from '../../hooks/useImgUpload';
 import { toast } from 'react-toastify';
-import { useGetTempPostQuery } from '../../hooks/queries/useGetTempPostQuery';
 
-const MarkdownEditorForm = () => {
+const MarkdownEditorForm = ({ tempPost }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { saveActive, submitActive, tempCntActive, isTemp, title, mrkdown, postId } = useSelector(({ publish }) => ({
@@ -32,16 +31,12 @@ const MarkdownEditorForm = () => {
     const [linkTxt, setLinkTxt] = useState('');
     const [imgBlobUrl, setImgBlobUrl] = useState(null);
     const [imagePath, setImagePath] = useState(null);
-    const [apiEnabled, setApiEnabled] = useState(false);
-    const [searchParams, setSearchParams] = useSearchParams();
 
     const codemirrorRef = useRef(null)
     const codemirrorBlockRef = useRef(null)
     const postIdRef = useRef(postId)
     const titleRef = useRef(title)
     const contentRef = useRef(mrkdown)
-
-    const { data: tempPost } = useGetTempPostQuery(searchParams.get("id"), apiEnabled)
 
     const { mutateAsync: uploadImageMutateAsync } = useUploadImageMutation();
     const { mutateAsync: addPostMutateAsync } = useAddPostMutation();
@@ -80,13 +75,14 @@ const MarkdownEditorForm = () => {
                         date: new Date(),
                         title: title,
                         content: content,
-                        isTemp: true
+                        isTemp: true,
+                        isPublic: true
                     },
                     {
                         onSuccess: (res) => {
                             id = res.data.id
-                            const updateDtString = res.data.updateDateTime
-                            const [datePart, timePart] = updateDtString.split(' ')
+                            const updatedDtString = res.data.updatedDateTime
+                            const [datePart, timePart] = updatedDtString.split(' ')
                             const [year, month, day] = datePart.split('.').map(Number)
                             const [hours, minutes] = timePart.split(':').map(Number)
 
@@ -354,7 +350,8 @@ ${selectedTxt}
                         date: new Date(),
                         title: title,
                         content: content,
-                        isTemp: true
+                        isTemp: true,
+                        isPublic: true
                     },
                     {
                         onSuccess: (res) => {
@@ -413,13 +410,7 @@ ${selectedTxt}
                 })
             }
         }, 
-        [isTemp, navigate, addPostMutateAsync, onChangeField])
-
-    useEffect(()=> {
-        if (Array.from(searchParams.keys()).length > 0 && searchParams.get("id")) {
-            setApiEnabled(true)
-        }
-    }, [searchParams])
+        [isTemp, navigate, addPostMutateAsync, onChangeField, updatePostMutate])
 
     useEffect(() => {
         if (!imgFile) return;
@@ -446,18 +437,6 @@ ${selectedTxt}
         contentRef.current = mrkdown
         titleRef.current = title
     }, [mrkdown, title])
-
-    useEffect(() => {
-        if (tempPost && !Array.isArray(tempPost)) { 
-            dispatch(storePost({
-                id: tempPost.id,
-                title: tempPost.title,
-                mrkdown: tempPost.content,
-                updateDt: null,
-                isTemp: tempPost.isTemp
-            }))
-        }
-    }, [tempPost, dispatch])
 
     useEffect(() => {
         if (saveActive) {

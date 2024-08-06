@@ -17,6 +17,7 @@ const SaveModalForm = ({setActiveState}) => {
         dispatch(storePost({
             id: item.id,
             title: item.title,
+            description: item.description,
             mrkdown: item.content,
             updateDt: null,
             isTemp: item.isTemp

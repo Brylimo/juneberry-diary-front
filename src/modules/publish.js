@@ -16,24 +16,28 @@ const initialState = {
     submitActive: false,
     tempCntActive: false,
     isTemp: false,
+    isPublic: true,
     title: '',
+    description: '',
     mrkdown: '',
     html: '',
     postId: '',
     updateDt: null,
-    tags: [],
+    hashtags: [],
 }
 
 const publish = handleActions(
     {
         [INITIALIZE]: state => initialState,
-        [STORE_POST]: (state, { payload: {id, title, mrkdown, updateDt, isTemp}}) => ({
+        [STORE_POST]: (state, { payload: {id, title, description, mrkdown, updateDt, isTemp, isPublic }}) => ({
             ...state,
             postId: id,
             title: title,
+            description: description || '',
             mrkdown: mrkdown,
             updateDt: updateDt,
-            isTemp: isTemp
+            isTemp: isTemp,
+            isPublic: isPublic
         }),
         [CHANGE_FIELD]: (state, { payload: {key, value} }) => ({
             ...state,
