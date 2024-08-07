@@ -10,7 +10,7 @@ const ModalBlock = styled.div`
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: #8c959f33;
     z-index: 19983004;
     overflow: hidden;
 `;
@@ -105,7 +105,7 @@ const CloseIconBtn = styled.button`
     cursor: pointer;
 `;
 
-const CloseIconCore = styled(CloseIcon)`
+const CloseIconCustom = styled(CloseIcon)`
     width: 20px;
     height: 20px; 
     opacity: 0.5;
@@ -141,7 +141,7 @@ const Modal = ({ activeState, setActiveState, headerTxt, headerColor, headerFont
                                 <ModalHeader>
                                     <ModalHeaderTxt color={headerColor} family={headerFontFamily}>{headerTxt}</ModalHeaderTxt>
                                     <ModalHeaderBtnWrapper>
-                                        <CloseIconBtn onClick={onClickCloseBtn} className='ignore-click'><CloseIconCore /></CloseIconBtn>
+                                        <CloseIconBtn onClick={onClickCloseBtn} className='ignore-click'><CloseIconCustom /></CloseIconBtn>
                                     </ModalHeaderBtnWrapper>
                                 </ModalHeader>
                                 <ModalBody className='ignore-click'>

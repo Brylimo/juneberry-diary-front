@@ -21,7 +21,7 @@ export const AuthRoute = () => {
                 try {
                     const response = await authAPI.validate();
                     if (response.status === 200) {
-                        dispatch(signin(response.data));
+                        dispatch(signin(response.data?.data));
                     }
                 } catch (e) {}
                 setLoading(false);

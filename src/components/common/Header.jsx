@@ -2,7 +2,7 @@ import React, { useCallback, useState, useRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import Menu from './Menu';
 import { useNavigate, useLocation } from 'react-router-dom';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import CloseIcon from '@mui/icons-material/Close';
 import Switch from '@mui/material/Switch';
 
 const HeaderBlock = styled.div`
@@ -42,7 +42,6 @@ const FlagTopLeftBlock = styled.div`
     display: flex;
     align-items: center;
     margin-right: 2rem;
-    position: relative;
     ${({ theme }) => theme.sm`
         margin-right: 0.5rem;
     `};
@@ -128,29 +127,74 @@ const FlagLi = styled.li`
     `};
 `;
 
+const ModalBlock = styled.div`
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: #8c959f33;
+    z-index: 19983004;
+    overflow: hidden;
+`
+
 const DropdownBlock = styled.div`
     position: absolute;
     right: 0;
-    top: 100%;
-    margin-top: 1rem;
+    top: 0;
+    height: 100vh;
 `;
 
 const DropdownMenuBlock = styled.div`
     position: relative;
     z-index: 32;
-    width: 20rem;
+    width: 320px;
+    height: 100%;
     background-color: white;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px;
+    border-top-left-radius: 17px;
+    border-bottom-left-radius: 17px;
+    padding: 1rem 1.2rem;
     ${({ theme }) => theme.xs`
-        width: 13rem;
+        width: 311px;
     `};
 `;
 
+const DropdownInfo = styled.div`
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1.5rem;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+const DropdownLine = styled.div`
+    width: 100%;
+    height: 1px;
+    background-color: #d0d7deb3;
+    margin-top: 4px;
+    margin-bottom: 5px;
+`;
+
+const DropdownInfoLeft = styled.div`
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+`;
+
+const DropdownInfoName = styled.span`
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000eb;
+`;
+
 const DropdownMenu = styled.div`
-    padding: 1rem 1.2rem;
+    padding: 6px 8px;
     line-height: 1.5;
     font-weight: 500;
-    font-size: 1.6rem;
+    font-size: 14px;
     cursor: pointer;
 
     &:hover {
@@ -160,24 +204,6 @@ const DropdownMenu = styled.div`
     ${({ theme }) => theme.xs`
         font-weight: 400;
         font-size: 1.3rem;
-    `};
-`;
-
-const ArrowDropDownIconWrapper = styled(ArrowDropDownIcon)`
-    width: 2em;
-    height: 2em;
-    color: #868e96;
-    cursor: pointer;
-
-    ${props =>
-        props.active &&
-        css`
-            color: black;
-        `
-    }
-    ${({ theme }) => theme.sm`
-        width: 1em;
-        height: 1em;
     `};
 `;
 
@@ -317,6 +343,17 @@ const SaveBtnLine = styled.div`
     background-color: #d0d7de;
 `;
 
+const CloseIconCustom = styled(CloseIcon)`
+    width: 16px;
+    height: 16px; 
+    opacity: 0.5;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 1;
+    }
+`
+
 const Header = ({ 
     todoActive, 
     submitActive, 
@@ -336,25 +373,33 @@ const Header = ({
     const dropdownElement = useRef(null);
 
     const onClickMyPage = useCallback(e => {
+        setView(false);
         navigate('/user/profile');
     }, [navigate])
 
     const onClickMapFlag = useCallback(e => {
+        setView(false);
         navigate('/geo/map');
     }, [navigate]);
 
     const onClickCalendarFlag = useCallback(e => {
+        setView(false);
         navigate('/cal/calendar');
     }, [navigate]);
 
     const onClickPostFlag = useCallback(e => {
-        navigate('/post/publish');
+        setView(false);
+        navigate('/post/@brylimo');
     }, [navigate]);
 
     const onClickAvatar = useCallback(e => {
         e.stopPropagation();
         setView(!view);
     }, [view]);
+
+    const onClickCloseIcon = useCallback(e => {
+        setView(false)
+    }, [])
 
     const handleCloseDropdown = useCallback(e => {
         if (view && (dropdownElement.current && !dropdownElement.current.contains(e.target))) setView(false);
@@ -377,19 +422,32 @@ const Header = ({
                     <TitleSpan>JUNEBERRY DIARY</TitleSpan>
                     <FlagTopLeftBlock>
                         <AvatarBlock onClick={onClickAvatar}></AvatarBlock>
-                        <ArrowDropDownIconWrapper onClick={onClickAvatar} active={view}/>
-                        {view && <div ref={dropdownElement}>
-                            <DropdownBlock>
+                        {view && (<ModalBlock>
+                            <DropdownBlock ref={dropdownElement}>
                                 <DropdownMenuBlock>
+                                    <DropdownInfo>
+                                        <DropdownInfoLeft>
+                                            <AvatarBlock />
+                                            <DropdownInfoName>cheaejin</DropdownInfoName>
+                                        </DropdownInfoLeft>
+                                        <CloseIconCustom onClick={onClickCloseIcon} />
+                                    </DropdownInfo>
                                     <DropdownMenu onClick={onClickMyPage}>마이페이지</DropdownMenu>
+                                    <DropdownLine />
+                                    <DropdownMenu onClick={onClickMapFlag}>지도</DropdownMenu>
+                                    <DropdownMenu onClick={onClickCalendarFlag}>캘린더</DropdownMenu>
+                                    <DropdownMenu>다이어리</DropdownMenu>
+                                    <DropdownMenu onClick={onClickPostFlag}>내 포스트</DropdownMenu>
+                                    <DropdownLine />
+                                    <DropdownMenu onClick={onLogout}>설정</DropdownMenu>
                                     <DropdownMenu onClick={onLogout}>로그아웃</DropdownMenu>
                                 </DropdownMenuBlock>
                             </DropdownBlock>
-                        </div>}
+                        </ModalBlock>)}
                     </FlagTopLeftBlock>
                 </FlagTopBlock>
                 <FlagBottomBlock>
-                    {pathname === "/post/publish" && !submitActive ? 
+                    {pathname === "/write/publish" && !submitActive ? 
                         (<PublishUtilityBlock>
                             <SaveBtnBlock>
                                 <SaveBtn onClick={onClickPostSave}>save</SaveBtn>
@@ -398,7 +456,7 @@ const Header = ({
                             </SaveBtnBlock>
                             <CommonBtn onClick={onClickPostSubmit} bgColor={"#8df198"} hoverColor={"#7ac884"}>publish</CommonBtn>
                         </PublishUtilityBlock>)
-                        : pathname === "/post/publish" && submitActive ?
+                        : pathname === "/write/publish" && submitActive ?
                         (<PublishUtilityBlock>
                             <CommonBtn onClick={onClickPostGoBack} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>goback</CommonBtn>
                         </PublishUtilityBlock>)
@@ -406,7 +464,6 @@ const Header = ({
                             <FlagBottomUl>
                                 <FlagLi active={pathname === "/geo/map"} onClick={onClickMapFlag}>map</FlagLi>
                                 <FlagLi active={pathname === "/cal/calendar"} onClick={onClickCalendarFlag}>calendar</FlagLi>
-                                <FlagLi active={pathname === "/post/publish"} onClick={onClickPostFlag}>post</FlagLi>
                             </FlagBottomUl>
                         </FlagBottomNav>)}
                     <FlagBottomUtilityBlock>
@@ -416,7 +473,7 @@ const Header = ({
                             <IOSSwitch sx={{ m: 1 }} bgColor={"#65C466"} onChange={onClickTodoBtn} checked={todoActive}/>
                         </>) 
                         : ''}
-                        {pathname === "/post/publish" && !submitActive && postUpdateDt ? 
+                        {pathname === "/write/publish" && !submitActive && postUpdateDt ? 
                         (<>
                             <IOSSpan>임시저장: {postUpdateDt.getHours()}시 {postUpdateDt.getMinutes()}분</IOSSpan>
                         </>) 

@@ -4,6 +4,7 @@ import { changeField, initializeForm } from "../../modules/auth";
 import AuthForm from "../../components/auth/AuthForm";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../hooks/mutations/useLoginMutation";
+import { signin } from '../../modules/user';
 
 const LoginForm = () => {
     const dispatch = useDispatch();
@@ -37,7 +38,8 @@ const LoginForm = () => {
                     dispatch(initializeForm('login'));
                     return;
                 },
-                onSuccess: () => {
+                onSuccess: (res) => {
+                    console.log("star", res)
                     navigate('/geo/map');
                 }
             }

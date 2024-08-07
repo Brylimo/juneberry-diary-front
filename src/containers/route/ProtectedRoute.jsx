@@ -25,7 +25,7 @@ export const ProtectedRoute = () => {
                     if (response.status === 403) {
                         navigate("/login");
                     } else if (response.status === 200) {
-                        dispatch(signin(response.data));
+                        dispatch(signin(response.data?.data));
                         dispatch(initializeEventHash());
                         queryClient.removeQueries();
                     }

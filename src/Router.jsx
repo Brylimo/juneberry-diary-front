@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { 
     MapPage,
     PublishPage,
+    PostPage,
     CalendarPage,
     LoginPage,
     RegisterPage,
@@ -16,10 +17,12 @@ function Router() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route>
-                    <Route path="login" element={<LoginPage/>} />
-                    <Route path="register" element={<RegisterPage/>} />
+                <Route path="login" element={<LoginPage/>} />
+                <Route path="register" element={<RegisterPage/>} />
+                <Route path="post" element={<Layout />} >
+                    <Route path=":username" element={<PostPage />}/>
                 </Route>
+                
                 <Route element={<ProtectedRoute />}>
                     <Route path="/geo/*" element={<Layout />}>
                         <Route path="map" element={<MapPage/>} />
@@ -27,7 +30,7 @@ function Router() {
                     <Route path="/cal/*" element={<Layout />}>
                         <Route path="calendar" element={<CalendarPage/>} />
                     </Route>
-                    <Route path="/post/*" element={<Layout />}>
+                    <Route path="/write/*" element={<Layout />}>
                         <Route path="publish" element={<PublishPage/>} />
                     </Route>
                     <Route path="/user/*" element={<Layout />}>

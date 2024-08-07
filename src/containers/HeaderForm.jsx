@@ -11,7 +11,8 @@ import { toast } from 'react-toastify';
 
 const HeaderForm = () => {
     const dispatch = useDispatch();
-    const { todoActive, submitActive, postTitle, postMrkdown, postUpdateDt, tempCnt } = useSelector(({ cal, publish, post }) => ({
+    const { user, todoActive, submitActive, postTitle, postMrkdown, postUpdateDt, tempCnt } = useSelector(({ cal, publish, post, user }) => ({
+        user: user.user,
         todoActive: cal.todoActive,
         submitActive: publish.submitActive,
         postTitle: publish.title,
@@ -21,6 +22,8 @@ const HeaderForm = () => {
     }));
     const { logoutRefetch } = useLogoutQuery();
     const { data: tempPostCnt } = useGetTempPostCntQuery();
+
+    console.log("tt", user);
 
     const onClickLogout = useCallback(e => {
         logoutRefetch().then(() => {

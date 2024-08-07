@@ -9,7 +9,7 @@ import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
 const StyledSideBar = styled.aside`
     position: fixed;
     top: 8rem;
-    z-index: 320;
+    z-index: 10;
     width: 7rem;
     background-color: white;
     height: calc(100% - 8rem); 
