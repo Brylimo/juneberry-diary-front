@@ -1,9 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeField } from '../../modules/publish';
 import { useAddPostMutation } from '../../hooks/mutations/useAddPostMutation';
 import { useUpdatePostMutation } from '../../hooks/mutations/useUpdatePostMutation';
 import MarkdownConfirm from '../../components/post/MarkdownConfirm';
+import { useImgUpload } from '../../hooks/useImgUpload';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -22,14 +23,17 @@ function replaceEmptyLinesWithBr(text) {
 const MarkdownConfirmForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { title, description, mrkdown, isPublic, postId } = useSelector(({ publish }) => ({
+    const { title, description, mrkdown, isPublic, postId, thumbnailPath } = useSelector(({ publish }) => ({
         title: publish.title,
         description: publish.description,
         mrkdown: publish.mrkdown,
         isPublic: publish.isPublic,
-        postId: publish.postId
+        postId: publish.postId,
+        thumbnailPath: publish.thumbnailPath
     }));
+    const [thumbnailURL, setThumbnailURL] = useState(thumbnailPath);
 
+    const [imgFile, imgUpload, setImgFile] = useImgUpload();
     const { mutateAsync: addPostMutateAsync } = useAddPostMutation();
     const { mutate: updatePostMutate } = useUpdatePostMutation();
 
@@ -51,8 +55,10 @@ const MarkdownConfirmForm = () => {
                         title: title,
                         description: description,
                         content: mrkdown,
+                        thumbnailPath: thumbnailURL,
                         isTemp: false,
-                        isPublic: isPublic
+                        isPublic: isPublic,
+                        thumbnailImg: imgFile
                     },
                     {
                         onSuccess: (res) => {
@@ -85,8 +91,10 @@ const MarkdownConfirmForm = () => {
                         title: title,
                         description: description,
                         content: mrkdown,
+                        thumbnailPath: thumbnailURL,
                         isTemp: false,
-                        isPublic: isPublic
+                        isPublic: isPublic,
+                        thumbnailImg: imgFile
                     },
                     {
                         onSuccess: (res) => {
@@ -110,15 +118,37 @@ const MarkdownConfirmForm = () => {
                     })
             }
         },
-        [description, isPublic, mrkdown, title, postId, onChangeField, addPostMutateAsync, updatePostMutate])
+        [thumbnailURL, imgFile, description, isPublic, mrkdown, title, postId, onChangeField, addPostMutateAsync, updatePostMutate])
+
+    const onClickImgBtn = useCallback(() => {
+        imgUpload()
+    }, [imgUpload])
+
+    const handleThumbnailReUpload = useCallback((event) => {
+        imgUpload();
+    }, [imgUpload])
+
+    const handleThumbnailDelete = useCallback((event) => {
+        setThumbnailURL(null);
+    }, [setThumbnailURL])
+
+    useEffect(() => {
+        if (imgFile) {
+            setThumbnailURL(URL.createObjectURL(imgFile))
+        }
+    }, [imgFile])
 
     return <MarkdownConfirm 
                 title={title} 
                 description={description} 
                 mrkdown={replaceEmptyLinesWithBr(mrkdown)}
-                isPublic={isPublic} 
+                isPublic={isPublic}
+                thumbnailURL={thumbnailURL} 
                 onChangeField={onChangeField}
                 onClickPublishBtn={onClickPublishBtn}
+                onClickImgBtn={onClickImgBtn}
+                handleThumbnailReUpload={handleThumbnailReUpload}
+                handleThumbnailDelete={handleThumbnailDelete}
             />
 }
 

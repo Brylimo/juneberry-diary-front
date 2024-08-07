@@ -10,7 +10,6 @@ import rehypeSanitize from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
 import sanitize from "sanitize-html";
 import Typography from '../common/Typography';
-import { useImgUpload } from '../../hooks/useImgUpload';
 
 const MarkdownConfirmWrapper = styled.div`
     width: 100%;
@@ -436,8 +435,18 @@ const filter = (html) => {
     })
 }
 
-const MarkdownConfirm = ({ title, description, mrkdown, isPublic, onChangeField, onClickPublishBtn }) => {
-    const [imgFile, imgUpload, setImgFile] = useImgUpload();
+const MarkdownConfirm = ({ 
+        title, 
+        description, 
+        mrkdown,
+        isPublic,
+        thumbnailURL, 
+        onChangeField, 
+        onClickPublishBtn,
+        onClickImgBtn,
+        handleThumbnailReUpload,
+        handleThumbnailDelete 
+    }) => {
 
     const [htmlTxt, setHtmlTxt] = useState(
         filter(
@@ -483,10 +492,6 @@ const MarkdownConfirm = ({ title, description, mrkdown, isPublic, onChangeField,
         onChangeField({ key: 'isPublic', value: false });
     }, [onChangeField]);
 
-    const onClickImgBtn = useCallback(() => {
-        imgUpload()
-    }, [imgUpload])
-
     const handleDescriptionChange = useCallback((event) => {
         if (event.target.value?.length <= 150) {
             onChangeField({ key: 'description', value: event.target.value })
@@ -514,14 +519,6 @@ const MarkdownConfirm = ({ title, description, mrkdown, isPublic, onChangeField,
             setHashtagTxt('')
         }
     }, [hashtags, hashtagTxt])
-
-    const handleThumbnailReUpload = useCallback((event) => {
-        imgUpload();
-    }, [imgUpload])
-
-    const handleThumbnailDelete = useCallback((event) => {
-        setImgFile(null);
-    }, [setImgFile])
 
     useEffect(() => {
         window.addEventListener('resize', updatePostConfigImgHeight);
@@ -566,7 +563,7 @@ const MarkdownConfirm = ({ title, description, mrkdown, isPublic, onChangeField,
                         (<PostConfigContent>
                             <div style={{ width: '100%' }}>
                                 <PostConfigCellWrapper>
-                                    {imgFile && (<PostConfigCellInfo>
+                                    {thumbnailURL && (<PostConfigCellInfo>
                                         <PostConifgCellLinkBlock>
                                             <PostConfigCellLink onClick={handleThumbnailReUpload}>재업로드</PostConfigCellLink>
                                             <PostConfigCellSpan>•</PostConfigCellSpan>
@@ -578,8 +575,8 @@ const MarkdownConfirm = ({ title, description, mrkdown, isPublic, onChangeField,
                                             대표 이미지
                                         </CellHeader>
                                         <PostConfigSegBlock>
-                                            {imgFile ? 
-                                            (<PostThumbnailImg ref={postConfigImgBlockRef} src={URL.createObjectURL(imgFile)} height={imgBlockWidth * 0.6} />) :
+                                            {thumbnailURL ? 
+                                            (<PostThumbnailImg ref={postConfigImgBlockRef} src={thumbnailURL} height={imgBlockWidth * 0.6} />) :
                                             (<PostConfigImg ref={postConfigImgBlockRef} height={imgBlockWidth * 0.6}>
                                                 <ImgImage alt="img icon" src="/image-icon.svg" />
                                                 <ImgBtn type="button" onClick={onClickImgBtn}>대표 이미지</ImgBtn>

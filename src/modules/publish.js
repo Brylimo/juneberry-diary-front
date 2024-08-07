@@ -22,6 +22,7 @@ const initialState = {
     mrkdown: '',
     html: '',
     postId: '',
+    thumbnailPath: null,
     updateDt: null,
     hashtags: [],
 }
@@ -29,7 +30,7 @@ const initialState = {
 const publish = handleActions(
     {
         [INITIALIZE]: state => initialState,
-        [STORE_POST]: (state, { payload: {id, title, description, mrkdown, updateDt, isTemp, isPublic }}) => ({
+        [STORE_POST]: (state, { payload: {id, title, description, mrkdown, updateDt, isTemp, isPublic, thumbnailPath }}) => ({
             ...state,
             postId: id,
             title: title,
@@ -37,7 +38,8 @@ const publish = handleActions(
             mrkdown: mrkdown,
             updateDt: updateDt,
             isTemp: isTemp,
-            isPublic: isPublic
+            isPublic: isPublic,
+            thumbnailPath: thumbnailPath
         }),
         [CHANGE_FIELD]: (state, { payload: {key, value} }) => ({
             ...state,
