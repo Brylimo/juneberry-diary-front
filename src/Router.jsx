@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { 
     MapPage,
     PublishPage,
-    PostPage,
+    BlogPage,
+    BlogJoinPage,
     CalendarPage,
     LoginPage,
     RegisterPage,
@@ -10,7 +11,7 @@ import {
     ProfilePage
 } from './pages'
 import { ProtectedRoute } from "./containers/route/ProtectedRoute";
-import { AuthRoute } from "./containers/route/AuthRoute";
+import { PostRoute } from "./containers/route/PostRoute";
 import Layout from "./components/common/Layout";
 
 function Router() {
@@ -19,8 +20,10 @@ function Router() {
             <Routes>
                 <Route path="login" element={<LoginPage/>} />
                 <Route path="register" element={<RegisterPage/>} />
-                <Route path="post" element={<Layout />} >
-                    <Route path=":username" element={<PostPage />}/>
+                <Route element={<PostRoute />}>
+                    <Route path="blog" element={<Layout />} >
+                        <Route path=":blogname" element={<BlogPage />}/>
+                    </Route>
                 </Route>
                 
                 <Route element={<ProtectedRoute />}>
@@ -30,12 +33,13 @@ function Router() {
                     <Route path="/cal/*" element={<Layout />}>
                         <Route path="calendar" element={<CalendarPage/>} />
                     </Route>
-                    <Route path="/write/*" element={<Layout />}>
+                    <Route path="/post/*" element={<Layout />}>
                         <Route path="publish" element={<PublishPage/>} />
                     </Route>
                     <Route path="/user/*" element={<Layout />}>
                         <Route path="profile" element={<ProfilePage/>} />
                     </Route>
+                    <Route path="member/join" element={<BlogJoinPage />} />
                     <Route path="*" element={<NotFoundPage />} />
                 </Route>
             </Routes>

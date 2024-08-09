@@ -1,10 +1,10 @@
 import { Helmet } from "react-helmet-async";
 
-const PostPage = () => {
+const BlogPage = () => {
     return (
         <>
             <Helmet>
-                <title>포스트</title>
+                <title>블로그</title>
             </Helmet>
             <div style={{ position: 'relative', height: '100%' }}>
                 hi
@@ -13,4 +13,4 @@ const PostPage = () => {
     );
 }
 
-export default PostPage;
+export default BlogPage;

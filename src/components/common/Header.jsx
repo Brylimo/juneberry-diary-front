@@ -264,7 +264,6 @@ const PublishUtilityBlock = styled.div`
     display: flex;
     gap: 4px;
     height: 100%;
-    width: 130px;
     align-items: center;
     margin-left: 2rem;
     ${({ theme }) => theme.sm`
@@ -354,7 +353,35 @@ const CloseIconCustom = styled(CloseIcon)`
     }
 `
 
+const LoginBtn = styled.button`
+    padding: 1.5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    height: 30px;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
+    border: none;
+    color: white;
+    font-size: 12px;
+    font-weight: 400;
+    background-color: rgba(0, 0, 0, 0.8);
+
+    &:hover {
+            background-color: rgba(0, 0, 0, 1);
+    }
+`
+
+const BlogNameSpan = styled.span`
+    color: #565c62;
+    line-height: 4rem;
+    font-size: 26px;
+    font-weight: bold;
+    font-family: slowslow;
+    letter-spacing: 3px;
+`;
+
 const Header = ({ 
+    user,
     todoActive, 
     submitActive, 
     tempCnt,
@@ -389,8 +416,16 @@ const Header = ({
 
     const onClickPostFlag = useCallback(e => {
         setView(false);
-        navigate('/post/@brylimo');
-    }, [navigate]);
+        navigate(`/blog/${user.username}`);
+    }, [navigate, user]);
+
+    const onClickPostStart = useCallback(e => {
+        navigate('/member/join');
+    }, [navigate])
+
+    const onClickLoginBtn = useCallback(e => {
+        navigate('/login')
+    }, [navigate])
 
     const onClickAvatar = useCallback(e => {
         e.stopPropagation();
@@ -415,39 +450,43 @@ const Header = ({
     return (
         <HeaderBlock>
             <Logo>
-                <Menu to='/'><img src="/logo.svg" style={{width:'6rem', height:'6rem'}}></img></Menu>
+                <Menu to='/'><img src="/logo.svg" style={{width:'6rem', height:'6rem'}} alt="logo"></img></Menu>
             </Logo>
             <HeaderFlagBlock>
                 <FlagTopBlock>
                     <TitleSpan>JUNEBERRY DIARY</TitleSpan>
                     <FlagTopLeftBlock>
-                        <AvatarBlock onClick={onClickAvatar}></AvatarBlock>
-                        {view && (<ModalBlock>
-                            <DropdownBlock ref={dropdownElement}>
-                                <DropdownMenuBlock>
-                                    <DropdownInfo>
-                                        <DropdownInfoLeft>
-                                            <AvatarBlock />
-                                            <DropdownInfoName>cheaejin</DropdownInfoName>
-                                        </DropdownInfoLeft>
-                                        <CloseIconCustom onClick={onClickCloseIcon} />
-                                    </DropdownInfo>
-                                    <DropdownMenu onClick={onClickMyPage}>마이페이지</DropdownMenu>
-                                    <DropdownLine />
-                                    <DropdownMenu onClick={onClickMapFlag}>지도</DropdownMenu>
-                                    <DropdownMenu onClick={onClickCalendarFlag}>캘린더</DropdownMenu>
-                                    <DropdownMenu>다이어리</DropdownMenu>
-                                    <DropdownMenu onClick={onClickPostFlag}>내 포스트</DropdownMenu>
-                                    <DropdownLine />
-                                    <DropdownMenu onClick={onLogout}>설정</DropdownMenu>
-                                    <DropdownMenu onClick={onLogout}>로그아웃</DropdownMenu>
-                                </DropdownMenuBlock>
-                            </DropdownBlock>
-                        </ModalBlock>)}
+                        {user ? (
+                            <>
+                                <AvatarBlock onClick={onClickAvatar}></AvatarBlock>
+                                {view && (<ModalBlock>
+                                    <DropdownBlock ref={dropdownElement}>
+                                        <DropdownMenuBlock>
+                                            <DropdownInfo>
+                                                <DropdownInfoLeft>
+                                                    <AvatarBlock />
+                                                    <DropdownInfoName>{user?.username}</DropdownInfoName>
+                                                </DropdownInfoLeft>
+                                                <CloseIconCustom onClick={onClickCloseIcon} />
+                                            </DropdownInfo>
+                                            <DropdownMenu onClick={onClickMyPage}>마이페이지</DropdownMenu>
+                                            <DropdownLine />
+                                            <DropdownMenu onClick={onClickMapFlag}>지도</DropdownMenu>
+                                            <DropdownMenu onClick={onClickCalendarFlag}>캘린더</DropdownMenu>
+                                            <DropdownMenu>다이어리</DropdownMenu>
+                                            { user.postname ? (<DropdownMenu onClick={onClickPostFlag}>내 블로그</DropdownMenu>) : (<DropdownMenu onClick={onClickPostStart}>블로그 시작하기</DropdownMenu>) }
+                                            <DropdownLine />
+                                            <DropdownMenu onClick={onLogout}>설정</DropdownMenu>
+                                            <DropdownMenu onClick={onLogout}>로그아웃</DropdownMenu>
+                                        </DropdownMenuBlock>
+                                    </DropdownBlock>
+                                </ModalBlock>)}
+                            </>
+                        ) : (<LoginBtn onClick={onClickLoginBtn}>로그인</LoginBtn>)}
                     </FlagTopLeftBlock>
                 </FlagTopBlock>
                 <FlagBottomBlock>
-                    {pathname === "/write/publish" && !submitActive ? 
+                    {pathname === "/post/publish" && !submitActive && 
                         (<PublishUtilityBlock>
                             <SaveBtnBlock>
                                 <SaveBtn onClick={onClickPostSave}>save</SaveBtn>
@@ -456,28 +495,36 @@ const Header = ({
                             </SaveBtnBlock>
                             <CommonBtn onClick={onClickPostSubmit} bgColor={"#8df198"} hoverColor={"#7ac884"}>publish</CommonBtn>
                         </PublishUtilityBlock>)
-                        : pathname === "/write/publish" && submitActive ?
+                    }
+                    {pathname === "/post/publish" && submitActive && 
                         (<PublishUtilityBlock>
                             <CommonBtn onClick={onClickPostGoBack} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>goback</CommonBtn>
                         </PublishUtilityBlock>)
-                        : (<FlagBottomNav>
+                    }
+                    {pathname.startsWith("/blog") && 
+                        (<PublishUtilityBlock>
+                            <BlogNameSpan>멋쟁이 사자처럼</BlogNameSpan>
+                        </PublishUtilityBlock>)
+                    }
+                    {pathname !== "/post/publish" && !pathname.startsWith("/blog") &&
+                        (<FlagBottomNav>
                             <FlagBottomUl>
                                 <FlagLi active={pathname === "/geo/map"} onClick={onClickMapFlag}>map</FlagLi>
                                 <FlagLi active={pathname === "/cal/calendar"} onClick={onClickCalendarFlag}>calendar</FlagLi>
+                                <FlagLi>diary</FlagLi>
                             </FlagBottomUl>
-                        </FlagBottomNav>)}
+                        </FlagBottomNav>)
+                    }
                     <FlagBottomUtilityBlock>
-                        {pathname === "/cal/calendar" ? 
+                        {pathname === "/cal/calendar" &&
                         (<>
                             <IOSSpan>Todo</IOSSpan>
                             <IOSSwitch sx={{ m: 1 }} bgColor={"#65C466"} onChange={onClickTodoBtn} checked={todoActive}/>
-                        </>) 
-                        : ''}
-                        {pathname === "/write/publish" && !submitActive && postUpdateDt ? 
+                        </>)}
+                        {pathname === "/post/publish" && !submitActive && postUpdateDt &&
                         (<>
                             <IOSSpan>임시저장: {postUpdateDt.getHours()}시 {postUpdateDt.getMinutes()}분</IOSSpan>
-                        </>) 
-                        : ''}
+                        </>)}
                     </FlagBottomUtilityBlock>
                 </FlagBottomBlock>
             </HeaderFlagBlock>

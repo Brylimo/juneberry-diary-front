@@ -4,6 +4,7 @@ export { default as MapPage } from './MapPage';
 export { default as PublishPage } from './PublishPage';
 export { default as CalendarPage } from './CalendarPage';
 export { default as ProfilePage } from './ProfilePage';
-export { default as PostPage } from './PostPage';
+export { default as BlogPage } from './BlogPage';
+export { default as BlogJoinPage } from './BlogJoinPage';
 
 export { default as NotFoundPage } from './NotFoundPage';

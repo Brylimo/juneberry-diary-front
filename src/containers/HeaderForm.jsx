@@ -21,9 +21,7 @@ const HeaderForm = () => {
         tempCnt: post.tempCnt
     }));
     const { logoutRefetch } = useLogoutQuery();
-    const { data: tempPostCnt } = useGetTempPostCntQuery();
-
-    console.log("tt", user);
+    const { data: tempPostCnt } = useGetTempPostCntQuery(!!user);
 
     const onClickLogout = useCallback(e => {
         logoutRefetch().then(() => {
@@ -59,9 +57,10 @@ const HeaderForm = () => {
         if (tempPostCnt && typeof tempPostCnt === 'number') {
             dispatch(changePostField({key:'tempCnt', value: tempPostCnt}))
         }
-    }, [tempPostCnt])
+    }, [tempPostCnt, dispatch])
 
     return <Header 
+        user={user}
         todoActive={todoActive} 
         submitActive={submitActive}
         tempCnt={tempCnt}

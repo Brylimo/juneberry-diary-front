@@ -39,7 +39,7 @@ const LoginForm = () => {
                     return;
                 },
                 onSuccess: (res) => {
-                    console.log("star", res)
+                    dispatch(signin(res.data))
                     navigate('/geo/map');
                 }
             }
