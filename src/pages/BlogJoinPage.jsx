@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import BlogJoinForm from '../containers/post/BlogJoinForm';
+import BlogJoinForm from '../containers/blog/BlogJoinForm';
 
 const BlogJoinPage = () => {
     return (

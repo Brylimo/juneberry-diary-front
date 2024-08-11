@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import * as calAPI from '../../lib/api/calAPI';
+import * as calAPI from '../../../lib/api/calAPI';
 
 export const useGetTodayTxtQuery = (selectedDate) => {
     const {

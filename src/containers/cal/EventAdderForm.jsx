@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux"
 import EventAdder from '../../components/cal/EventAdder';
 import { changeEventTags } from '../../modules/cal';
 import { useQueryClient } from '@tanstack/react-query';
-import { useAddEventTagListMutation } from "../../hooks/mutations/useAddEventTagListMutation";
+import { useAddEventTagListMutation } from "../../hooks/mutations/cal/useAddEventTagListMutation";
 import { toast } from 'react-toastify'
 
 const EventAdderForm = ({ currentMonth, selectedDate }) => {

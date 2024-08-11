@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import * as authAPI from '../../lib/api/authAPI';
+import * as authAPI from '../../../lib/api/authAPI';
 
 export const useLogoutQuery = () => {
     const {

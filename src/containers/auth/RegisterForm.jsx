@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { changeField, initializeForm } from "../../modules/auth";
 import AuthForm from "../../components/auth/AuthForm";
 import { useNavigate } from "react-router-dom";
-import { useRegisterMutation } from "../../hooks/mutations/useRegisterMutation";
+import { useRegisterMutation } from "../../hooks/mutations/auth/useRegisterMutation";
 
 const RegisterForm = () => {
     const dispatch = useDispatch();

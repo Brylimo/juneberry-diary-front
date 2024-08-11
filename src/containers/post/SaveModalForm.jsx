@@ -12,7 +12,7 @@ const SaveModalForm = ({setActiveState}) => {
     }))
 
     const onClickTempCard = useCallback((item) => {
-        navigate(`/write/publish?id=${item.id}`, { replace: true })
+        navigate(`/post/publish?id=${item.id}`, { replace: true })
         
         dispatch(storePost({
             id: item.id,

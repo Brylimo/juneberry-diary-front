@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { initialize } from '../../modules/publish';
 import { storePost } from '../../modules/publish';
-import { useGetPostQuery } from '../../hooks/queries/useGetPostQuery';
+import { useGetPostQuery } from '../../hooks/queries/post/useGetPostQuery';
 import { useSearchParams } from 'react-router-dom';
 import Editor from '../../components/post/Editor';
 

@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import { useDispatch } from "react-redux";
-import { useGetTodosByDayQuery } from '../../hooks/queries/useGetTodosByDayQuery';
-import { useGetTodayTxtQuery } from '../../hooks/queries/useGetTodayTxtQuery';
+import { useGetTodosByDayQuery } from '../../hooks/queries/todo/useGetTodosByDayQuery';
+import { useGetTodayTxtQuery } from '../../hooks/queries/todo/useGetTodayTxtQuery';
 import Todo from '../../components/todo/Todo';
 import { storeTodayTxt, storeTodos } from '../../modules/todo';
 import { useQueryClient } from '@tanstack/react-query';

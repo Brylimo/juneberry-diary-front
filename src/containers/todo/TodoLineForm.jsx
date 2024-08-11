@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import TodoLine from '../../components/todo/TodoLine';
-import { useAddOneTodoMutation } from '../../hooks/mutations/useAddOneTodoMutation';
-import { useUpdateTodoChkMutation } from '../../hooks/mutations/useUpdateTodoChkMutation';
+import { useAddOneTodoMutation } from '../../hooks/mutations/todo/useAddOneTodoMutation';
+import { useUpdateTodoChkMutation } from '../../hooks/mutations/todo/useUpdateTodoChkMutation';
 import useDebounce from './../../hooks/useDebounce';
 import { changeTodo } from '../../modules/todo';
 import { useQueryClient } from '@tanstack/react-query';

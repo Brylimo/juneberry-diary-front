@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import useDebounce from '../../hooks/useDebounce';
-import { useUpdateTodayTxtMutation } from '../../hooks/mutations/useUpdateTodayTxtMutation';
+import { useUpdateTodayTxtMutation } from '../../hooks/mutations/todo/useUpdateTodayTxtMutation';
 import { toast } from 'react-toastify';
 import { useQueryClient } from '@tanstack/react-query';
 import TodoHeader from '../../components/todo/TodoHeader';

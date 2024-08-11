@@ -1,8 +1,8 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from "react-redux"
 import { useQueryClient } from '@tanstack/react-query';
-import { useAddEventTagListMutation } from "../../hooks/mutations/useAddEventTagListMutation";
-import { useAddDayEmojiMutation } from '../../hooks/mutations/useAddDayEmojiMutation';
+import { useAddEventTagListMutation } from "../../hooks/mutations/cal/useAddEventTagListMutation";
+import { useAddDayEmojiMutation } from '../../hooks/mutations/cal/useAddDayEmojiMutation';
 import EventModal from '../../components/modal/EventModal';
 import { changeEmoji, changeEventTags } from '../../modules/cal';
 

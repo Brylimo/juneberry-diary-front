@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { changeField, initializeForm } from "../../modules/auth";
 import AuthForm from "../../components/auth/AuthForm";
 import { useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../../hooks/mutations/useLoginMutation";
+import { useLoginMutation } from "../../hooks/mutations/auth/useLoginMutation";
 import { signin } from '../../modules/user';
 
 const LoginForm = () => {

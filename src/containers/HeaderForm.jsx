@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import Header from "../components/common/Header";
 import { signout } from '../modules/user';
 import { toggleTodoActive } from '../modules/cal';
-import { togglePreviewActive, changeField } from '../modules/publish';
+import { changeField } from '../modules/publish';
 import { changePostField } from '../modules/post';
-import { useLogoutQuery } from '../hooks/queries/useLogoutQuery';
-import { useGetTempPostCntQuery } from '../hooks/queries/useGetTempPostCntQuery';
+import { useLogoutQuery } from '../hooks/queries/auth/useLogoutQuery';
+import { useGetTempPostCntQuery } from '../hooks/queries/post/useGetTempPostCntQuery';
 import { toast } from 'react-toastify';
 
 const HeaderForm = () => {

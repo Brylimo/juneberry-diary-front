@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import * as postAPI from '../../lib/api/postAPI';
+import * as postAPI from '../../../lib/api/postAPI';
 
-export const useGetPostQuery = (id, enabled) => {
+export const useGetTempPostCntQuery = (enabled) => {
     const {
         isPending,
         data
     } = useQuery({
-        queryKey: ["getPost", {id: id}],
-        queryFn:() => postAPI.getPost(id),
+        queryKey: ["getTempPostCnt"],
+        queryFn:() => postAPI.getTempPostCnt(),
         select: (res) => res?.data,
         enabled: enabled
     });

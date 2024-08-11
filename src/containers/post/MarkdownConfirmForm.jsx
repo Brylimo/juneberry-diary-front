@@ -1,8 +1,8 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeField } from '../../modules/publish';
-import { useAddPostMutation } from '../../hooks/mutations/useAddPostMutation';
-import { useUpdatePostMutation } from '../../hooks/mutations/useUpdatePostMutation';
+import { useAddPostMutation } from '../../hooks/mutations/post/useAddPostMutation';
+import { useUpdatePostMutation } from '../../hooks/mutations/post/useUpdatePostMutation';
 import MarkdownConfirm from '../../components/post/MarkdownConfirm';
 import { useImgUpload } from '../../hooks/useImgUpload';
 import { useNavigate } from 'react-router-dom';

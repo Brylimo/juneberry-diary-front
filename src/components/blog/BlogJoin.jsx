@@ -90,6 +90,13 @@ const CloseIconCustom = styled(CloseIcon)`
     color: white;
 `
 
+const InputBottomIdBlock = styled.div`
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    color: #868E96;
+`
+
 const InputBottomBlock = styled.div`
     display: flex;
     justify-content: flex-end;
@@ -143,10 +150,8 @@ const Phase = styled.div`
     };
 `
 
-const BlogJoin = ({ user }) => {
-    const [blogId, setBlogId] = useState("")
+const BlogJoin = ({ user, blogId, confirmActive, setBlogId, handleBlogIdInput }) => {
     const [blogname, setBlogname] = useState("")  
-    const [confirmActive, setConfirmActive] = useState(false)
     const [submitActive, setSubmitActive] = useState(false)
     const [curPhase, setCurPhase] = useState(0)
 
@@ -170,17 +175,6 @@ const BlogJoin = ({ user }) => {
 
     const onClickSubmitBtn = useCallback(() => {
 
-    }, [])
-
-    const handleBlogIdInput = useCallback((e) => {
-        if (e.target.value?.length <= 35) {
-            setBlogId(e.target.value)
-        }
-        if (e.target.value?.length > 0) {
-            setConfirmActive(true)
-        } else {
-            setConfirmActive(false)
-        }
     }, [])
 
     const handleBlognameInput = useCallback((e) => {
@@ -237,9 +231,10 @@ const BlogJoin = ({ user }) => {
                                     <CloseIconCustom onClick={onClickBlogIdCloseIcon} />
                                 </BlognameInitBtn>
                             </BlognameInputBlock> 
-                            <InputBottomBlock>
+                            <InputBottomIdBlock>
+                                <div>hi</div>
                                 {blogId.length}/35
-                            </InputBottomBlock>
+                            </InputBottomIdBlock>
                         </>
                     )}
                     { curPhase === 1 && (

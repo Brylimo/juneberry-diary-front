@@ -2,10 +2,10 @@ import React, {useState, useEffect} from 'react';
 import { addDays, endOfMonth, endOfWeek, isSameMonth, isSameDay, startOfMonth, startOfWeek } from "date-fns";
 import CalendarBody from '../../components/cal/CalendarBody';
 import { useDispatch } from "react-redux";
-import { useGetEventTagsByMonthQuery } from '../../hooks/queries/useGetEventTagsByMonthQuery';
-import { useGetTagsByMonthQuery } from '../../hooks/queries/useGetTagsByMonthQuery';
+import { useGetEventTagsByMonthQuery } from '../../hooks/queries/cal/useGetEventTagsByMonthQuery';
+import { useGetTagsByMonthQuery } from '../../hooks/queries/cal/useGetTagsByMonthQuery';
 import { storeEvents, storeTags, storeEmojis } from '../../modules/cal';
-import { useGetEmojisByMonthQuery } from '../../hooks/queries/useGetEmojisByMonthQuery';
+import { useGetEmojisByMonthQuery } from '../../hooks/queries/cal/useGetEmojisByMonthQuery';
 
 const CalendarBodyForm = ({ currentMonth, selectedDate, setSelectedDate, setModalActive }) => {
     const dispatch = useDispatch();

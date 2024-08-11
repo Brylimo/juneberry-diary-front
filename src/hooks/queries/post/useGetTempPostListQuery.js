@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import * as postAPI from '../../lib/api/postAPI';
+import * as postAPI from '../../../lib/api/postAPI';
 
 export const useGetTempPostListQuery = (page, size) => {
     const {

@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useInView } from 'react-intersection-observer';
-import { useGetTempPostListQuery } from '../../hooks/queries/useGetTempPostListQuery';
+import { useGetTempPostListQuery } from '../../hooks/queries/post/useGetTempPostListQuery';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const ModalBlock = styled.div`
