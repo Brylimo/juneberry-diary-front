@@ -382,6 +382,7 @@ const BlogNameSpan = styled.span`
 
 const Header = ({ 
     user,
+    blogName,
     todoActive, 
     submitActive, 
     tempCnt,
@@ -414,12 +415,12 @@ const Header = ({
         navigate('/cal/calendar');
     }, [navigate]);
 
-    const onClickPostFlag = useCallback(e => {
+    const onClickBlogFlag = useCallback(e => {
         setView(false);
         navigate(`/blog/${user.username}`);
     }, [navigate, user]);
 
-    const onClickPostStart = useCallback(e => {
+    const onClickBlogStart = useCallback(e => {
         navigate('/member/join');
     }, [navigate])
 
@@ -474,7 +475,7 @@ const Header = ({
                                             <DropdownMenu onClick={onClickMapFlag}>지도</DropdownMenu>
                                             <DropdownMenu onClick={onClickCalendarFlag}>캘린더</DropdownMenu>
                                             <DropdownMenu>다이어리</DropdownMenu>
-                                            { user.postname ? (<DropdownMenu onClick={onClickPostFlag}>내 블로그</DropdownMenu>) : (<DropdownMenu onClick={onClickPostStart}>블로그 시작하기</DropdownMenu>) }
+                                            { user.postname ? (<DropdownMenu onClick={onClickBlogFlag}>내 블로그</DropdownMenu>) : (<DropdownMenu onClick={onClickBlogStart}>블로그 시작하기</DropdownMenu>) }
                                             <DropdownLine />
                                             <DropdownMenu onClick={onLogout}>설정</DropdownMenu>
                                             <DropdownMenu onClick={onLogout}>로그아웃</DropdownMenu>
@@ -503,7 +504,7 @@ const Header = ({
                     }
                     {pathname.startsWith("/blog") && 
                         (<PublishUtilityBlock>
-                            <BlogNameSpan>멋쟁이 사자처럼</BlogNameSpan>
+                            <BlogNameSpan>{blogName}</BlogNameSpan>
                         </PublishUtilityBlock>)
                     }
                     {pathname !== "/post/publish" && !pathname.startsWith("/blog") &&

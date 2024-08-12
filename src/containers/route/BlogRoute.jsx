@@ -2,20 +2,27 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams, Outlet } from "react-router-dom";
 import { signin } from '../../modules/user';
+import { storeBlog } from '../../modules/blog';
 import { initializeEventHash } from '../../modules/cal';
+import { useGetBlogByIdQuery } from '../../hooks/queries/blog/useGetBlogByIdQuery';
 import { useQueryClient } from '@tanstack/react-query';
 import * as authAPI from '../../lib/api/authAPI';
+import { NotFoundPage } from '../../pages';
 
-export const PostRoute = () => {
+export const BlogRoute = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { usernameParams } = useParams();
+    const { id } = useParams();
     const queryClient = useQueryClient();
     const [loading, setLoading] = useState(false);
+    const [isVoid, setIsVoid] = useState(false)
 
-    const { user } = useSelector(({ user }) => ({
-        user: user.user
+    const { user, blogId } = useSelector(({ user, blog }) => ({
+        user: user.user,
+        blogId: blog.blogId
     }));
+
+    const { isPending: apiPending, data: fetchedBlog } = useGetBlogByIdQuery(id, true);
 
     useEffect(() => {
         if (!user) {
@@ -36,9 +43,22 @@ export const PostRoute = () => {
         }
     }, [user, dispatch, navigate, queryClient]);
 
-    if (loading) {
+    useEffect(() => {
+        if (fetchedBlog && typeof fetchedBlog === 'object' && !Array.isArray(fetchedBlog)) {
+            dispatch(storeBlog({
+                blogId: fetchedBlog.blogId,
+                blogName: fetchedBlog.blogName
+            }))
+        } else if (fetchedBlog) {
+            setIsVoid(true)
+        }
+    }, [fetchedBlog, dispatch, navigate])
+
+    if (!isVoid && (loading || apiPending || blogId !== id)) {
         return "로딩중입니다....";
     }
 
-    return <Outlet />;
+    if (isVoid) return <NotFoundPage />
+    
+    return <Outlet />
 }

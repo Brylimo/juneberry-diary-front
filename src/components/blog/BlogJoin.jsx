@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import CloseIcon from '@mui/icons-material/Close';
+import { BeatLoader } from 'react-spinners';
 
 const BlogJoinWrapper = styled.div`
     display: flex;
@@ -12,10 +13,13 @@ const BlogJoinWrapper = styled.div`
 const BlogJoinBlock = styled.div`
     display: flex;
     flex-direction: column;
-    min-width: 620px;
     width: 45%;
     padding: 1rem 1rem;
     gap: 15px;
+
+    ${({ theme }) => theme.sm`
+        width: 100%;
+    `};
 `
 
 const TxtBlock = styled.div`
@@ -97,6 +101,11 @@ const InputBottomIdBlock = styled.div`
     color: #868E96;
 `
 
+const InputBottomLeftBlock = styled.div`
+    display: flex;
+    align-items: center;
+`
+
 const InputBottomBlock = styled.div`
     display: flex;
     justify-content: flex-end;
@@ -139,31 +148,37 @@ const PhaseBlock = styled.div`
 const Phase = styled.div`
     width: 35px;
     height: 8px;
-    background-color: rgba(145, 150, 155, 0.6);
+    background-color: rgb(235, 235, 235);
     border-radius: 40px;
     cursor: pointer;
 
     ${
         props => props.active && css`
-            background-color: rgb(66, 215, 96);    
+            background-color: rgb(205, 205, 205)
+        `
+    };
+
+    ${
+        props => ((props.active && props.idConfirm) || (props.active && props.nameConfirm)) && css`
+            background-color: rgb(66, 215, 96)
+        `
+    };
+
+    ${
+        props => ((!props.active && props.idConfirm) || (!props.active && props.nameConfirm)) && css`
+            border: 1px solid rgb(66, 215, 96);
+            background-color: transparent;
         `
     };
 `
 
-const BlogJoin = ({ user, blogId, confirmActive, setBlogId, handleBlogIdInput }) => {
-    const [blogname, setBlogname] = useState("")  
-    const [submitActive, setSubmitActive] = useState(false)
+const BlogJoin = ({ user, blogId, blogname, blog, idObj, idDone, isPending, submitActive, setSubmitActive, setBlogname, handleBlogIdInput, onClickBlogIdCloseIcon, onClickSubmitBtn }) => {  
     const [curPhase, setCurPhase] = useState(0)
-
-    const  onClickBlogIdCloseIcon = useCallback(() => {
-        setBlogId("")
-        setSubmitActive(false)
-    }, [])
 
     const  onClickBlognameCloseIcon = useCallback(() => {
         setBlogname("")
         setSubmitActive(false)
-    }, [])
+    }, [setSubmitActive, setBlogname])
 
     const onClickPhase = useCallback((idx) => {
         setCurPhase(idx)
@@ -171,10 +186,6 @@ const BlogJoin = ({ user, blogId, confirmActive, setBlogId, handleBlogIdInput })
 
     const onClickConfirmBtn = useCallback(() => {
         setCurPhase(prev => prev + 1)
-    }, [])
-
-    const onClickSubmitBtn = useCallback(() => {
-
     }, [])
 
     const handleBlognameInput = useCallback((e) => {
@@ -186,14 +197,14 @@ const BlogJoin = ({ user, blogId, confirmActive, setBlogId, handleBlogIdInput })
         } else {
             setSubmitActive(false)
         }
-    }, [])
+    }, [setSubmitActive, setBlogname])
 
     return (
         <BlogJoinWrapper>
             <BlogJoinBlock>
                 <PhaseBlock>
                     {Array.from({ length: 2 }).map((_, idx) => (
-                        <Phase key={idx} active={curPhase === idx} onClick={() => onClickPhase(idx)} />
+                        <Phase key={idx} active={curPhase === idx} idConfirm={idDone && idx === 0} nameConfirm={blogname && idx === 1}  onClick={() => onClickPhase(idx)} />
                     ))}
                 </PhaseBlock>
                 <TxtBlock style={{ marginBottom: "35px" }}>
@@ -232,7 +243,10 @@ const BlogJoin = ({ user, blogId, confirmActive, setBlogId, handleBlogIdInput })
                                 </BlognameInitBtn>
                             </BlognameInputBlock> 
                             <InputBottomIdBlock>
-                                <div>hi</div>
+                                <InputBottomLeftBlock>
+                                    {(blog && isPending) ? <BeatLoader color="rgb(66, 215, 96)" size="5" /> : 
+                                        (idObj?.msg ? <span>{idObj.msg}</span> : null)}
+                                </InputBottomLeftBlock>
                                 {blogId.length}/35
                             </InputBottomIdBlock>
                         </>
@@ -251,11 +265,11 @@ const BlogJoin = ({ user, blogId, confirmActive, setBlogId, handleBlogIdInput })
                         </>
                     )}
                 </InputBlock>
-                { curPhase === 0 && (<SubmitBtn active={confirmActive} onClick={onClickConfirmBtn}>확인</SubmitBtn>) }
-                { curPhase === 1 && (<SubmitBtn active={submitActive} onClick={onClickSubmitBtn}>제출</SubmitBtn>) }
+                { curPhase === 0 && (<SubmitBtn active={idObj?.isOkay} onClick={onClickConfirmBtn}>확인</SubmitBtn>) }
+                { curPhase === 1 && (<SubmitBtn active={idObj?.isOkay && submitActive} onClick={onClickSubmitBtn}>제출</SubmitBtn>) }
             </BlogJoinBlock>
         </BlogJoinWrapper>
     )
 }
 
-export default BlogJoin;
+export default React.memo(BlogJoin);

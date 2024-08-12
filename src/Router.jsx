@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { 
     MapPage,
     PublishPage,
-    BlogPage,
+    BlogHomePage,
     BlogJoinPage,
     CalendarPage,
     LoginPage,
@@ -11,7 +11,7 @@ import {
     ProfilePage
 } from './pages'
 import { ProtectedRoute } from "./containers/route/ProtectedRoute";
-import { PostRoute } from "./containers/route/PostRoute";
+import { BlogRoute } from "./containers/route/BlogRoute";
 import Layout from "./components/common/Layout";
 
 function Router() {
@@ -20,9 +20,9 @@ function Router() {
             <Routes>
                 <Route path="login" element={<LoginPage/>} />
                 <Route path="register" element={<RegisterPage/>} />
-                <Route element={<PostRoute />}>
+                <Route element={<BlogRoute />}>
                     <Route path="blog" element={<Layout />} >
-                        <Route path=":blogname" element={<BlogPage />}/>
+                        <Route path=":id" element={<BlogHomePage />}/>
                     </Route>
                 </Route>
                 

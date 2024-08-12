@@ -11,8 +11,9 @@ import { toast } from 'react-toastify';
 
 const HeaderForm = () => {
     const dispatch = useDispatch();
-    const { user, todoActive, submitActive, postTitle, postMrkdown, postUpdateDt, tempCnt } = useSelector(({ cal, publish, post, user }) => ({
+    const { user, blogName, todoActive, submitActive, postTitle, postMrkdown, postUpdateDt, tempCnt } = useSelector(({ cal, publish, post, user, blog }) => ({
         user: user.user,
+        blogName: blog.blogName,
         todoActive: cal.todoActive,
         submitActive: publish.submitActive,
         postTitle: publish.title,
@@ -61,6 +62,7 @@ const HeaderForm = () => {
 
     return <Header 
         user={user}
+        blogName={blogName}
         todoActive={todoActive} 
         submitActive={submitActive}
         tempCnt={tempCnt}
