@@ -4,6 +4,7 @@ import {
     PublishPage,
     BlogHomePage,
     BlogJoinPage,
+    BlogRepositoriesPage,
     CalendarPage,
     LoginPage,
     RegisterPage,
@@ -39,7 +40,10 @@ function Router() {
                     <Route path="/user/*" element={<Layout />}>
                         <Route path="profile" element={<ProfilePage/>} />
                     </Route>
-                    <Route path="member/join" element={<BlogJoinPage />} />
+                    <Route path="/blogs/join" element={<BlogJoinPage />} />
+                    <Route path="/blogs/*" element={<Layout />}>
+                        <Route path="repositories" element={<BlogRepositoriesPage />} />
+                    </Route>
                     <Route path="*" element={<NotFoundPage />} />
                 </Route>
             </Routes>

@@ -9,6 +9,11 @@ export const getBlogById = async (id) => {
     return res.data;
 }
 
+export const getAllBlogsByUser = async () => {
+    const res = await client.get('/blog/getAllBlogsByUser')
+    return res.data;
+}
+
 export const createBlog = async ({ blogId, blogName }) => {
     const res = await client.post('/blog/createBlog', { blogId, blogName })
     return res.data;

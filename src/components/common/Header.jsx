@@ -115,6 +115,7 @@ const FlagLi = styled.li`
     line-height: 4rem;
     cursor: pointer;
     color: #868e96;
+    border-bottom: 0.3rem solid transparent;
     ${props =>
         props.active &&
         css`
@@ -417,11 +418,12 @@ const Header = ({
 
     const onClickBlogFlag = useCallback(e => {
         setView(false);
-        navigate(`/blog/${user.username}`);
-    }, [navigate, user]);
+        navigate(`/blogs/repositories`);
+    }, [navigate]);
 
     const onClickBlogStart = useCallback(e => {
-        navigate('/member/join');
+        setView(false)
+        navigate('/blogs/join');
     }, [navigate])
 
     const onClickLoginBtn = useCallback(e => {
@@ -475,7 +477,7 @@ const Header = ({
                                             <DropdownMenu onClick={onClickMapFlag}>지도</DropdownMenu>
                                             <DropdownMenu onClick={onClickCalendarFlag}>캘린더</DropdownMenu>
                                             <DropdownMenu>다이어리</DropdownMenu>
-                                            { user.postname ? (<DropdownMenu onClick={onClickBlogFlag}>내 블로그</DropdownMenu>) : (<DropdownMenu onClick={onClickBlogStart}>블로그 시작하기</DropdownMenu>) }
+                                            { user.hasBlog ? (<DropdownMenu onClick={onClickBlogFlag}>내 블로그</DropdownMenu>) : (<DropdownMenu onClick={onClickBlogStart}>블로그 시작하기</DropdownMenu>) }
                                             <DropdownLine />
                                             <DropdownMenu onClick={onLogout}>설정</DropdownMenu>
                                             <DropdownMenu onClick={onLogout}>로그아웃</DropdownMenu>
@@ -502,17 +504,18 @@ const Header = ({
                             <CommonBtn onClick={onClickPostGoBack} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>goback</CommonBtn>
                         </PublishUtilityBlock>)
                     }
-                    {pathname.startsWith("/blog") && 
+                    {(pathname.startsWith("/blog") && !pathname.startsWith("/blogs")) && 
                         (<PublishUtilityBlock>
                             <BlogNameSpan>{blogName}</BlogNameSpan>
                         </PublishUtilityBlock>)
                     }
-                    {pathname !== "/post/publish" && !pathname.startsWith("/blog") &&
+                    {pathname !== "/post/publish" && !(pathname.startsWith("/blog") && !pathname.startsWith("/blogs")) &&
                         (<FlagBottomNav>
                             <FlagBottomUl>
                                 <FlagLi active={pathname === "/geo/map"} onClick={onClickMapFlag}>map</FlagLi>
                                 <FlagLi active={pathname === "/cal/calendar"} onClick={onClickCalendarFlag}>calendar</FlagLi>
                                 <FlagLi>diary</FlagLi>
+                                { user.hasBlog && (<FlagLi active={pathname === "/blogs/repositories"} onClick={onClickBlogFlag}>blogs</FlagLi>) }
                             </FlagBottomUl>
                         </FlagBottomNav>)
                     }

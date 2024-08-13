@@ -6,5 +6,6 @@ export { default as CalendarPage } from './CalendarPage';
 export { default as ProfilePage } from './ProfilePage';
 export { default as BlogHomePage } from './BlogHomePage';
 export { default as BlogJoinPage } from './BlogJoinPage';
+export { default as BlogRepositoriesPage } from './BlogRepositoriesPage';
 
 export { default as NotFoundPage } from './NotFoundPage';
