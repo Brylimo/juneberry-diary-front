@@ -93,7 +93,7 @@ const MarkdownEditorForm = ({ tempPost }) => {
 
                             onChangeField({ key: 'postId', value: id });
                             onChangeField({ key: 'updateDt', value: parsedUpdateDt });
-                            navigate(`/write/publish?id=${id}`, { replace: true })
+                            navigate(`/post/publish?id=${id}`, { replace: true })
                         },
                         onError: () => {
                             toast.error("포스트 저장에 실패했습니다.")
@@ -368,7 +368,7 @@ ${selectedTxt}
 
                             onChangeField({ key: 'postId', value: id });
                             onChangeField({ key: 'updateDt', value: parsedUpdateDt });
-                            navigate(`/write/publish?id=${id}`, { replace: true })
+                            navigate(`/post/publish?id=${id}`, { replace: true })
                             toast.success("포스트가 임시저장되었습니다.")
                         },
                         onError: () => {

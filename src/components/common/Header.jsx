@@ -430,6 +430,10 @@ const Header = ({
         navigate('/login')
     }, [navigate])
 
+    const onClickBlogPublish = useCallback(e => {
+        navigate('/post/publish')
+    }, [navigate])
+
     const onClickAvatar = useCallback(e => {
         e.stopPropagation();
         setView(!view);
@@ -528,6 +532,10 @@ const Header = ({
                         {pathname === "/post/publish" && !submitActive && postUpdateDt &&
                         (<>
                             <IOSSpan>임시저장: {postUpdateDt.getHours()}시 {postUpdateDt.getMinutes()}분</IOSSpan>
+                        </>)}
+                        {pathname === "/blogs/repositories" &&
+                        (<>
+                            <button onClick={onClickBlogPublish}>블로그 쓰기</button>
                         </>)}
                     </FlagBottomUtilityBlock>
                 </FlagBottomBlock>
