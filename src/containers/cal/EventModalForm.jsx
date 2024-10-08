@@ -24,8 +24,8 @@ const EventModalForm = ({ selectedDate }) => {
     const [ isScrollDown, setIsScrollDown ] = useState(true);
     
     const queryClient = useQueryClient();
-    const { mutate: addEventTagListMutate } = useAddEventTagListMutation();
-    const { mutate: addDayEmojiMutate } = useAddDayEmojiMutation();
+    const { mutateAsync: addEventTagListMutateAsync } = useAddEventTagListMutation();
+    const { mutateAsync: addDayEmojiMutateAsync } = useAddDayEmojiMutation();
 
     const eventAdderEndRef = useRef(null);
 
@@ -57,9 +57,9 @@ const EventModalForm = ({ selectedDate }) => {
         setTempEvents(updatedList);
     }, [tempEvents]);
 
-    const onClickFlushBtn = useCallback(() => {
+    const onClickFlushBtn = useCallback(async () => {
         if (tempEvents?.length || events?.length) {
-            addEventTagListMutate(
+            await addEventTagListMutateAsync(
                 {
                     selectedDate,
                     events: tempEvents
@@ -81,7 +81,7 @@ const EventModalForm = ({ selectedDate }) => {
             )
         }
         if (currentEmoji?.length || emojiCodeArray?.length) {
-            addDayEmojiMutate(
+            await addDayEmojiMutateAsync(
                 {
                     selectedDate,
                     emojiCodeArray: currentEmoji
@@ -102,7 +102,7 @@ const EventModalForm = ({ selectedDate }) => {
                 }
             )
         }
-    }, [tempEvents, events, emojiCodeArray, currentEmoji, selectedDate, addEventTagListMutate, addDayEmojiMutate, queryClient, dispatch]);
+    }, [tempEvents, events, emojiCodeArray, currentEmoji, selectedDate, addEventTagListMutateAsync, addDayEmojiMutateAsync, queryClient, dispatch]);
 
     const removeEventTag = (index) => {
         const removedEventAdderTagList = tempEvents.filter((_, i) => {

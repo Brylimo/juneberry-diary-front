@@ -19,7 +19,7 @@ const TodoLineForm = ({ index, selectedDate }) => {
     const [focusActive, setFocusActive] = useState(false);
     const [pendingActive, setPendingActive] = useState(true);
     const [stopActive, setStopActive] = useState(false);
-    const [chkValue, setChkValue] = useState(null);
+    const [chkValue, setChkValue] = useState('none');
     const [lineGroupTxt, setLineGroupTxt] = useState('');
     const [lineContentTxt, setLineContentTxt] = useState('');
     const [prevTodo, setPrevTodo]= useState(undefined);
@@ -48,7 +48,7 @@ const TodoLineForm = ({ index, selectedDate }) => {
                     groupName: lineGroupTxt,
                     content: lineContentTxt,
                     position: index,
-                    chk: chkValue
+                    chkStatus: chkValue
                 },
                 {
                     onSuccess: (res) => {
@@ -82,7 +82,7 @@ const TodoLineForm = ({ index, selectedDate }) => {
         if (!focusActive || !todo || ((isPending || apiPending) && pendingActive)) {
             setLineGroupTxt(todo?.groupName || '');
             setLineContentTxt(todo?.content || '');
-            setChkValue(todo?.chk || '')
+            setChkValue(todo?.chkStatus || 'none')
             setPendingActive(false)
             if (isPending && pendingActive) {
                 setStopActive(true);
@@ -108,7 +108,7 @@ const TodoLineForm = ({ index, selectedDate }) => {
         if (lineActive && !todo && prevTodo === todo) {
             setLineGroupTxt(todo?.groupName || '');
             setLineContentTxt(todo?.content || '');
-            setChkValue(todo?.chk || '')
+            setChkValue(todo?.chkStatus || 'none')
             setPendingActive(false)
             if (isPending && pendingActive) {
                 setStopActive(true);
@@ -118,12 +118,12 @@ const TodoLineForm = ({ index, selectedDate }) => {
     }, [selectedDate])
 
     useEffect(() => {
-        if (chkValue && chkValue !== todo?.chk) {
+        if (chkValue !== 'none' && chkValue !== todo?.chkStatus) {
             updateTodoChkMutate(
                 {
                     selectedDate,
                     position: index,
-                    chk: chkValue
+                    chkStatus: chkValue
                 },
                 {
                     onSuccess: (res) => {
