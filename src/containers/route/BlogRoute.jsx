@@ -15,7 +15,7 @@ export const BlogRoute = () => {
     const { id } = useParams();
     const queryClient = useQueryClient();
     const [loading, setLoading] = useState(false);
-    const [isVoid, setIsVoid] = useState(false)
+    const [isVoid, setIsVoid] = useState(false);
 
     const { user, blogId } = useSelector(({ user, blog }) => ({
         user: user.user,

@@ -13,6 +13,7 @@ import {
     DiaryMainPage,
     SettingPage
 } from './pages'
+import { ProtectedBlogRoute } from "./containers/route/ProtectedBlogRoute";
 import { ProtectedRoute } from "./containers/route/ProtectedRoute";
 import { BlogRoute } from "./containers/route/BlogRoute";
 import Layout from "./components/common/Layout";
@@ -39,15 +40,17 @@ function Router() {
                     <Route path="/diary/*" element={<Layout />}>
                         <Route path="main" element={<DiaryMainPage/>} />
                     </Route>
-                    <Route path="/post/*" element={<Layout />}>
-                        <Route path="publish" element={<PublishPage/>} />
-                    </Route>
                     <Route path="/user/*" element={<Layout />}>
                         <Route path="profile" element={<ProfilePage/>} />
                     </Route>
                     <Route path="/blogs/join" element={<BlogJoinPage />} />
                     <Route path="/blogs/*" element={<Layout />}>
                         <Route path="repositories" element={<BlogRepositoryPage />} />
+                    </Route>
+                    <Route element={<ProtectedBlogRoute/>}>
+                        <Route path="/blog/*" element={<Layout />}>
+                            <Route path=":id/publish" element={<PublishPage/>} />
+                        </Route>
                     </Route>
                     <Route path="/setting" element={<Layout />}>
                         <Route path="" element={<SettingPage />}/>

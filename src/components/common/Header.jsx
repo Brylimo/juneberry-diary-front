@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import Menu from './Menu';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 import Switch from '@mui/material/Switch';
 
@@ -395,6 +395,7 @@ const Header = ({
     onClickPostGoBack,
     onClickTempCnt 
 }) => {
+    const { id } = useParams();
     const { pathname } = useLocation();
     const navigate = useNavigate();
 
@@ -445,8 +446,11 @@ const Header = ({
     }, [navigate])
 
     const onClickBlogPublish = useCallback(e => {
-        navigate('/post/publish')
-    }, [navigate])
+        // 동적으로 param 값을 삽입해줌
+        if (id) {
+            navigate(`/blog/${id}/publish`)
+        }
+    }, [navigate, id])
 
     const onClickAvatar = useCallback(e => {
         e.stopPropagation();
@@ -507,7 +511,7 @@ const Header = ({
                     </FlagTopLeftBlock>
                 </FlagTopBlock>
                 <FlagBottomBlock>
-                    {pathname === "/post/publish" && !submitActive && 
+                    {/^\/blog\/[^/]+\/publish$/.test(pathname) && !submitActive && 
                         (<PublishUtilityBlock>
                             <SaveBtnBlock>
                                 <SaveBtn onClick={onClickPostSave}>save</SaveBtn>
@@ -517,17 +521,17 @@ const Header = ({
                             <CommonBtn onClick={onClickPostSubmit} bgColor={"#8df198"} hoverColor={"#7ac884"}>publish</CommonBtn>
                         </PublishUtilityBlock>)
                     }
-                    {pathname === "/post/publish" && submitActive && 
+                    {/^\/blog\/[^/]+\/publish$/.test(pathname) && submitActive && 
                         (<PublishUtilityBlock>
                             <CommonBtn onClick={onClickPostGoBack} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>goback</CommonBtn>
                         </PublishUtilityBlock>)
                     }
-                    {(pathname.startsWith("/blog") && !pathname.startsWith("/blogs")) && 
+                    {(pathname.startsWith("/blog") && !(/^\/blog\/[^/]+\/publish$/.test(pathname)) &&!pathname.startsWith("/blogs")) && 
                         (<PublishUtilityBlock>
                             <BlogNameSpan>{blogName}</BlogNameSpan>
                         </PublishUtilityBlock>)
                     }
-                    {pathname !== "/post/publish" && !(pathname.startsWith("/blog") && !pathname.startsWith("/blogs")) &&
+                    {!(/^\/blog\/[^/]+\/publish$/.test(pathname)) && !(pathname.startsWith("/blog") && !pathname.startsWith("/blogs")) &&
                         (<FlagBottomNav>
                             <FlagBottomUl>
                                 <FlagLi active={pathname === "/geo/map"} onClick={onClickMapFlag}>map</FlagLi>
@@ -543,7 +547,7 @@ const Header = ({
                             <IOSSpan>Todo</IOSSpan>
                             <IOSSwitch sx={{ m: 1 }} bgColor={"#65C466"} onChange={onClickTodoBtn} checked={todoActive}/>
                         </>)}
-                        {pathname === "/post/publish" && !submitActive && postUpdateDt &&
+                        {/^\/blog\/[^/]+\/publish$/.test(pathname) && !submitActive && postUpdateDt &&
                         (<>
                             <IOSSpan>임시저장: {postUpdateDt.getHours()}시 {postUpdateDt.getMinutes()}분</IOSSpan>
                         </>)}
@@ -551,7 +555,7 @@ const Header = ({
                         (<>
                             <button onClick={onClickNewBlog}>create blog</button>
                         </>)}
-                        {(pathname.startsWith("/blog") && !pathname.startsWith("/blogs")) &&
+                        {user && (pathname.startsWith("/blog") && !(/^\/blog\/[^/]+\/publish$/.test(pathname)) && !pathname.startsWith("/blogs")) &&
                         (<>
                             <button onClick={onClickBlogPublish}>새 글 작성</button>
                         </>)}
