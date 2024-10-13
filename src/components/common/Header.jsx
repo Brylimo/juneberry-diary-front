@@ -416,6 +416,16 @@ const Header = ({
         navigate('/cal/calendar');
     }, [navigate]);
 
+    const onClickDiaryFlag = useCallback(e => {
+        setView(false);
+        navigate('/diary/main');
+    }, [navigate]);
+
+    const onClickSettingFlag = useCallback(e => {
+        setView(false);
+        navigate('/setting');
+    }, [navigate]);
+
     const onClickBlogFlag = useCallback(e => {
         setView(false);
         navigate(`/blogs/repositories`);
@@ -428,6 +438,10 @@ const Header = ({
 
     const onClickLoginBtn = useCallback(e => {
         navigate('/login')
+    }, [navigate])
+
+    const onClickNewBlog = useCallback(e => {
+        navigate('/blogs/join')
     }, [navigate])
 
     const onClickBlogPublish = useCallback(e => {
@@ -480,10 +494,10 @@ const Header = ({
                                             <DropdownLine />
                                             <DropdownMenu onClick={onClickMapFlag}>지도</DropdownMenu>
                                             <DropdownMenu onClick={onClickCalendarFlag}>캘린더</DropdownMenu>
-                                            <DropdownMenu>다이어리</DropdownMenu>
+                                            <DropdownMenu onClick={onClickDiaryFlag}>다이어리</DropdownMenu>
                                             { user.hasBlog ? (<DropdownMenu onClick={onClickBlogFlag}>내 블로그</DropdownMenu>) : (<DropdownMenu onClick={onClickBlogStart}>블로그 시작하기</DropdownMenu>) }
                                             <DropdownLine />
-                                            <DropdownMenu onClick={onLogout}>설정</DropdownMenu>
+                                            <DropdownMenu onClick={onClickSettingFlag}>설정</DropdownMenu>
                                             <DropdownMenu onClick={onLogout}>로그아웃</DropdownMenu>
                                         </DropdownMenuBlock>
                                     </DropdownBlock>
@@ -518,7 +532,7 @@ const Header = ({
                             <FlagBottomUl>
                                 <FlagLi active={pathname === "/geo/map"} onClick={onClickMapFlag}>map</FlagLi>
                                 <FlagLi active={pathname === "/cal/calendar"} onClick={onClickCalendarFlag}>calendar</FlagLi>
-                                <FlagLi>diary</FlagLi>
+                                <FlagLi active={pathname === "/diary/main"} onClick={onClickDiaryFlag}>diary</FlagLi>
                                 { user.hasBlog && (<FlagLi active={pathname === "/blogs/repositories"} onClick={onClickBlogFlag}>blogs</FlagLi>) }
                             </FlagBottomUl>
                         </FlagBottomNav>)
@@ -535,7 +549,11 @@ const Header = ({
                         </>)}
                         {pathname === "/blogs/repositories" &&
                         (<>
-                            <button onClick={onClickBlogPublish}>블로그 쓰기</button>
+                            <button onClick={onClickNewBlog}>create blog</button>
+                        </>)}
+                        {(pathname.startsWith("/blog") && !pathname.startsWith("/blogs")) &&
+                        (<>
+                            <button onClick={onClickBlogPublish}>새 글 작성</button>
                         </>)}
                     </FlagBottomUtilityBlock>
                 </FlagBottomBlock>

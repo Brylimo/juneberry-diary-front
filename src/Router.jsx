@@ -4,12 +4,14 @@ import {
     PublishPage,
     BlogHomePage,
     BlogJoinPage,
-    BlogRepositoriesPage,
+    BlogRepositoryPage,
     CalendarPage,
     LoginPage,
     RegisterPage,
     NotFoundPage,
-    ProfilePage
+    ProfilePage,
+    DiaryMainPage,
+    SettingPage
 } from './pages'
 import { ProtectedRoute } from "./containers/route/ProtectedRoute";
 import { BlogRoute } from "./containers/route/BlogRoute";
@@ -34,6 +36,9 @@ function Router() {
                     <Route path="/cal/*" element={<Layout />}>
                         <Route path="calendar" element={<CalendarPage/>} />
                     </Route>
+                    <Route path="/diary/*" element={<Layout />}>
+                        <Route path="main" element={<DiaryMainPage/>} />
+                    </Route>
                     <Route path="/post/*" element={<Layout />}>
                         <Route path="publish" element={<PublishPage/>} />
                     </Route>
@@ -42,7 +47,10 @@ function Router() {
                     </Route>
                     <Route path="/blogs/join" element={<BlogJoinPage />} />
                     <Route path="/blogs/*" element={<Layout />}>
-                        <Route path="repositories" element={<BlogRepositoriesPage />} />
+                        <Route path="repositories" element={<BlogRepositoryPage />} />
+                    </Route>
+                    <Route path="/setting" element={<Layout />}>
+                        <Route path="" element={<SettingPage />}/>
                     </Route>
                     <Route path="*" element={<NotFoundPage />} />
                 </Route>
