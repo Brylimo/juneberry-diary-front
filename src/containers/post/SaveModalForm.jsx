@@ -1,18 +1,19 @@
 import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { storePost } from '../../modules/publish';
 import SaveModal from '../../components/post/SaveModal';
 
 const SaveModalForm = ({setActiveState}) => {
+    const { id: blogId } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { tempCnt } = useSelector(({ post }) => ({
-        tempCnt: post.tempCnt
+    const { tempCnt } = useSelector(({ blog }) => ({
+        tempCnt: blog.tempCnt
     }))
 
     const onClickTempCard = useCallback((item) => {
-        navigate(`/post/publish?id=${item.id}`, { replace: true })
+        navigate(`/blog/${blogId}/publish?id=${item.id}`, { replace: true })
         
         dispatch(storePost({
             id: item.id,

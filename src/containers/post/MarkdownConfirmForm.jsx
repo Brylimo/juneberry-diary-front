@@ -5,7 +5,7 @@ import { useAddPostMutation } from '../../hooks/mutations/post/useAddPostMutatio
 import { useUpdatePostMutation } from '../../hooks/mutations/post/useUpdatePostMutation';
 import MarkdownConfirm from '../../components/post/MarkdownConfirm';
 import { useImgUpload } from '../../hooks/useImgUpload';
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 function replaceEmptyLinesWithBr(text) {
@@ -21,8 +21,8 @@ function replaceEmptyLinesWithBr(text) {
 }
 
 const MarkdownConfirmForm = () => {
+    const { id: blogId } = useParams();
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const { title, description, mrkdown, isPublic, postId, thumbnailPath } = useSelector(({ publish }) => ({
         title: publish.title,
         description: publish.description,
@@ -92,6 +92,7 @@ const MarkdownConfirmForm = () => {
                         description: description,
                         content: mrkdown,
                         thumbnailPath: thumbnailURL,
+                        blogId: blogId,
                         isTemp: false,
                         isPublic: isPublic,
                         thumbnailImg: imgFile
@@ -118,7 +119,7 @@ const MarkdownConfirmForm = () => {
                     })
             }
         },
-        [thumbnailURL, imgFile, description, isPublic, mrkdown, title, postId, onChangeField, addPostMutateAsync, updatePostMutate])
+        [blogId, thumbnailURL, imgFile, description, isPublic, mrkdown, title, postId, onChangeField, addPostMutateAsync, updatePostMutate])
 
     const onClickImgBtn = useCallback(() => {
         imgUpload()

@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { useGetTempPostListQuery } from '../../hooks/queries/post/useGetTempPostListQuery';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -129,9 +130,10 @@ const ArrowBackIconCore = styled(ArrowBackIcon)`
 `
 
 const SaveModal = ({tempCnt, setActiveState, onClickTempCard}) => {
+    const { id: paramId } = useParams()
     const [page, setPage] = useState(0)
     const [tempItems, setTempItems] = useState([])
-    const { data: tempPostList } = useGetTempPostListQuery(page, 10)
+    const { data: tempPostList } = useGetTempPostListQuery(paramId, page, 10)
     
     const { ref, inView } = useInView()
     const mounted = useRef(false)

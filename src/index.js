@@ -17,6 +17,10 @@ import { HelmetProvider } from 'react-helmet-async';
 const sagaMiddleware = createSagaMiddleware();
 const logger = createLogger();
 
+/*const store = createStore(
+  rootReducer, composeWithDevTools(applyMiddleware())
+);*/
+
 const store = createStore(
   rootReducer
 );

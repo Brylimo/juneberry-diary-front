@@ -2,17 +2,21 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import MarkdownEditor from '../../components/post/MarkdownEditor';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeField } from '../../modules/publish';
+import { changeBlogField } from '../../modules/blog';
+import { useGetTempPostCntQuery } from '../../hooks/queries/post/useGetTempPostCntQuery';
 import { useUploadImageMutation } from '../../hooks/mutations/post/useUploadImageMutation';
 import { useAddPostMutation } from '../../hooks/mutations/post/useAddPostMutation';
 import { useUpdatePostMutation } from '../../hooks/mutations/post/useUpdatePostMutation';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useImgUpload } from '../../hooks/useImgUpload';
 import { toast } from 'react-toastify';
 
 const MarkdownEditorForm = ({ tempPost }) => {
+    const { id: blogId } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { saveActive, submitActive, tempCntActive, isTemp, title, mrkdown, postId } = useSelector(({ publish }) => ({
+    const { user, saveActive, submitActive, tempCntActive, isTemp, title, mrkdown, postId } = useSelector(({ user, publish }) => ({
+        user: user.user,
         saveActive: publish.saveActive,
         submitActive: publish.submitActive,
         tempCntActive: publish.tempCntActive,
@@ -37,6 +41,8 @@ const MarkdownEditorForm = ({ tempPost }) => {
     const postIdRef = useRef(postId)
     const titleRef = useRef(title)
     const contentRef = useRef(mrkdown)
+
+    const { data: tempPostCnt } = useGetTempPostCntQuery(!!user && !!blogId, blogId);
 
     const { mutateAsync: uploadImageMutateAsync } = useUploadImageMutation();
     const { mutateAsync: addPostMutateAsync } = useAddPostMutation();
@@ -75,6 +81,7 @@ const MarkdownEditorForm = ({ tempPost }) => {
                         date: new Date(),
                         title: title,
                         content: content,
+                        blogId: blogId,
                         isTemp: true,
                         isPublic: true
                     },
@@ -93,7 +100,7 @@ const MarkdownEditorForm = ({ tempPost }) => {
 
                             onChangeField({ key: 'postId', value: id });
                             onChangeField({ key: 'updateDt', value: parsedUpdateDt });
-                            navigate(`/post/publish?id=${id}`, { replace: true })
+                            navigate(`/blog/${blogId}/publish?id=${id}`, { replace: true })
                         },
                         onError: () => {
                             toast.error("포스트 저장에 실패했습니다.")
@@ -118,6 +125,7 @@ const MarkdownEditorForm = ({ tempPost }) => {
 
             await uploadImageMutateAsync(
                 {
+                    blogId: blogId,
                     postId: id,
                     editorImg: imgFile
                 },
@@ -133,7 +141,7 @@ const MarkdownEditorForm = ({ tempPost }) => {
                     }
                 }
             )
-        }, [uploadImageMutateAsync, setImgFile, onChangeField, addPostMutateAsync, navigate, tempPost]
+        }, [blogId, uploadImageMutateAsync, setImgFile, onChangeField, addPostMutateAsync, navigate, tempPost]
     );
 
     const onToolbarItemClick = useCallback((mode) => {
@@ -350,6 +358,7 @@ ${selectedTxt}
                         date: new Date(),
                         title: title,
                         content: content,
+                        blogId: blogId,
                         isTemp: true,
                         isPublic: true
                     },
@@ -368,7 +377,7 @@ ${selectedTxt}
 
                             onChangeField({ key: 'postId', value: id });
                             onChangeField({ key: 'updateDt', value: parsedUpdateDt });
-                            navigate(`/post/publish?id=${id}`, { replace: true })
+                            navigate(`/blog/${blogId}/publish?id=${id}`, { replace: true })
                             toast.success("포스트가 임시저장되었습니다.")
                         },
                         onError: () => {
@@ -385,7 +394,10 @@ ${selectedTxt}
                 {
                     postId: id,
                     title: title,
-                    content: content
+                    content: content,
+                    blogId: blogId,
+                    isTemp: true,
+                    isPublic: true
                 },
                 {
                     onSuccess: (res) => {
@@ -450,6 +462,12 @@ ${selectedTxt}
             onChangeField({ key: 'submitActive', value: false})
         }
     }, [submitActive, onChangeField])
+
+    useEffect(() => {
+        if (typeof tempPostCnt === 'number') {
+            dispatch(changeBlogField({key:'tempCnt', value: tempPostCnt}))
+        }
+    }, [tempPostCnt, dispatch])
 
     return <MarkdownEditor
         tempCntActive={tempCntActive} 

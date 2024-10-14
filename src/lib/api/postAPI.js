@@ -1,31 +1,37 @@
 import client from './client';
 
-export const uploadImg = async ({editorImg, postId}) => {
+export const uploadImg = async ({editorImg, blogId, postId}) => {
     const config = {
         headers: { 'Content-Type': 'multipart/form-data' },
     };
 
-    const res = await client.post('/post/uploadPostImage', { editorImg, postId }, config);
+    const res = await client.post('/post/uploadPostImage', { editorImg, blogId, postId }, config);
     return res.data;
 }
 
-export const getPost = async (id) => {
+export const getPost = async (blogId, id) => {
     const res = await client.get('/post/getPost', {
         params: {
+            blogId: blogId,
             id: id
         }
     })
     return res.data;
 }
 
-export const getTempPostCnt = async () => {
-    const res = await client.get('/post/getTempPostCnt', {})
+export const getTempPostCnt = async (blogId) => {
+    const res = await client.get('/post/getTempPostCnt', {
+        params: {
+            blogId: blogId
+        }
+    })
     return res.data;
 }
 
-export const getTempPostList = async (page, size) => {
+export const getTempPostList = async (blogId, page, size) => {
     const res = await client.get('/post/getTempPostList', {
         params: {
+            blogId: blogId,
             page: page,
             size: size
         }
@@ -33,18 +39,18 @@ export const getTempPostList = async (page, size) => {
     return res.data;
 }
 
-export const updatePost = async ({ postId, title, description, content, isTemp, isPublic, thumbnailImg, thumbnailPath }) => {
+export const updatePost = async ({ postId, title, description, content, blogId, isTemp, isPublic, thumbnailImg, thumbnailPath }) => {
     const config = {
         headers: { 'Content-Type': 'multipart/form-data' },
     };
     
     const res = await client.post('/post/updatePost', {
-        postId, title, description, content, isTemp, isPublic, thumbnailImg, thumbnailPath
+        postId, title, description, content, blogId, isTemp, isPublic, thumbnailImg, thumbnailPath
     }, config)
     return res.data;
 }
 
-export const addPost = async ({ date, title, description, content, isTemp, isPublic, thumbnailImg, thumbnailPath }) => {
+export const addPost = async ({ date, title, description, content, isTemp, isPublic, blogId, thumbnailImg, thumbnailPath }) => {
     const config = {
         headers: { 'Content-Type': 'multipart/form-data' },
     };
@@ -53,6 +59,6 @@ export const addPost = async ({ date, title, description, content, isTemp, isPub
     const month = ('0' + (date.getMonth() + 1)).slice(-2);
     const day = ('0' + date.getDate()).slice(-2);
 
-    const res = await client.post('/post/addPost', { date: `${year}-${month}-${day}`, title, description, content, isTemp, isPublic, thumbnailImg, thumbnailPath }, config)
+    const res = await client.post('/post/addPost', { date: `${year}-${month}-${day}`, title, description, content, isTemp, isPublic, blogId, thumbnailImg, thumbnailPath }, config)
     return res.data;
 }

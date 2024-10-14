@@ -5,10 +5,9 @@ import cal from './cal';
 import todo from './todo';
 import publish from './publish';
 import blog from './blog';
-import post from './post';
 
 const rootReducer = combineReducers({
-    auth, user, cal, todo, publish, blog, post
+    auth, user, cal, todo, publish, blog
 });
 
 export default rootReducer;

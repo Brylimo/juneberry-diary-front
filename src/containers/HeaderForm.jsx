@@ -1,17 +1,17 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import Header from "../components/common/Header";
 import { signout } from '../modules/user';
 import { toggleTodoActive } from '../modules/cal';
 import { changeField } from '../modules/publish';
-import { changePostField } from '../modules/post';
 import { useLogoutQuery } from '../hooks/queries/auth/useLogoutQuery';
-import { useGetTempPostCntQuery } from '../hooks/queries/post/useGetTempPostCntQuery';
 import { toast } from 'react-toastify';
 
 const HeaderForm = () => {
+    const { id: paramId } = useParams();
     const dispatch = useDispatch();
-    const { user, blogName, todoActive, submitActive, postTitle, postMrkdown, postUpdateDt, tempCnt } = useSelector(({ cal, publish, post, user, blog }) => ({
+    const { user, blogName, todoActive, submitActive, postTitle, postMrkdown, postUpdateDt, tempCnt } = useSelector(({ cal, publish, user, blog }) => ({
         user: user.user,
         blogName: blog.blogName,
         todoActive: cal.todoActive,
@@ -19,10 +19,9 @@ const HeaderForm = () => {
         postTitle: publish.title,
         postMrkdown: publish.mrkdown,
         postUpdateDt: publish.updateDt,
-        tempCnt: post.tempCnt
+        tempCnt: blog.tempCnt
     }));
     const { logoutRefetch } = useLogoutQuery();
-    const { data: tempPostCnt } = useGetTempPostCntQuery(!!user);
 
     const onClickLogout = useCallback(e => {
         logoutRefetch().then(() => {
@@ -54,13 +53,8 @@ const HeaderForm = () => {
         dispatch(changeField({ key: 'tempCntActive', value: true}))
     }, [dispatch])
 
-    useEffect(() => {
-        if (tempPostCnt && typeof tempPostCnt === 'number') {
-            dispatch(changePostField({key:'tempCnt', value: tempPostCnt}))
-        }
-    }, [tempPostCnt, dispatch])
-
     return <Header 
+        paramId={paramId}
         user={user}
         blogName={blogName}
         todoActive={todoActive} 

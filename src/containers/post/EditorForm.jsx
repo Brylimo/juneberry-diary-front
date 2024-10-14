@@ -1,19 +1,20 @@
 import React, {useState, useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { initialize } from '../../modules/publish';
-import { storePost } from '../../modules/publish';
+import { useParams } from 'react-router-dom';
+import { initialize, storePost } from '../../modules/publish';
 import { useGetPostQuery } from '../../hooks/queries/post/useGetPostQuery';
 import { useSearchParams } from 'react-router-dom';
 import Editor from '../../components/post/Editor';
 
 const EditorForm = () => {
+    const { id: blogId } = useParams();
     const dispatch = useDispatch();
     const { submitActive } = useSelector(({ publish }) => ({
         submitActive: publish.submitActive
     }))
     const [searchParams, setSearchParams] = useSearchParams();
     const [apiEnabled, setApiEnabled] = useState(false);
-    const { data: tempPost } = useGetPostQuery(searchParams.get("id"), apiEnabled)
+    const { data: tempPost } = useGetPostQuery(blogId, searchParams.get("id"), apiEnabled)
 
     useEffect(() => {
         return () => {

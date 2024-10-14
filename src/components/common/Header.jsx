@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import Menu from './Menu';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 import Switch from '@mui/material/Switch';
 
@@ -382,6 +382,7 @@ const BlogNameSpan = styled.span`
 `;
 
 const Header = ({ 
+    paramId,
     user,
     blogName,
     todoActive, 
@@ -395,7 +396,6 @@ const Header = ({
     onClickPostGoBack,
     onClickTempCnt 
 }) => {
-    const { id } = useParams();
     const { pathname } = useLocation();
     const navigate = useNavigate();
 
@@ -447,10 +447,10 @@ const Header = ({
 
     const onClickBlogPublish = useCallback(e => {
         // 동적으로 param 값을 삽입해줌
-        if (id) {
-            navigate(`/blog/${id}/publish`)
+        if (paramId) {
+            navigate(`/blog/${paramId}/publish`)
         }
-    }, [navigate, id])
+    }, [navigate, paramId])
 
     const onClickAvatar = useCallback(e => {
         e.stopPropagation();
