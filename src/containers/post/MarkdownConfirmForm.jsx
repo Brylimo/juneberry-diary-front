@@ -5,7 +5,7 @@ import { useAddPostMutation } from '../../hooks/mutations/post/useAddPostMutatio
 import { useUpdatePostMutation } from '../../hooks/mutations/post/useUpdatePostMutation';
 import MarkdownConfirm from '../../components/post/MarkdownConfirm';
 import { useImgUpload } from '../../hooks/useImgUpload';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 function replaceEmptyLinesWithBr(text) {
@@ -22,6 +22,7 @@ function replaceEmptyLinesWithBr(text) {
 
 const MarkdownConfirmForm = () => {
     const { id: blogId } = useParams();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const { title, description, mrkdown, isPublic, postId, thumbnailPath } = useSelector(({ publish }) => ({
         title: publish.title,
@@ -56,6 +57,7 @@ const MarkdownConfirmForm = () => {
                         description: description,
                         content: mrkdown,
                         thumbnailPath: thumbnailURL,
+                        blogId: blogId,
                         isTemp: false,
                         isPublic: isPublic,
                         thumbnailImg: imgFile
@@ -75,7 +77,7 @@ const MarkdownConfirmForm = () => {
 
                             onChangeField({ key: 'postId', value: id });
                             onChangeField({ key: 'updateDt', value: parsedUpdateDt });
-                            // navigate(`/post/publish?id=${id}`, { replace: true })
+                            navigate(`/blog/${blogId}`, { replace: true })
                         },
                         onError: () => {
                             toast.error("포스트 발행에 실패했습니다.")
@@ -110,7 +112,7 @@ const MarkdownConfirmForm = () => {
                             }
     
                             onChangeField({ key: 'updateDt', value: parsedUpdateDt });
-    
+                            navigate(`/blog/${blogId}`, { replace: true })
                         },
                         onError: () => {
                             toast.error("포스트 발행에 실패했습니다.")
@@ -119,7 +121,7 @@ const MarkdownConfirmForm = () => {
                     })
             }
         },
-        [blogId, thumbnailURL, imgFile, description, isPublic, mrkdown, title, postId, onChangeField, addPostMutateAsync, updatePostMutate])
+        [blogId, thumbnailURL, imgFile, description, isPublic, mrkdown, title, postId, onChangeField, addPostMutateAsync, updatePostMutate, navigate])
 
     const onClickImgBtn = useCallback(() => {
         imgUpload()

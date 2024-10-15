@@ -2,7 +2,7 @@ import React, { useCallback, useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
-import { useGetTempPostListQuery } from '../../hooks/queries/post/useGetTempPostListQuery';
+import { useGetPostListQuery } from '../../hooks/queries/post/useGetPostListQuery';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const ModalBlock = styled.div`
@@ -133,7 +133,7 @@ const SaveModal = ({tempCnt, tempPosts, setActiveState, onClickTempCard, onChang
     const { id: paramId } = useParams()
     const [page, setPage] = useState(0)
     const [hasMore, setHasMore] = useState(true);
-    const { isPending, isFetching, isLoading, data: tempPostList } = useGetTempPostListQuery(paramId, page, 10)
+    const { isPending, isFetching, isLoading, data: tempPostList } = useGetPostListQuery({blogId: paramId, page, isTemp: true, size: 10})
     
     const { ref, inView } = useInView()
 

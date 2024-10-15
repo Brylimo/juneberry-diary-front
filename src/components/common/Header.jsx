@@ -553,11 +553,11 @@ const Header = ({
                         </>)}
                         {pathname === "/blogs/repositories" &&
                         (<>
-                            <button onClick={onClickNewBlog}>create blog</button>
+                            <CommonBtn onClick={onClickNewBlog} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>새 블로그</CommonBtn>
                         </>)}
                         {user && (pathname.startsWith("/blog") && !(/^\/blog\/[^/]+\/publish$/.test(pathname)) && !pathname.startsWith("/blogs")) &&
                         (<>
-                            <button onClick={onClickBlogPublish}>새 글 작성</button>
+                            <CommonBtn onClick={onClickBlogPublish} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>새 글 작성</CommonBtn>
                         </>)}
                     </FlagBottomUtilityBlock>
                 </FlagBottomBlock>
