@@ -4,6 +4,7 @@ import * as blogAPI from '../../../lib/api/blogAPI';
 export const useGetBlogByIdQuery = (id, apiEnabled) => {
     const {
         isPending,
+        isFetching,
         data
     } = useQuery({
         queryKey: ["getBlogById", {id: id}],
@@ -12,5 +13,5 @@ export const useGetBlogByIdQuery = (id, apiEnabled) => {
         enabled: apiEnabled
     });
 
-    return { isPending, data }
+    return { isPending, isFetching, data }
 }

@@ -1,5 +1,5 @@
-import EditorForm from "../containers/post/EditorForm";
 import { Helmet } from "react-helmet-async";
+import PublishRendererForm from "../containers/post/PublishRendererFrom";
 
 const PublishPage = () => {
 
@@ -8,9 +8,7 @@ const PublishPage = () => {
             <Helmet>
                 <title>포스트 등록</title>
             </Helmet>
-            <div style={{ position: 'relative', height: '100%' }}>
-                <EditorForm />
-            </div>
+            <PublishRendererForm />
         </>
     );
 }

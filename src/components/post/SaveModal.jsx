@@ -129,32 +129,38 @@ const ArrowBackIconCore = styled(ArrowBackIcon)`
     }
 `
 
-const SaveModal = ({tempCnt, setActiveState, onClickTempCard}) => {
+const SaveModal = ({tempCnt, tempPosts, setActiveState, onClickTempCard, onChangeField}) => {
     const { id: paramId } = useParams()
     const [page, setPage] = useState(0)
-    const [tempItems, setTempItems] = useState([])
-    const { data: tempPostList } = useGetTempPostListQuery(paramId, page, 10)
+    const [hasMore, setHasMore] = useState(true);
+    const { isPending, isFetching, isLoading, data: tempPostList } = useGetTempPostListQuery(paramId, page, 10)
     
     const { ref, inView } = useInView()
-    const mounted = useRef(false)
 
     const onClickCloseBtn = useCallback((e) => {
         setActiveState(false);
     }, [setActiveState]);
 
     useEffect(() => {
-        if (tempPostList) {
-            setTempItems(prev => [...prev, ...tempPostList])
+        if (isPending || isFetching || !hasMore) return
+
+        if (page === 0 && tempPostList) {
+            onChangeField({key: 'tempPosts', value: [...tempPostList]})
+        } else if (tempPostList) {
+            onChangeField({key: 'tempPosts', value: [...tempPosts, ...tempPostList]})
         }
-    }, [tempPostList])
+
+        if (tempPostList.length < 10) {
+            setHasMore(false);
+        }
+
+    }, [tempPostList, isFetching])
 
     useEffect(() => {
-        if (inView) {
-            if (mounted.current) {
-                setPage(prev => prev + 1)
-            } else {
-                mounted.current = true
-            }
+        if (isLoading) return
+
+        if (inView && hasMore) {
+            setPage(prev => prev + 1)
         }
     }, [inView])
 
@@ -172,7 +178,7 @@ const SaveModal = ({tempCnt, setActiveState, onClickTempCard}) => {
                         </ModalHeaderLeft>
                     </ModalHeader>
                     <ModalBody>
-                        {tempItems.map((item, index) => (
+                        {tempPosts.map((item, index) => (
                             <TempCard key={index} onClick={() => onClickTempCard(item)}>
                                 <TempCardTitle>{item.title}</TempCardTitle>
                                 <TempCardDate>{item.updatedDateTime}</TempCardDate>

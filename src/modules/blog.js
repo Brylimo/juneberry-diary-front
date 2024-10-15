@@ -14,7 +14,8 @@ export const storeBlog = createAction(STORE_BLOG);
 const initialState = {
     blogId: null,
     blogName: null,
-    tempCnt: 0
+    tempCnt: 0,
+    tempPosts: []
 }
 
 const blog = handleActions(

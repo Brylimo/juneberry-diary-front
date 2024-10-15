@@ -4,6 +4,8 @@ import * as postAPI from '../../../lib/api/postAPI';
 export const useGetTempPostListQuery = (blogId, page, size) => {
     const {
         isPending,
+        isFetching,
+        isLoading,
         data
     } = useQuery({
         queryKey: ["getTempPostList", [blogId, page, size]],
@@ -11,5 +13,5 @@ export const useGetTempPostListQuery = (blogId, page, size) => {
         select: res => res?.data
     })
 
-    return { isPending, data }
+    return { isPending, isFetching, isLoading, data }
 }

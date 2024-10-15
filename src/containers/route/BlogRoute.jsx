@@ -22,7 +22,7 @@ export const BlogRoute = () => {
         blogId: blog.blogId
     }));
 
-    const { isPending: apiPending, data: fetchedBlog } = useGetBlogByIdQuery(id, true);
+    const { isPending: apiPending, isFetching: apiFetching, data: fetchedBlog } = useGetBlogByIdQuery(id, true);
 
     useEffect(() => {
         if (!user) {
@@ -44,6 +44,11 @@ export const BlogRoute = () => {
     }, [user, dispatch, navigate, queryClient]);
 
     useEffect(() => {
+        if (apiPending || apiFetching) {
+            // 로딩 중일 때는 아무 처리도 하지 않음
+            return;
+        }
+
         if (fetchedBlog && typeof fetchedBlog === 'object' && !Array.isArray(fetchedBlog)) {
             dispatch(storeBlog({
                 blogId: fetchedBlog.blogId,
@@ -54,7 +59,7 @@ export const BlogRoute = () => {
         }
     }, [fetchedBlog, dispatch, navigate])
 
-    if (!isVoid && (loading || apiPending || blogId !== id)) {
+    if (!isVoid && (loading || apiPending || apiFetching || blogId !== id)) {
         return "로딩중입니다....";
     }
 

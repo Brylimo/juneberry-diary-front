@@ -107,4 +107,4 @@ const BlogJoinForm = () => {
             />
 }
 
-export default BlogJoinForm;
+export default React.memo(BlogJoinForm);

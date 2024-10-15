@@ -3,6 +3,7 @@ import MarkdownEditor from '../../components/post/MarkdownEditor';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeField } from '../../modules/publish';
 import { changeBlogField } from '../../modules/blog';
+import { useQueryClient } from '@tanstack/react-query';
 import { useGetTempPostCntQuery } from '../../hooks/queries/post/useGetTempPostCntQuery';
 import { useUploadImageMutation } from '../../hooks/mutations/post/useUploadImageMutation';
 import { useAddPostMutation } from '../../hooks/mutations/post/useAddPostMutation';
@@ -23,7 +24,7 @@ const MarkdownEditorForm = ({ tempPost }) => {
         isTemp: publish.isTemp,
         title: publish.title,
         mrkdown: publish.mrkdown,
-        postId: publish.postId
+        postId: publish.postId,
     }));
 
     const [imgFile, imgUpload, setImgFile] = useImgUpload();
@@ -42,6 +43,7 @@ const MarkdownEditorForm = ({ tempPost }) => {
     const titleRef = useRef(title)
     const contentRef = useRef(mrkdown)
 
+    const queryClient = useQueryClient();
     const { data: tempPostCnt } = useGetTempPostCntQuery(!!user && !!blogId, blogId);
 
     const { mutateAsync: uploadImageMutateAsync } = useUploadImageMutation();
@@ -97,6 +99,10 @@ const MarkdownEditorForm = ({ tempPost }) => {
                             if (year && month && day && hours && minutes) {
                                 parsedUpdateDt = new Date(year, month - 1, day, hours, minutes)
                             }
+                            // tempPostCnt 초기화
+                            queryClient.invalidateQueries({
+                                queryKey: ["getTempPostCnt"]
+                            })
 
                             onChangeField({ key: 'postId', value: id });
                             onChangeField({ key: 'updateDt', value: parsedUpdateDt });
@@ -375,6 +381,10 @@ ${selectedTxt}
                                 parsedUpdateDt = new Date(year, month - 1, day, hours, minutes)
                             }
 
+                            // tempPostCnt 초기화
+                            queryClient.invalidateQueries({
+                                queryKey: ["getTempPostCnt"]
+                            })
                             onChangeField({ key: 'postId', value: id });
                             onChangeField({ key: 'updateDt', value: parsedUpdateDt });
                             navigate(`/blog/${blogId}/publish?id=${id}`, { replace: true })
