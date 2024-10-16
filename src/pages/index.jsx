@@ -9,5 +9,6 @@ export { default as BlogJoinPage } from './BlogJoinPage';
 export { default as BlogRepositoryPage } from './BlogRepositoryPage';
 export { default as DiaryMainPage } from './DiaryMainPage';
 export { default as SettingPage } from './SettingPage';
+export { default as PostPage } from './PostPage';
 
 export { default as NotFoundPage } from './NotFoundPage';

@@ -11,7 +11,8 @@ import {
     NotFoundPage,
     ProfilePage,
     DiaryMainPage,
-    SettingPage
+    SettingPage,
+    PostPage
 } from './pages'
 import { ProtectedBlogRoute } from "./containers/route/ProtectedBlogRoute";
 import { ProtectedRoute } from "./containers/route/ProtectedRoute";
@@ -24,11 +25,6 @@ function Router() {
             <Routes>
                 <Route path="login" element={<LoginPage/>} />
                 <Route path="register" element={<RegisterPage/>} />
-                <Route element={<BlogRoute />}>
-                    <Route path="blog" element={<Layout />} >
-                        <Route path=":id" element={<BlogHomePage />}/>
-                    </Route>
-                </Route>
                 
                 <Route element={<ProtectedRoute />}>
                     <Route path="/geo/*" element={<Layout />}>
@@ -56,6 +52,13 @@ function Router() {
                         <Route path="" element={<SettingPage />}/>
                     </Route>
                     <Route path="*" element={<NotFoundPage />} />
+                </Route>
+
+                <Route element={<BlogRoute />}>
+                    <Route path="blog" element={<Layout />} >
+                        <Route path=":id" element={<BlogHomePage />}/>
+                        <Route path=":id/:pid" element={<PostPage />}/>
+                    </Route>
                 </Route>
             </Routes>
         </BrowserRouter>

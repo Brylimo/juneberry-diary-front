@@ -19,6 +19,16 @@ export const getPost = async (blogId, id) => {
     return res.data;
 }
 
+export const getPostByIndex = async (blogId, index) => {
+    const res = await client.get('/post/getPostByIndex', {
+        params: {
+            blogId: blogId,
+            index: index
+        }
+    })
+    return res.data;
+}
+
 export const getTempPostCnt = async (blogId) => {
     const res = await client.get('/post/getTempPostCnt', {
         params: {
