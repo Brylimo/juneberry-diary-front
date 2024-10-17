@@ -4,13 +4,13 @@ import Footer from './Footer';
 
 const BlogLayout = () => {
     return (
-        <div>
+        <>
             <HeaderForm/>
-            <main>
+            <main style={{minHeight: '100vh'}}>
                 <Outlet/>
             </main>
             <Footer />
-        </div>
+        </>
     );
 }
 

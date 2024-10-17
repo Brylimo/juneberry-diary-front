@@ -29,7 +29,8 @@ export const ProtectedBlogRoute = () => {
     }, [fetchedBlog, dispatch, navigate])
 
     if (!isVoid && (apiPending || blogId !== id)) {
-        return "로딩중입니다....";
+        //return "로딩중입니다....";
+        return null;
     }
 
     if (isVoid) return <NotFoundPage />

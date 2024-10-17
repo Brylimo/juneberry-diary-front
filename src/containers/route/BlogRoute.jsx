@@ -59,8 +59,10 @@ export const BlogRoute = () => {
         }
     }, [fetchedBlog, dispatch, navigate])
 
+    if (!id) return <NotFoundPage />
     if (!isVoid && (loading || apiPending || apiFetching || blogId !== id)) {
-        return "로딩중입니다....";
+        //return "로딩중입니다....";
+        return null;
     }
 
     if (isVoid) return <NotFoundPage />

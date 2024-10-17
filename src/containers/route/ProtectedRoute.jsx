@@ -40,7 +40,8 @@ export const ProtectedRoute = () => {
     }, [user, dispatch, navigate, queryClient]);
 
     if (loading) {
-        return "로딩중입니다....";
+        //return "로딩중입니다....";
+        return null;
     }
 
     if (user) {

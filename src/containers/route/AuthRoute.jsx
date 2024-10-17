@@ -32,7 +32,8 @@ export const AuthRoute = () => {
     }, [user, dispatch, navigate]);
 
     if (loading) {
-        return "로딩중입니다....";
+        //return "로딩중입니다....";
+        return null;
     } else if (ready) {
         if (!user) {
             return <Outlet />;

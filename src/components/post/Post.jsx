@@ -64,6 +64,8 @@ const PostRenderBlock = styled.div`
 `
 
 function replaceEmptyLinesWithBr(text) {
+    if (!text) return text;
+
     const lines = text.split('\n');
 
     const processedLines = lines.map((line, index) => {
