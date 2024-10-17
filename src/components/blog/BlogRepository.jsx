@@ -5,8 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const BlogRepositoryWrapper = styled.div`
     width: 100%;
-    position: absolute;
-    top: 8rem;
+    margin-top: 8rem;
     height: auto;
     min-height: calc(100vh - 8rem);
     box-sizing: border-box;

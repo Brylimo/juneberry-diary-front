@@ -5,8 +5,7 @@ import { useGetPostListQuery } from '../../hooks/queries/post/useGetPostListQuer
 
 const BlogHomeWrapper = styled.div`
     width: 100%;
-    position: absolute;
-    top: 8rem;
+    margin-top: 8rem;
     height: auto;
     min-height: calc(100vh - 8rem);
     box-sizing: border-box;

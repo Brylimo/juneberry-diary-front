@@ -13,8 +13,7 @@ import Typography from '../common/Typography';
 
 const PostWrapper = styled.div`
     width: 100%;
-    position: absolute;
-    top: 8rem;
+    margin-top: 8rem;
     height: auto;
     min-height: calc(100vh - 8rem);
     box-sizing: border-box;
@@ -63,6 +62,18 @@ const PostRenderBlock = styled.div`
         list-style-position: inside;
     }
 `
+
+function replaceEmptyLinesWithBr(text) {
+    const lines = text.split('\n');
+
+    const processedLines = lines.map((line, index) => {
+        const isBlankLine = line.trim() === '';
+        return isBlankLine ? '\u200B' : line;
+    });
+    const processedText = processedLines.join('\n');
+
+    return processedText;
+}
 
 const sanitizeEventScript = (htmlString) => {
     return htmlString.replace(/ on\w+="[^"]*"/g, '');
@@ -142,12 +153,10 @@ const Post = ({ post }) => {
             .use(rehypeRaw)
             .use(rehypeSanitize)
             .use(rehypeStringify)
-            .processSync(post?.content)
+            .processSync(replaceEmptyLinesWithBr(post?.content))
             .toString()
-        )   
+        )
     );
-
-    console.log("eco", post?.content)
 
     return (
         <PostWrapper>
