@@ -385,6 +385,9 @@ ${selectedTxt}
                             queryClient.invalidateQueries({
                                 queryKey: ["getTempPostCnt"]
                             })
+                            queryClient.invalidateQueries({
+                                queryKey: ["getPostList"]
+                            })
                             onChangeField({ key: 'postId', value: id });
                             onChangeField({ key: 'updateDt', value: parsedUpdateDt });
                             navigate(`/blog/${blogId}/publish?id=${id}`, { replace: true })

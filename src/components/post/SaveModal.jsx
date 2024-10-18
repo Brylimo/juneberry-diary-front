@@ -154,7 +154,7 @@ const SaveModal = ({tempCnt, tempPosts, setActiveState, onClickTempCard, onChang
             setHasMore(false);
         }
 
-    }, [tempPostList, isFetching])
+    }, [tempPostList, isPending, isFetching])
 
     useEffect(() => {
         if (isLoading) return
@@ -163,6 +163,12 @@ const SaveModal = ({tempCnt, tempPosts, setActiveState, onClickTempCard, onChang
             setPage(prev => prev + 1)
         }
     }, [inView])
+
+    useEffect(() => {
+        return () => {
+            setPage(0)
+        }
+    })
 
     return (
         <ModalBlock>

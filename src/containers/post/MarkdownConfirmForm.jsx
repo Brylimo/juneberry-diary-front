@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { changeField } from '../../modules/publish';
 import { useAddPostMutation } from '../../hooks/mutations/post/useAddPostMutation';
 import { useUpdatePostMutation } from '../../hooks/mutations/post/useUpdatePostMutation';
+import { useQueryClient } from '@tanstack/react-query';
 import MarkdownConfirm from '../../components/post/MarkdownConfirm';
 import { useImgUpload } from '../../hooks/useImgUpload';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -22,6 +23,7 @@ function replaceEmptyLinesWithBr(text) {
 
 const MarkdownConfirmForm = () => {
     const { id: blogId } = useParams();
+    const queryClient = useQueryClient();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { title, description, mrkdown, isPublic, postId, thumbnailPath } = useSelector(({ publish }) => ({
@@ -77,6 +79,8 @@ const MarkdownConfirmForm = () => {
 
                             onChangeField({ key: 'postId', value: id });
                             onChangeField({ key: 'updateDt', value: parsedUpdateDt });
+
+                            queryClient.invalidateQueries({ queryKey: ["getPostList"]})
                             navigate(`/blog/${blogId}`, { replace: true })
                         },
                         onError: () => {
@@ -112,6 +116,8 @@ const MarkdownConfirmForm = () => {
                             }
     
                             onChangeField({ key: 'updateDt', value: parsedUpdateDt });
+
+                            queryClient.invalidateQueries({ queryKey: ["getPostList"]})
                             navigate(`/blog/${blogId}`, { replace: true })
                         },
                         onError: () => {
@@ -121,7 +127,7 @@ const MarkdownConfirmForm = () => {
                     })
             }
         },
-        [blogId, thumbnailURL, imgFile, description, isPublic, mrkdown, title, postId, onChangeField, addPostMutateAsync, updatePostMutate, navigate])
+        [blogId, thumbnailURL, imgFile, description, isPublic, mrkdown, title, postId, onChangeField, addPostMutateAsync, updatePostMutate, navigate, queryClient])
 
     const onClickImgBtn = useCallback(() => {
         imgUpload()
