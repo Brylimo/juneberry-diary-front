@@ -1,7 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useQueryClient } from '@tanstack/react-query';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGetPostListQuery } from '../../hooks/queries/post/useGetPostListQuery';
+import Pagination from '../common/Pagination';
 
 const BlogHomeWrapper = styled.div`
     width: 100%;
@@ -88,15 +90,23 @@ const PostCardConfigImg = styled.img`
 const BlogHome  = () => {
     const { id: paramId } = useParams()
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
-    const [page, setPage] = useState(0)
-    const { data: publicPostList } = useGetPostListQuery({blogId: paramId, page, isTemp: false, isPublic: true, size: 10})
+    const [page, setPage] = useState(1)
+    const [limit, setLimit] = useState(5);
+    const { data } = useGetPostListQuery({blogId: paramId, page: page - 1, isTemp: false, isPublic: true, size: limit})
 
     const onClickPostCard = useCallback((index) => {
         if (index) {
             navigate(`/blog/${paramId}/${index}`)
         }
     }, [navigate, paramId])
+
+    useEffect(() => {
+        return () => {
+            queryClient.invalidateQueries({ queryKey: ["getPostList"]});
+        }
+    }, [queryClient])
 
     return (
         <BlogHomeWrapper>
@@ -105,7 +115,7 @@ const BlogHome  = () => {
                     <HeaderTxt>전체글</HeaderTxt>
                 </BlogHomeHeader>
                 <PostCardUl>
-                    {publicPostList && publicPostList.map(post => (
+                    {data?.postInfoList && data?.postInfoList.map(post => (
                         <PostCardLi key={post.postId} onClick={() => onClickPostCard(post.index)}>
                             <PostCardTxtBlock>
                                 <PostCardTitle>{post.title}</PostCardTitle>
@@ -122,6 +132,12 @@ const BlogHome  = () => {
                     ))}
                 </PostCardUl>
             </BlogHomeBlock>
+            <Pagination 
+                total={data?.totalCount}
+                limit={limit}
+                page={page}
+                setPage={setPage}
+            />
         </BlogHomeWrapper>)
 }
 

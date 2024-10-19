@@ -133,7 +133,7 @@ const SaveModal = ({tempCnt, tempPosts, setActiveState, onClickTempCard, onChang
     const { id: paramId } = useParams()
     const [page, setPage] = useState(0)
     const [hasMore, setHasMore] = useState(true);
-    const { isPending, isFetching, isLoading, data: tempPostList } = useGetPostListQuery({blogId: paramId, page, isTemp: true, size: 10})
+    const { isPending, isFetching, isLoading, data } = useGetPostListQuery({blogId: paramId, page, isTemp: true, size: 10})
     
     const { ref, inView } = useInView()
 
@@ -144,17 +144,17 @@ const SaveModal = ({tempCnt, tempPosts, setActiveState, onClickTempCard, onChang
     useEffect(() => {
         if (isPending || isFetching || !hasMore) return
 
-        if (page === 0 && tempPostList) {
-            onChangeField({key: 'tempPosts', value: [...tempPostList]})
-        } else if (tempPostList) {
-            onChangeField({key: 'tempPosts', value: [...tempPosts, ...tempPostList]})
+        if (page === 0 && data?.postInfoList) {
+            onChangeField({key: 'tempPosts', value: [...data?.postInfoList]})
+        } else if (data?.postInfoList) {
+            onChangeField({key: 'tempPosts', value: [...tempPosts, ...data?.postInfoList]})
         }
 
-        if (tempPostList.length < 10) {
+        if (data?.postInfoList?.length < 10) {
             setHasMore(false);
         }
 
-    }, [tempPostList, isPending, isFetching])
+    }, [data, isPending, isFetching])
 
     useEffect(() => {
         if (isLoading) return
