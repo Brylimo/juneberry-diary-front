@@ -35,6 +35,7 @@ const LoginForm = () => {
             {
                 onError: () => {
                     console.log('오류 발생');
+                    alert('로그인에 실패했습니다.');
                     dispatch(initializeForm('login'));
                     return;
                 },
