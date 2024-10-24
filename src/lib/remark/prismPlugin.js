@@ -49,7 +49,6 @@ export default function attacher({ include, exclude } = {}) {
       Prism.languages[lang] || Prism.languages.markup,
     );
 
-    console.log('star', highlighted)
     node.type = 'html';
     node.value = `<pre><code class="language-${lang}">${highlighted}</code></pre>`;
   }

@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import prismThemes from '../../lib/styles/prismThemes';
 import { unified } from 'unified';
+import endEffectPlugin from '../../lib/remark/endEffectPlugin';
 import prismPlugin from '../../lib/remark/prismPlugin';
 import remarkParse from 'remark-parse';
 import slug from 'rehype-slug';
@@ -31,8 +32,42 @@ const MarkdownRendererBlock = styled.div`
     }
 
     & menu, ol, ul {
-        list-style: auto;
+        list-style: disc;
         list-style-position: inside;
+    }
+
+    & ul ul {
+        margin-left: 20px;
+    }
+
+    a {
+        color: #54a0ff;
+        text-decoration: underline;
+    }
+
+    table {
+        width: 100%;
+        margin-bottom: 1rem;
+        font-size: 14px;
+
+        & thead th {
+            text-align: center;
+            padding: 5px 5px;
+            background-color: #f68e2c;
+            color: #fff;
+            border: 0.5px solid #ddd;
+        }
+
+        & tr td {
+            padding: 5px 5px;
+            border: 0.5px solid #ddd;
+        }
+    }
+
+    blockquote {
+        border-left: 3px solid lightgray;
+        padding-left: 10px;
+        margin: 0 0 0 15px;
     }
 `
 
@@ -135,6 +170,7 @@ const MarkdownRenderer = ({
             .use(remarkBreak)
             .use(remarkGfm)
             .use(prismPlugin)
+            .use(endEffectPlugin)
             .use(remarkRehype, { allowDangerousHtml: true })
             .use(rehypeRaw)
             .use(slug)
