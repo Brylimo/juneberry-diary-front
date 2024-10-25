@@ -13,7 +13,7 @@ juneberry diary frontent project
 - 프로젝트 개발 투입 인원
   - 1명(나)
 
-## 구동방법
+### 구동방법
 1. yarn install
 2. yarn start
 

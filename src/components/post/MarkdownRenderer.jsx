@@ -29,6 +29,7 @@ const MarkdownRendererBlock = styled.div`
     pre {
         background-color: #fbfcfd;
         padding: 20px 10px;
+        overflow: overlay;
     }
 
     & menu, ol, ul {

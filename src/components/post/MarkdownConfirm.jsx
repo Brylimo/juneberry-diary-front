@@ -11,6 +11,7 @@ const MarkdownConfirmWrapper = styled.div`
 
 const PostPreviewBlock = styled.div`
     flex: 1;
+    overflow: hidden;
 
     @media (max-width: 893px) {
         display:none;
