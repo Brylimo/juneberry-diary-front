@@ -221,29 +221,85 @@ const BlogAbout = () => {
                             <b>Github</b> : <BlogLink href="https://github.com/Brylimo" target="_blank" rel="noopener noreferrer">https://github.com/Brylimo</BlogLink>
                             <br />
                             <b>Email</b> : icj0103@gmail.com
+                            <br/>
+                            <br/>
+                            <b>Career Summary</b> : <br/>
+                            <BlogLink href="https://docs.google.com/document/d/1_lEl3kxrgruhx6m9kaZ0h1zMR4ZRba9CD6_SWnp0xe0/edit?usp=sharing" target="_blank" rel="noopener noreferrer">https://docs.google.com/document/d/1_lEl3kxrgruhx6m9kaZ0h1zMR4ZRba9CD6_SWnp0xe0/edit?usp=sharing</BlogLink>
                         </BlogAboutLink>
                         <BlogAboutSemiTitle>
                             Skills
                         </BlogAboutSemiTitle>
                         <BlogHrLine />
-                        <BlogAboutHighlightTitle>
-                            <span style={{backgroundColor: "rgb(251, 243, 219)"}}>Strong</span>
-                        </BlogAboutHighlightTitle>
-                        <BlogAboutTxt>
-                            Java / JavaScript / Python / JQuery / Spring / Spring Boot / React.js / Express.js / Postgresql / MySQL
-                        </BlogAboutTxt>
-                        <BlogAboutHighlightTitle>
-                            <span style={{backgroundColor: "rgb(251, 243, 219)"}}>Knowledgeable</span>
-                        </BlogAboutHighlightTitle>
-                        <BlogAboutTxt>
-                            TypeScript / Redis / MongoDB / CouchDB
-                        </BlogAboutTxt>
-                        <BlogAboutHighlightTitle>
-                            <span style={{backgroundColor: "rgb(251, 243, 219)"}}>ETC</span>
-                        </BlogAboutHighlightTitle>
-                        <BlogAboutTxt>
-                            Git / Jenkins
-                        </BlogAboutTxt>
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
+                                    <span style={{backgroundColor: "rgb(251, 243, 219)"}}>Backend</span>
+                                </BlogAboutHighlightTitle>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>Java, node.js, python</li>
+                                        <li>Spring Boot, Spring MVC, Spring Data JPA, Spring Security</li>
+                                        <li>JPA, Querydsl, MyBatis, Prisma</li>
+                                        <li>Gradle, Maven</li>
+                                        <li>IntelliJ, Visual Studio Code, Vim, DBeaver, HeidiSQL</li>
+                                        <li>Git</li>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
+                                    <span style={{backgroundColor: "rgb(251, 243, 219)"}}>DevOps</span>
+                                </BlogAboutHighlightTitle>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>AWS EC2, S3, RDS, Lambda, Cloudflare R2, Vercel, Cafe24, GoDaddy</li>
+                                        <li>Postgresql, MySQL, MariaDB, SQLite</li>
+                                        <li>Jenkins</li>
+                                        <li>Nginx, Tomcat, Docker</li>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
+                                    <span style={{backgroundColor: "rgb(251, 243, 219)"}}>Frontend</span>
+                                </BlogAboutHighlightTitle>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>HTML5, CSS, JS(ES5, ES6), Thymeleaf, Pug, JSP, Sass, BootStrap, JQuery</li>
+                                        <li>React.js</li>
+                                        <li>React Query, Redux, Styled Components, CodeMirror</li>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
+                                    <span style={{backgroundColor: "rgb(251, 243, 219)"}}>Collaboration</span>
+                                </BlogAboutHighlightTitle>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>Slack</li>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+                        
                         <BlogAboutSemiTitle>
                             <span>Work Experience & Projects</span>
                             <BlogAboutTag>총 경력 2년</BlogAboutTag>
@@ -430,8 +486,10 @@ const BlogAbout = () => {
                                     <BlogAboutUl>
                                         <li>소우주 사이트 유지보수</li>
                                         <ul>
-                                            <li>JWT 방식을 이용한 인증/인가 개발</li>
-                                            <li>express.js 기반 3가지 기능 추가</li>
+                                            <li>
+                                                잘못된 세션 기반 인증 방식을 JWT 기반 방식으로 변경해 불필요하게 적재되는 세션 데이터 양 100% 감소
+                                            </li>
+                                            <li>HTTPS 프로토콜 기반으로 서비스 변경</li>
                                             <li>Scrum 방식 agile 개발</li>
                                         </ul>
                                     </BlogAboutUl>
