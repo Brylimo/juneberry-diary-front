@@ -7,7 +7,7 @@ const PostPage = () => {
             <Helmet>
                 <title>포스트</title>
             </Helmet>
-            <div style={{ position: 'relative', height: '100%' }}>
+            <div style={{ position: 'relative', height: '100%', marginBottom: '7rem' }}>
                 <PostForm />
             </div>
         </>

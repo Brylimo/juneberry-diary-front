@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 const FooterBlock = styled.footer`
-    margin-top: 7rem;
     background-color: #f0f0f0;
     padding: 18px;
     text-align: center;

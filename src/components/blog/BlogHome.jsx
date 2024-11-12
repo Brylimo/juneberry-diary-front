@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import { useQueryClient } from '@tanstack/react-query';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGetPostListQuery } from '../../hooks/queries/post/useGetPostListQuery';
@@ -25,6 +25,7 @@ const BlogHomeBlock = styled.div`
 const BlogHomeHeader = styled.div`
     display: flex;
     flex-direction: row;
+    align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #7a583a;
 `
@@ -87,6 +88,36 @@ const PostCardConfigImg = styled.img`
     width: 45%;
 `
 
+const PortfolioBtn = styled.button`
+    display: flex;
+    align-items: center;
+    height: 80%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: white;
+    padding: 3px;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.2);
+    border-radius: 4px;
+    letter-spacing: 1px;
+    font-weight: 300;
+    font-family: "Source Sans Pro", sans-serif;
+    padding: 3px 6px;
+    ${props => props.bgColor &&
+        css`
+            background-color: ${props.bgColor};
+        `
+    }
+
+    &:hover {
+        ${props => props.hoverColor &&
+            css`
+                background-color: ${props.hoverColor};
+            `
+        }
+    }
+`;
+
 const BlogHome  = () => {
     const { id: paramId } = useParams()
     const navigate = useNavigate();
@@ -102,6 +133,10 @@ const BlogHome  = () => {
         }
     }, [navigate, paramId])
 
+    const onClickPortfolio = useCallback(() => {
+        navigate(`/blog/${paramId}/about`)
+    }, [navigate, paramId])
+
     useEffect(() => {
         return () => {
             queryClient.invalidateQueries({ queryKey: ["getPostList"]});
@@ -113,6 +148,9 @@ const BlogHome  = () => {
             <BlogHomeBlock>
                 <BlogHomeHeader>
                     <HeaderTxt>전체글</HeaderTxt>
+                    { paramId === 'tourist0302' ?
+                        <PortfolioBtn onClick={onClickPortfolio} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>포트폴리오</PortfolioBtn> : null
+                    }
                 </BlogHomeHeader>
                 <PostCardUl>
                     {data?.postInfoList && data?.postInfoList.map(post => (

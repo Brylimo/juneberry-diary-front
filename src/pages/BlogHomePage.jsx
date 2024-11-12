@@ -7,7 +7,7 @@ const BlogHomePage = () => {
             <Helmet>
                 <title>블로그</title>
             </Helmet>
-            <div style={{ position: 'relative', height: '100%' }}>
+            <div style={{ position: 'relative', height: '100%', marginBottom: '7rem' }}>
                 <BlogHomeForm />
             </div>
         </>

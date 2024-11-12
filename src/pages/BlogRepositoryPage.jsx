@@ -8,7 +8,7 @@ const BlogRepositoryPage = () => {
             <Helmet>
                 <title>블로그 저장소</title>
             </Helmet>
-            <div style={{ position: 'relative', height: '100%' }}>
+            <div style={{ position: 'relative', height: '100%', marginBottom: '7rem' }}>
                 <BlogRepositoryForm />
             </div>
         </>
