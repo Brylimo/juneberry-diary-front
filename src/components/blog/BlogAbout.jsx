@@ -365,7 +365,7 @@ const BlogAbout = () => {
                                     퍼스널 모빌리티(PM) 안전사고 다발지역 안내 서비스[PL]
                                 </BlogAboutHighlightTitle>
                                 <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
-                                    2023.04 ~ 2023.10 (총 7개월) / 1명
+                                    2023.04 ~ 2023.10 (총 7개월) / 2명
                                 </BlogAboutTextBlock>
                                 <BlogAboutTextBlock style={{marginBottom: '10px'}}>
                                     <BlogLink href="https://juneberrydiary.com/blog/tourist0302/16" target="_blank" rel="noopener noreferrer">https://juneberrydiary.com/blog/tourist0302/16</BlogLink>
