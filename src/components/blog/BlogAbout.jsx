@@ -487,7 +487,7 @@ const BlogAbout = () => {
                                         <li>소우주 사이트 유지보수</li>
                                         <ul>
                                             <li>
-                                                잘못된 세션 기반 인증 방식을 JWT 기반 방식으로 변경해 불필요하게 적재되는 세션 데이터 양 100% 감소
+                                                잘못된 세션 기반 인증 방식을 JWT 기반 방식으로 변경해 불필요하게 적재되는 세션 데이터 양 <b>100%</b> 감소
                                             </li>
                                             <li>HTTPS 프로토콜 기반으로 서비스 변경</li>
                                             <li>Scrum 방식 agile 개발</li>
@@ -507,10 +507,13 @@ const BlogAbout = () => {
                                 <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
                                     준베리다이어리[PL]
                                 </BlogAboutHighlightTitle>
-                                <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
+                                <BlogAboutTextBlock type={"text"}>
                                     2024.03 ~ 현재 / 1명
                                     <a href="https://github.com/Brylimo/juneberry-diary-front" target="_blank" rel="noopener noreferrer"><GitHubIconCustom style={{color: 'rgb(25, 118, 210)'}} /></a>
                                     <a href="https://github.com/Brylimo/juneberry-diary-back" target="_blank" rel="noopener noreferrer"><GitHubIconCustom /></a>
+                                </BlogAboutTextBlock>
+                                <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
+                                    임시 ID : jbdtest, 임시 PWD : test99
                                 </BlogAboutTextBlock>
                                 <BlogAboutTextBlock style={{marginBottom: '10px'}}>
                                     <BlogLink href="https://juneberrydiary.com/blog/tourist0302/28" target="_blank" rel="noopener noreferrer">https://juneberrydiary.com/blog/tourist0302/28</BlogLink>
@@ -540,9 +543,12 @@ const BlogAbout = () => {
                                 <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
                                     MERCI[PL]
                                 </BlogAboutHighlightTitle>
-                                <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
+                                <BlogAboutTextBlock type={"text"}>
                                     2023.08 ~ 2024.03 / 1명
                                     <a href="https://github.com/Brylimo/merci" target="_blank" rel="noopener noreferrer"><GitHubIconCustom /></a>
+                                </BlogAboutTextBlock>
+                                <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
+                                    임시 ID : mercitest, 임시 PWD : test99
                                 </BlogAboutTextBlock>
                                 <BlogAboutTextBlock style={{marginBottom: '10px'}}>
                                     <BlogLink href="https://www.juneberrydiary.com/blog/tourist0302/17" target="_blank" rel="noopener noreferrer">https://www.juneberrydiary.com/blog/tourist0302/17</BlogLink>

@@ -5,12 +5,12 @@ export const uploadImg = async ({editorImg, blogId, postId}) => {
         headers: { 'Content-Type': 'multipart/form-data' },
     };
 
-    const res = await client.post('/post/uploadPostImage', { editorImg, blogId, postId }, config);
+    const res = await client.post('/v1/post/uploadPostImage', { editorImg, blogId, postId }, config);
     return res.data;
 }
 
 export const getPost = async (blogId, id) => {
-    const res = await client.get('/post/getPost', {
+    const res = await client.get('/v1/post/getPost', {
         params: {
             blogId: blogId,
             id: id
@@ -20,7 +20,7 @@ export const getPost = async (blogId, id) => {
 }
 
 export const getPostByIndex = async (blogId, index) => {
-    const res = await client.get('/post/getPostByIndex', {
+    const res = await client.get('/v1/post/getPostByIndex', {
         params: {
             blogId: blogId,
             index: index
@@ -30,7 +30,7 @@ export const getPostByIndex = async (blogId, index) => {
 }
 
 export const getTempPostCnt = async (blogId) => {
-    const res = await client.get('/post/getTempPostCnt', {
+    const res = await client.get('/v1/post/getTempPostCnt', {
         params: {
             blogId: blogId
         }
@@ -39,7 +39,7 @@ export const getTempPostCnt = async (blogId) => {
 }
 
 export const getPostList = async ({blogId, isTemp, isPublic, page, size}) => {
-    const res = await client.get('/post/getPostList', {
+    const res = await client.get('/v1/post/getPostList', {
         params: {
             blogId: blogId,
             isTemp: isTemp,
@@ -56,7 +56,7 @@ export const updatePost = async ({ postId, title, description, content, blogId, 
         headers: { 'Content-Type': 'multipart/form-data' },
     };
     
-    const res = await client.post('/post/updatePost', {
+    const res = await client.post('/v1/post/updatePost', {
         postId, title, description, content, blogId, isTemp, isPublic, thumbnailImg, thumbnailPath
     }, config)
     return res.data;
@@ -71,6 +71,6 @@ export const addPost = async ({ date, title, description, content, isTemp, isPub
     const month = ('0' + (date.getMonth() + 1)).slice(-2);
     const day = ('0' + date.getDate()).slice(-2);
 
-    const res = await client.post('/post/addPost', { date: `${year}-${month}-${day}`, title, description, content, isTemp, isPublic, blogId, thumbnailImg, thumbnailPath }, config)
+    const res = await client.post('/v1/post/addPost', { date: `${year}-${month}-${day}`, title, description, content, isTemp, isPublic, blogId, thumbnailImg, thumbnailPath }, config)
     return res.data;
 }
