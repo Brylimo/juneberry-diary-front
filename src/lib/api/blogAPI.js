@@ -1,7 +1,7 @@
 import client from "./client";
 
 export const getBlogById = async (id) => {
-    const res = await client.get('/blog/getBlogById', {
+    const res = await client.get('/v1/blog/getBlogById', {
         params: {
             id: id
         }
@@ -10,11 +10,11 @@ export const getBlogById = async (id) => {
 }
 
 export const getAllBlogsByUser = async () => {
-    const res = await client.get('/blog/getAllBlogsByUser')
+    const res = await client.get('/v1/blog/getAllBlogsByUser')
     return res.data;
 }
 
 export const createBlog = async ({ blogId, blogName }) => {
-    const res = await client.post('/blog/createBlog', { blogId, blogName })
+    const res = await client.post('/v1/blog/createBlog', { blogId, blogName })
     return res.data;
 }
