@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import MarkdownRenderer from './MarkdownRenderer';
 
 const PostWrapper = styled.div`
@@ -33,6 +34,16 @@ const PostTitle = styled.div`
     color: #111;
 `
 
+const PostWriterBlock = styled.div`
+    display: flex;
+    gap: 10px;
+`;
+
+const PostWriterSemiBlock = styled.div`
+    display: flex;
+    gap: 5px;
+`
+
 const PostWriter = styled.div`
     font-size: 13px;
     color: #111;
@@ -42,13 +53,22 @@ const PostContentBlock = styled.div`
     width: 100%;
 `
 
-const Post = ({ post }) => {
+const Post = ({ post, user, blogId, handleDeletePost }) => {
     return (
         <PostWrapper>
             <PostBlock>
                 <PostHeaderBlock>
                     <PostTitle>{post?.title}</PostTitle>
-                    <PostWriter>{post?.updatedDateTime}</PostWriter>
+                    <PostWriterBlock>
+                        <PostWriter>{post?.updatedDateTime}</PostWriter>
+                        {user ? (
+                        <PostWriterSemiBlock>
+                            <PostWriter>
+                                <Link to={`/blog/${blogId}/publish?id=${post?.id}`}>수정</Link>
+                            </PostWriter>
+                            <PostWriter onClick={() => handleDeletePost(post?.id)} style={{cursor: 'pointer'}}>삭제</PostWriter>
+                        </PostWriterSemiBlock>) : null}
+                    </PostWriterBlock>
                 </PostHeaderBlock>
                 <PostContentBlock>
                     <MarkdownRenderer markdown={post?.content}/>

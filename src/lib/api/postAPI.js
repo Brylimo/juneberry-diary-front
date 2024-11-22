@@ -62,6 +62,11 @@ export const updatePost = async ({ postId, title, description, content, blogId, 
     return res.data;
 }
 
+export const deletePost = async (id) => {
+    const res = await client.delete(`/v1/post/${id}`);
+    return res.data;
+}
+
 export const addPost = async ({ date, title, description, content, isTemp, isPublic, blogId, thumbnailImg, thumbnailPath }) => {
     const config = {
         headers: { 'Content-Type': 'multipart/form-data' },

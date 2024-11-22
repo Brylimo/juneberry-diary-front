@@ -41,7 +41,7 @@ const LoginForm = () => {
                 },
                 onSuccess: (res) => {
                     dispatch(signin(res.data))
-                    navigate('/geo/map');
+                    navigate('/cal/calendar');
                 }
             }
         );

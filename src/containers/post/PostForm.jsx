@@ -1,14 +1,24 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useCallback} from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { initialize, storePost } from '../../modules/publish';
 import { useGetPostByIndexQuery } from '../../hooks/queries/post/useGetPostByIndexQuery';
+import { useDeletePostMutation } from '../../hooks/mutations/post/useDeletePostMutation';
 import Post from '../../components/post/Post';
+import { useSelector } from 'react-redux';
 
 const PostForm = () => {
     const { id: blogId, pid: index } = useParams();
     const dispatch = useDispatch();
+    const { user } = useSelector(({ user }) => ({
+        user: user.user
+    }));
     const { isLoading, isFetching, data: post } = useGetPostByIndexQuery(blogId, index)
+    const { mutate: deletePostMutate } = useDeletePostMutation();
+
+    const handleDeletePost = useCallback((id) => {
+        deletePostMutate(id);
+    }, [deletePostMutate])
 
     useEffect(() => {
         return () => {
@@ -35,7 +45,12 @@ const PostForm = () => {
         return null
     }
 
-    return <Post post={post} />
+    return <Post
+        post={post}
+        user={user}
+        blogId={blogId}
+        handleDeletePost={handleDeletePost}
+    />
 }
 
 export default PostForm;
