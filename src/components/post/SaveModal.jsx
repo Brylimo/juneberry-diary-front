@@ -187,7 +187,7 @@ const SaveModal = ({tempCnt, tempPosts, setActiveState, onClickTempCard, onChang
                         {tempPosts.map((item, index) => (
                             <TempCard key={index} onClick={() => onClickTempCard(item)}>
                                 <TempCardTitle>{item.title}</TempCardTitle>
-                                <TempCardDate>{item.updatedDateTime}</TempCardDate>
+                                <TempCardDate>{item.registeredDateTime}</TempCardDate>
                             </TempCard>
                         ))}
                         <div ref={ref}></div>

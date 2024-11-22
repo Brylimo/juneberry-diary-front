@@ -91,7 +91,6 @@ const sanitizeEventScript = (htmlString) => {
 }
 
 const filter = (html) => {
-    console.log('sun', html)
     const eventSanitizedString = sanitizeEventScript(html);
     return sanitize(eventSanitizedString, {
         allowedTags: [
