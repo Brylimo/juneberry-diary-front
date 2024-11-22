@@ -1,7 +1,9 @@
 import React, {useState, useCallback} from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useHtml2Pdf } from '../../hooks/useHtml2Pdf';
 import MarkdownRenderer from './MarkdownRenderer';
+import DownloadIcon from '@mui/icons-material/Download';
 
 const PostWrapper = styled.div`
     width: 100%;
@@ -54,7 +56,20 @@ const PostContentBlock = styled.div`
     width: 100%;
 `
 
+const DownloadIconCustom = styled(DownloadIcon)`
+    width: 18px;
+    height: 18px;
+    opacity: 0.5;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 1;
+    }
+`;
+
 const Post = ({ post, user, blogId, handleDeletePost }) => {
+    const [ pdfRef, convertToPdf ] = useHtml2Pdf();
+
     const formatDate = useCallback((date) => {
         if (!date) return null;
 
@@ -70,7 +85,7 @@ const Post = ({ post, user, blogId, handleDeletePost }) => {
 
     return (
         <PostWrapper>
-            <PostBlock>
+            <PostBlock ref={pdfRef}>
                 <PostHeaderBlock>
                     <PostTitle>{post?.title}</PostTitle>
                     <PostWriterBlock>
@@ -81,6 +96,7 @@ const Post = ({ post, user, blogId, handleDeletePost }) => {
                                 <Link to={`/blog/${blogId}/publish?id=${post?.id}`}>수정</Link>
                             </PostWriter>
                             <PostWriter onClick={() => handleDeletePost(post?.id)} style={{cursor: 'pointer'}}>삭제</PostWriter>
+                            <DownloadIconCustom onClick={() => convertToPdf(post?.title)} />
                         </PostWriterSemiBlock>) : null}
                     </PostWriterBlock>
                 </PostHeaderBlock>
