@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import Profile from "../components/user/Profile";
+import ProfileForm from "../containers/user/ProfileForm";
 
 const ProfilePage = () => {
     return (
@@ -8,7 +8,7 @@ const ProfilePage = () => {
                 <title>프로필</title>
             </Helmet>
             <div style={{ position: 'relative', height: '100%' }}>
-                <Profile />  
+                <ProfileForm />  
             </div>
         </>
     );

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useHtml2Pdf } from '../../hooks/useHtml2Pdf';
 import MarkdownRenderer from './MarkdownRenderer';
 import DownloadIcon from '@mui/icons-material/Download';
+import { Helmet } from "react-helmet-async";
 
 const PostWrapper = styled.div`
     width: 100%;
@@ -84,27 +85,32 @@ const Post = ({ post, user, blogId, handleDeletePost }) => {
     }
 
     return (
-        <PostWrapper>
-            <PostBlock ref={pdfRef}>
-                <PostHeaderBlock>
-                    <PostTitle>{post?.title}</PostTitle>
-                    <PostWriterBlock>
-                        <PostWriter><b>{blogId}</b> · {formatDate(post?.registeredDateTime)}</PostWriter>
-                        {user ? (
-                        <PostWriterSemiBlock>
-                            <PostWriter>
-                                <Link to={`/blog/${blogId}/publish?id=${post?.id}`}>수정</Link>
-                            </PostWriter>
-                            <PostWriter onClick={() => handleDeletePost(post?.id)} style={{cursor: 'pointer'}}>삭제</PostWriter>
-                            <DownloadIconCustom onClick={() => convertToPdf(post?.title)} />
-                        </PostWriterSemiBlock>) : null}
-                    </PostWriterBlock>
-                </PostHeaderBlock>
-                <PostContentBlock>
-                    <MarkdownRenderer markdown={post?.content}/>
-                </PostContentBlock>
-            </PostBlock>
-        </PostWrapper>
+        <>
+            <Helmet>
+                <title>{post?.title}</title>
+            </Helmet>
+            <PostWrapper>
+                <PostBlock ref={pdfRef}>
+                    <PostHeaderBlock>
+                        <PostTitle>{post?.title}</PostTitle>
+                        <PostWriterBlock>
+                            <PostWriter><b>{blogId}</b> · {formatDate(post?.registeredDateTime)}</PostWriter>
+                            {user ? (
+                            <PostWriterSemiBlock>
+                                <PostWriter>
+                                    <Link to={`/blog/${blogId}/publish?id=${post?.id}`}>수정</Link>
+                                </PostWriter>
+                                <PostWriter onClick={() => handleDeletePost(post?.id)} style={{cursor: 'pointer'}}>삭제</PostWriter>
+                                <DownloadIconCustom onClick={() => convertToPdf(post?.title)} />
+                            </PostWriterSemiBlock>) : null}
+                        </PostWriterBlock>
+                    </PostHeaderBlock>
+                    <PostContentBlock>
+                        <MarkdownRenderer markdown={post?.content}/>
+                    </PostContentBlock>
+                </PostBlock>
+            </PostWrapper>
+        </>
     )
 }
 

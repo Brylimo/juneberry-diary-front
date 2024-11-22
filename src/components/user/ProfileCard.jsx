@@ -37,15 +37,14 @@ const PCInfoUserName = styled.div`
     font-size: 35px;
 `;
 
-const ProfileCard = () => {
-
+const ProfileCard = ({ user }) => {
     return (
         <ProfileCardBlock>
             <ProfileCardImgBlock>
             </ProfileCardImgBlock>
             <ProfileCardInfoBlock>
                 <PCInfoUserName>
-                    brylimo
+                    {user.username}
                 </PCInfoUserName>
             </ProfileCardInfoBlock>
         </ProfileCardBlock>

@@ -24,11 +24,11 @@ const ProfileContent = styled.div`
     flex: 6;
 `
 
-const Profile = () => {
+const Profile = ({ user }) => {
     return (
         <ProfileBlock>
             <ProfileLeftSidebar>
-                <ProfileCard />
+                <ProfileCard user={user} />
             </ProfileLeftSidebar>
             <ProfileContent>
             </ProfileContent>

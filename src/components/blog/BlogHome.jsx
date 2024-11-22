@@ -4,6 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGetPostListQuery } from '../../hooks/queries/post/useGetPostListQuery';
 import Pagination from '../common/Pagination';
+import { Helmet } from "react-helmet-async";
 
 const BlogHomeWrapper = styled.div`
     width: 100%;
@@ -118,7 +119,7 @@ const PortfolioBtn = styled.button`
     }
 `;
 
-const BlogHome  = () => {
+const BlogHome  = ({ blogName }) => {
     const { id: paramId } = useParams()
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -144,39 +145,44 @@ const BlogHome  = () => {
     }, [queryClient])
 
     return (
-        <BlogHomeWrapper>
-            <BlogHomeBlock>
-                <BlogHomeHeader>
-                    <HeaderTxt>전체글</HeaderTxt>
-                    { paramId === 'tourist0302' ?
-                        <PortfolioBtn onClick={onClickPortfolio} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>포트폴리오</PortfolioBtn> : null
-                    }
-                </BlogHomeHeader>
-                <PostCardUl>
-                    {data?.postInfoList && data?.postInfoList.map(post => (
-                        <PostCardLi key={post.postId} onClick={() => onClickPostCard(post.index)}>
-                            <PostCardTxtBlock>
-                                <PostCardTitle>{post.title}</PostCardTitle>
-                                <PostCardDesc>{post.description}</PostCardDesc>
-                            </PostCardTxtBlock>
-                            <PostCardThumbnailBlock>
-                                {post.thumbnailPath ?
-                                 (<PostCardThumbnailImg src={post.thumbnailPath}/>) : 
-                                 (<PostCardConfigBlock>
-                                    <PostCardConfigImg alt="img icon" src="/image-icon.svg"/>
-                                 </PostCardConfigBlock>)}
-                            </PostCardThumbnailBlock>
-                        </PostCardLi>
-                    ))}
-                </PostCardUl>
-            </BlogHomeBlock>
-            <Pagination 
-                total={data?.totalCount}
-                limit={limit}
-                page={page}
-                setPage={setPage}
-            />
-        </BlogHomeWrapper>)
+        <>
+            <Helmet>
+                <title>{blogName}</title>
+            </Helmet>
+            <BlogHomeWrapper>
+                <BlogHomeBlock>
+                    <BlogHomeHeader>
+                        <HeaderTxt>전체글</HeaderTxt>
+                        { paramId === 'tourist0302' ?
+                            <PortfolioBtn onClick={onClickPortfolio} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>포트폴리오</PortfolioBtn> : null
+                        }
+                    </BlogHomeHeader>
+                    <PostCardUl>
+                        {data?.postInfoList && data?.postInfoList.map(post => (
+                            <PostCardLi key={post.postId} onClick={() => onClickPostCard(post.index)}>
+                                <PostCardTxtBlock>
+                                    <PostCardTitle>{post.title}</PostCardTitle>
+                                    <PostCardDesc>{post.description}</PostCardDesc>
+                                </PostCardTxtBlock>
+                                <PostCardThumbnailBlock>
+                                    {post.thumbnailPath ?
+                                    (<PostCardThumbnailImg src={post.thumbnailPath}/>) : 
+                                    (<PostCardConfigBlock>
+                                        <PostCardConfigImg alt="img icon" src="/image-icon.svg"/>
+                                    </PostCardConfigBlock>)}
+                                </PostCardThumbnailBlock>
+                            </PostCardLi>
+                        ))}
+                    </PostCardUl>
+                </BlogHomeBlock>
+                <Pagination 
+                    total={data?.totalCount}
+                    limit={limit}
+                    page={page}
+                    setPage={setPage}
+                />
+            </BlogHomeWrapper>
+        </>)
 }
 
 export default BlogHome;
