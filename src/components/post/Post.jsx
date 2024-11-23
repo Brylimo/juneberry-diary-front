@@ -2,9 +2,10 @@ import React, {useState, useCallback} from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useHtml2Pdf } from '../../hooks/useHtml2Pdf';
+import { Helmet } from "react-helmet-async";
 import MarkdownRenderer from './MarkdownRenderer';
 import DownloadIcon from '@mui/icons-material/Download';
-import { Helmet } from "react-helmet-async";
+import DisplayAds from '../ad/DisplayAds';
 
 const PostWrapper = styled.div`
     width: 100%;
@@ -105,6 +106,7 @@ const Post = ({ post, user, blogId, handleDeletePost }) => {
                             </PostWriterSemiBlock>) : null}
                         </PostWriterBlock>
                     </PostHeaderBlock>
+                    <DisplayAds/>
                     <PostContentBlock>
                         <MarkdownRenderer markdown={post?.content}/>
                     </PostContentBlock>

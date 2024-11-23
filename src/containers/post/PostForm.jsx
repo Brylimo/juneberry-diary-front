@@ -16,7 +16,9 @@ const PostForm = () => {
     const { mutate: deletePostMutate } = useDeletePostMutation();
 
     const handleDeletePost = useCallback((id) => {
-        deletePostMutate(id);
+        if (window.confirm("정말 포스트를 삭제하시겠습니까?")) {
+            deletePostMutate(id);
+        }
     }, [deletePostMutate])
 
     useEffect(() => {
