@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import { Helmet } from 'react-helmet-async';
+import DiaryMain from '../components/diary/DiaryMain';
 
 const DiaryMainPage = () => {
     return (
@@ -7,7 +8,9 @@ const DiaryMainPage = () => {
             <Helmet>
                 <title>다이어리</title>
             </Helmet>
-            <div>hi</div>
+            <div style={{ position: 'relative', height: '100%' }}>
+                <DiaryMain/>
+            </div>
         </>
     )
 }
