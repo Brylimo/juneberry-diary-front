@@ -60,6 +60,10 @@ const PostCardTxtBlock = styled.div`
     ${({ theme }) => theme.md`
         width: calc(100% - 150px);
     `};
+
+    ${({ theme }) => theme.xs`
+        width: calc(100% - 110px);
+    `};
 `
 
 const PostCardTitle = styled.div`
@@ -78,6 +82,7 @@ const PostTagBlock = styled.div`
     margin-top: 20px;
     display: flex;
     gap: 5px;
+    flex-wrap: wrap;
 `
 
 const PostTagBadge = styled.div`
@@ -88,6 +93,10 @@ const PostTagBadge = styled.div`
     border-radius: 7px;
     cursor: default;
     font-weight: 400;
+
+    ${({ theme }) => theme.xs`
+        font-size: 10px;
+    `};
 `;
 
 const PostCardThumbnailBlock = styled.div`
@@ -97,6 +106,11 @@ const PostCardThumbnailBlock = styled.div`
     ${({ theme }) => theme.md`
         width: 150px;
         height: 105.71px;
+    `};
+
+    ${({ theme }) => theme.xs`
+        width: 110px;
+        height: 77.5pxpx;
     `};
 `;
 
