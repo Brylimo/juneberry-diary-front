@@ -48,12 +48,13 @@ const PostCardLi = styled.li`
     cursor: pointer;
     border-bottom: 1px solid #d0d7de;
     padding: 30px 0;
-    gap: 78px;
+    gap: 10px;
 `
 
 const PostCardTxtBlock = styled.div`
     display: flex;
     flex-direction: column;
+    flex: 1;
 `
 
 const PostCardTitle = styled.div`
@@ -64,6 +65,8 @@ const PostCardTitle = styled.div`
 
 const PostCardDesc = styled.div`
     font-size: 14px;
+    word-wrap: break-word;
+    word-break: break-word;
 `
 
 const PostTagBlock = styled.div`
@@ -85,6 +88,11 @@ const PostTagBadge = styled.div`
 const PostCardThumbnailBlock = styled.div`
     width: 210px;
     height: 148px;
+
+    ${({ theme }) => theme.md`
+        width: 150px;
+        height: 105.71px;
+    `};
 `;
 
 const PostCardThumbnailImg = styled.img`
