@@ -58,6 +58,24 @@ const PostContentBlock = styled.div`
     width: 100%;
 `
 
+const PostTagBlock = styled.div`
+    margin: 25px 0 35px 0;
+    padding: 27px 0 0 0;
+    display: flex;
+    gap: 5px;
+`
+
+const PostTagBadge = styled.div`
+    background-color: #fff;
+    color: #959595;
+    border: 1px solid #d1d1d1;
+    font-size: 14px;
+    padding: 0.1rem 1.5rem;
+    border-radius: 13px;
+    cursor: default;
+    font-weight: 400;
+`;
+
 const DownloadIconCustom = styled(DownloadIcon)`
     width: 18px;
     height: 18px;
@@ -110,6 +128,11 @@ const Post = ({ post, user, blogId, handleDeletePost }) => {
                     <PostContentBlock>
                         <MarkdownRenderer markdown={post?.content}/>
                     </PostContentBlock>
+                    <PostTagBlock>
+                        {post?.tags.map(tag => (
+                            <PostTagBadge>{tag}</PostTagBadge>
+                        ))}
+                    </PostTagBlock>
                 </PostBlock>
             </PostWrapper>
         </>

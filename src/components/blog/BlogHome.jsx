@@ -59,12 +59,28 @@ const PostCardTxtBlock = styled.div`
 const PostCardTitle = styled.div`
     font-size: 16px;
     font-weight: 700;
-    margin-bottom: 2px;
+    margin-bottom: 10px;
 `
 
 const PostCardDesc = styled.div`
-    font-size: 12px;
+    font-size: 14px;
 `
+
+const PostTagBlock = styled.div`
+    margin-top: 20px;
+    display: flex;
+    gap: 5px;
+`
+
+const PostTagBadge = styled.div`
+    background-color: #F5F5F5;
+    color: green;
+    font-size: 14px;
+    padding: 0.1rem 1.5rem;
+    border-radius: 7px;
+    cursor: default;
+    font-weight: 400;
+`;
 
 const PostCardThumbnailBlock = styled.div`
     width: 210px;
@@ -163,6 +179,11 @@ const BlogHome  = ({ blogName }) => {
                                 <PostCardTxtBlock>
                                     <PostCardTitle>{post.title}</PostCardTitle>
                                     <PostCardDesc>{post.description}</PostCardDesc>
+                                    <PostTagBlock>
+                                        {post.tags?.map((tag) => (
+                                            <PostTagBadge>{tag}</PostTagBadge>
+                                        ))}
+                                    </PostTagBlock>
                                 </PostCardTxtBlock>
                                 <PostCardThumbnailBlock>
                                     {post.thumbnailPath ?
