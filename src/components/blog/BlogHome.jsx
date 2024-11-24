@@ -55,6 +55,11 @@ const PostCardTxtBlock = styled.div`
     display: flex;
     flex-direction: column;
     flex: 1;
+    width: calc(100% - 210px);
+
+    ${({ theme }) => theme.md`
+        width: calc(100% - 150px);
+    `};
 `
 
 const PostCardTitle = styled.div`
