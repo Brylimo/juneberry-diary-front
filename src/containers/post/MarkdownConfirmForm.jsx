@@ -26,10 +26,11 @@ const MarkdownConfirmForm = () => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { title, description, mrkdown, isPublic, postId, thumbnailPath } = useSelector(({ publish }) => ({
+    const { title, description, mrkdown, tags, isPublic, postId, thumbnailPath } = useSelector(({ publish }) => ({
         title: publish.title,
         description: publish.description,
         mrkdown: publish.mrkdown,
+        tags: publish.postTags,
         isPublic: publish.isPublic,
         postId: publish.postId,
         thumbnailPath: publish.thumbnailPath
@@ -62,6 +63,7 @@ const MarkdownConfirmForm = () => {
                         blogId: blogId,
                         isTemp: false,
                         isPublic: isPublic,
+                        tags: tags,
                         thumbnailImg: imgFile
                     },
                     {
@@ -101,6 +103,7 @@ const MarkdownConfirmForm = () => {
                         blogId: blogId,
                         isTemp: false,
                         isPublic: isPublic,
+                        tags: tags,
                         thumbnailImg: imgFile
                     },
                     {
@@ -127,7 +130,7 @@ const MarkdownConfirmForm = () => {
                     })
             }
         },
-        [blogId, thumbnailURL, imgFile, description, isPublic, mrkdown, title, postId, onChangeField, addPostMutateAsync, updatePostMutate, navigate, queryClient])
+        [blogId, thumbnailURL, imgFile, description, isPublic, mrkdown, title, postId, tags, onChangeField, addPostMutateAsync, updatePostMutate, navigate, queryClient])
 
     const onClickImgBtn = useCallback(() => {
         imgUpload()
@@ -151,6 +154,7 @@ const MarkdownConfirmForm = () => {
                 title={title} 
                 description={description} 
                 mrkdown={replaceEmptyLinesWithBr(mrkdown)}
+                tags={tags}
                 isPublic={isPublic}
                 thumbnailURL={thumbnailURL} 
                 onChangeField={onChangeField}

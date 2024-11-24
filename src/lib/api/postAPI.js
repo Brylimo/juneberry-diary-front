@@ -51,13 +51,13 @@ export const getPostList = async ({blogId, isTemp, isPublic, page, size}) => {
     return res.data;
 }
 
-export const updatePost = async ({ postId, title, description, content, blogId, isTemp, isPublic, thumbnailImg, thumbnailPath }) => {
+export const updatePost = async ({ postId, title, description, content, blogId, isTemp, isPublic, tags, thumbnailImg, thumbnailPath }) => {
     const config = {
         headers: { 'Content-Type': 'multipart/form-data' },
     };
     
     const res = await client.post('/v1/post/updatePost', {
-        postId, title, description, content, blogId, isTemp, isPublic, thumbnailImg, thumbnailPath
+        postId, title, description, content, blogId, isTemp, isPublic, tags, thumbnailImg, thumbnailPath
     }, config)
     return res.data;
 }
@@ -67,7 +67,7 @@ export const deletePost = async (id) => {
     return res.data;
 }
 
-export const addPost = async ({ date, title, description, content, isTemp, isPublic, blogId, thumbnailImg, thumbnailPath }) => {
+export const addPost = async ({ date, title, description, content, isTemp, isPublic, blogId, tags, thumbnailImg, thumbnailPath }) => {
     const config = {
         headers: { 'Content-Type': 'multipart/form-data' },
     };
@@ -76,6 +76,6 @@ export const addPost = async ({ date, title, description, content, isTemp, isPub
     const month = ('0' + (date.getMonth() + 1)).slice(-2);
     const day = ('0' + date.getDate()).slice(-2);
 
-    const res = await client.post('/v1/post/addPost', { date: `${year}-${month}-${day}`, title, description, content, isTemp, isPublic, blogId, thumbnailImg, thumbnailPath }, config)
+    const res = await client.post('/v1/post/addPost', { date: `${year}-${month}-${day}`, title, description, content, isTemp, isPublic, blogId, tags, thumbnailImg, thumbnailPath }, config)
     return res.data;
 }

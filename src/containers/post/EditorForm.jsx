@@ -29,6 +29,7 @@ const EditorForm = () => {
                 title: tempPost.title,
                 description: tempPost.description,
                 mrkdown: tempPost.content,
+                postTags: tempPost.tags,
                 updateDt: null,
                 isTemp: tempPost.isTemp,
                 isPublic: tempPost.isPublic,

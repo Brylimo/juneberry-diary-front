@@ -20,7 +20,7 @@ const DiaryMain = () => {
     return (
         <DiaryMainWrapper>
             <div style={{fontSize: "65px", marginBottom: "20px"}}>(˘･_･˘)</div>
-            diary 페이지는 현재 공사중에 있어요.
+            diary 페이지는 현재 공사중에 있어요. 🚧
         </DiaryMainWrapper>
     )
 }

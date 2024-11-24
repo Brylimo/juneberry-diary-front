@@ -24,18 +24,19 @@ const initialState = {
     postId: '',
     thumbnailPath: null,
     updateDt: null,
-    hashtags: [],
+    postTags: [],
 }
 
 const publish = handleActions(
     {
         [INITIALIZE]: state => initialState,
-        [STORE_POST]: (state, { payload: {id, title, description, mrkdown, updateDt, isTemp, isPublic, thumbnailPath }}) => ({
+        [STORE_POST]: (state, { payload: {id, title, description, mrkdown, postTags, updateDt, isTemp, isPublic, thumbnailPath }}) => ({
             ...state,
             postId: id,
             title: title,
             description: description || '',
             mrkdown: mrkdown,
+            postTags: postTags,
             updateDt: updateDt,
             isTemp: isTemp,
             isPublic: isPublic,

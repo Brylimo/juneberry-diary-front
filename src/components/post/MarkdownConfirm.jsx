@@ -364,6 +364,7 @@ const MarkdownConfirm = ({
         title, 
         description, 
         mrkdown,
+        tags,
         isPublic,
         thumbnailURL, 
         onChangeField, 
@@ -375,8 +376,7 @@ const MarkdownConfirm = ({
 
     const [currentMenu, setCurrentMenu] = useState("thumbnail");
     const [imgBlockWidth, setImgBlockWidth] = useState(0);
-    const [hashtags, setHashtags] = useState([])
-    const [hashtagTxt, setHashtagTxt] = useState("")
+    const [tagTxt, setTagTxt] = useState("")
 
     const postConfigImgBlockRef = useRef(null);
 
@@ -416,20 +416,28 @@ const MarkdownConfirm = ({
     }, [])
 
     const handleHashTagTxtChange = useCallback((event) => {
-        setHashtagTxt(event.target.value)
+        setTagTxt(event.target.value)
     }, [])
 
     const handleHashTagTxtKeyDown = useCallback((event) => {
-        if (event.key === 'Enter' && event.nativeEvent.isComposing === false && hashtagTxt.trim() !== '') {
+        if (event.key === 'Enter' && event.nativeEvent.isComposing === false && tagTxt.trim() !== '') {
             const regex = /[^\p{L}\p{N}\p{Zs}]/u; // 특수문자 확인
-            const tagTxt = hashtagTxt.trim()
+            const tagText = tagTxt.trim()
 
-            if (hashtags.length < 15 && !regex.test(tagTxt)) {
-                setHashtags(prev => prev.concat(tagTxt))
+            // 이미 등록된 태그면 무시
+            if (tags.includes(tagText)) {
+                setTagTxt('')
+                return
             }
-            setHashtagTxt('')
+
+            if (tags.length < 10 && !regex.test(tagText)) {
+                onChangeField({ key: 'postTags', value: [...tags, tagText]})
+            }
+            setTagTxt('')
+        } else if (event.key === 'Backspace') {
+            onChangeField({ key: 'postTags', value: tags.slice(0, tags.length - 1)})
         }
-    }, [hashtags, hashtagTxt])
+    }, [tags, tagTxt, onChangeField])
 
     useEffect(() => {
         window.addEventListener('resize', updatePostConfigImgHeight);
@@ -517,20 +525,20 @@ const MarkdownConfirm = ({
                                     <PostConfigSegBlock>
                                         <HashTagWrapper>
                                             <HashTagBlock>
-                                                {hashtags.map((hashtag, index) => (
-                                                    <HashTagBadge>{hashtag}</HashTagBadge>
+                                                {tags.map((tag, index) => (
+                                                    <HashTagBadge>{tag}</HashTagBadge>
                                                 ))}
                                                 <HashTagInputBlock>
                                                     <HashTagInput 
                                                         placeholder='태그를 입력하세요.' 
-                                                        value={hashtagTxt} 
+                                                        value={tagTxt} 
                                                         onChange={handleHashTagTxtChange} 
                                                         onKeyDown={handleHashTagTxtKeyDown}
                                                     />
                                                 </HashTagInputBlock>
                                             </HashTagBlock>
                                         </HashTagWrapper> 
-                                        <TextareaCntSpan>{hashtags.length}/15</TextareaCntSpan>
+                                        <TextareaCntSpan>{tags.length}/10</TextareaCntSpan>
                                     </PostConfigSegBlock> 
                                 </PostConfigCell>
                                 <PostConfigCell>

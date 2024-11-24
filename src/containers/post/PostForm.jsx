@@ -34,6 +34,7 @@ const PostForm = () => {
                 title: post.title,
                 description: post.description,
                 mrkdown: post.content,
+                postTags: post.tags,
                 updateDt: null,
                 isTemp: post.isTemp,
                 isPublic: post.isPublic,

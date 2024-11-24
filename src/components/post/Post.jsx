@@ -106,7 +106,7 @@ const Post = ({ post, user, blogId, handleDeletePost }) => {
                             </PostWriterSemiBlock>) : null}
                         </PostWriterBlock>
                     </PostHeaderBlock>
-                    <DisplayAds/>
+                    {/*<DisplayAds/>*/}
                     <PostContentBlock>
                         <MarkdownRenderer markdown={post?.content}/>
                     </PostContentBlock>
