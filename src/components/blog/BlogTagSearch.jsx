@@ -1,14 +1,12 @@
-import React, { useCallback, useState, useEffect } from 'react';
-import styled, {css} from 'styled-components';
-import { useQueryClient } from '@tanstack/react-query';
+import React, { useCallback, useState } from 'react';
+import styled, { css } from 'styled-components';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGetPostListQuery } from '../../hooks/queries/post/useGetPostListQuery';
-import Pagination from '../common/Pagination';
-import { Helmet } from "react-helmet-async";
 import { useGetAllTagsQuery } from '../../hooks/queries/tag/useGetAllTagsQuery';
+import { Helmet } from "react-helmet-async";
 import { Link } from 'react-router-dom';
 
-const BlogHomeWrapper = styled.div`
+const BlogTagSearchWrapper = styled.div`
     width: 100%;
     margin-top: 8rem;
     height: auto;
@@ -20,7 +18,7 @@ const BlogHomeWrapper = styled.div`
     overflow: hidden;
 `
 
-const BlogHomeBlock = styled.div`
+const BlogTagSearchBlock = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -50,7 +48,7 @@ const SidebarTitle = styled.div`
     color: #333;
 `
 
-const BlogHomeHeader = styled.div`
+const BlogTagSearchHeader = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -219,73 +217,42 @@ const BlogTag = styled.span`
         position: absolute;
         top: 12px;
         right: -2px;
-        width: 5px;
-        height: 5px;
+        width: 6px;
+        height: 6px;
         background: #fff;
     }
 `
 
-const BlogHome  = ({ blogName }) => {
-    const { id: paramId } = useParams()
+
+const BlogTagSearch = () => {
+    const { id: blogId, tagname } = useParams()
     const navigate = useNavigate();
-    const queryClient = useQueryClient();
 
     const [page, setPage] = useState(1)
     const [limit, setLimit] = useState(5);
-    const { data } = useGetPostListQuery({blogId: paramId, page: page - 1, isTemp: false, isPublic: true, size: limit})
-    const { data: blogTagList } = useGetAllTagsQuery({blogId: paramId})
-
-    const onClickPostCard = useCallback((index) => {
-        if (index) {
-            navigate(`/blog/${paramId}/${index}`)
-        }
-    }, [navigate, paramId])
+    const { data } = useGetPostListQuery({blogId: blogId, page: page - 1, isTemp: false, isPublic: true, size: limit})
+    const { data: blogTagList } = useGetAllTagsQuery({blogId: blogId})
 
     const onClickPortfolio = useCallback(() => {
-        navigate(`/blog/${paramId}/about`)
-    }, [navigate, paramId])
-
-    useEffect(() => {
-        return () => {
-            queryClient.invalidateQueries({ queryKey: ["getPostList"]});
-        }
-    }, [queryClient])
+        navigate(`/blog/${blogId}/about`)
+    }, [navigate, blogId])
 
     return (
         <>
             <Helmet>
-                <title>{blogName}</title>
+                <title>'{tagname}' 태그의 글 목록</title>
             </Helmet>
-            <BlogHomeWrapper>
-                <BlogHomeBlock>
+            <BlogTagSearchWrapper>
+                <BlogTagSearchBlock>
                     <AreaMain>
-                        <BlogHomeHeader>
-                            <HeaderTxt>전체글</HeaderTxt>
-                            { paramId === 'tourist0302' ?
+                        <BlogTagSearchHeader>
+                            <HeaderTxt># {tagname}</HeaderTxt>
+                            { blogId === 'tourist0302' ?
                                 <PortfolioBtn onClick={onClickPortfolio} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>포트폴리오</PortfolioBtn> : null
                             }
-                        </BlogHomeHeader>
+                        </BlogTagSearchHeader>
                         <PostCardUl>
-                            {data?.postInfoList && data?.postInfoList.map(post => (
-                                <PostCardLi key={post.postId} onClick={() => onClickPostCard(post.index)}>
-                                    <PostCardTxtBlock>
-                                        <PostCardTitle>{post.title}</PostCardTitle>
-                                        <PostCardDesc>{post.description}</PostCardDesc>
-                                        <PostTagBlock>
-                                            {post.tags?.map((tag) => (
-                                                <PostTagBadge>{tag}</PostTagBadge>
-                                            ))}
-                                        </PostTagBlock>
-                                    </PostCardTxtBlock>
-                                    <PostCardThumbnailBlock>
-                                        {post.thumbnailPath ?
-                                        (<PostCardThumbnailImg src={post.thumbnailPath}/>) : 
-                                        (<PostCardConfigBlock>
-                                            <PostCardConfigImg alt="img icon" src="/image-icon.svg"/>
-                                        </PostCardConfigBlock>)}
-                                    </PostCardThumbnailBlock>
-                                </PostCardLi>
-                            ))}
+                                
                         </PostCardUl>
                     </AreaMain>
                     <AreaSide>
@@ -295,7 +262,7 @@ const BlogHome  = ({ blogName }) => {
                             {
                                 blogTagList?.map(tag => (
                                     <BlogTag>
-                                        <Link to={`tag/${tag.name}`}>
+                                        <Link to={`/blog/${blogId}/tag/${tag.name}`}>
                                             {tag.name}, 
                                         </Link>
                                     </BlogTag>
@@ -304,15 +271,10 @@ const BlogHome  = ({ blogName }) => {
                             </BoxTag>
                         </TagBlock>
                     </AreaSide>
-                </BlogHomeBlock>
-                <Pagination 
-                    total={data?.totalCount}
-                    limit={limit}
-                    page={page}
-                    setPage={setPage}
-                />
-            </BlogHomeWrapper>
-        </>)
+                </BlogTagSearchBlock>
+            </BlogTagSearchWrapper>
+        </>
+    )
 }
 
-export default BlogHome;
+export default BlogTagSearch;

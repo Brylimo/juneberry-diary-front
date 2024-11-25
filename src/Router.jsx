@@ -5,6 +5,7 @@ import {
     BlogHomePage,
     BlogJoinPage,
     BlogAboutPage,
+    BlogTagSearchPage,
     BlogRepositoryPage,
     CalendarPage,
     LoginPage,
@@ -60,6 +61,7 @@ function Router() {
                     <Route path="blog" element={<BlogLayout />} >
                         <Route path=":id" element={<BlogHomePage />}/>
                         <Route path=":id/about" element={<BlogAboutPage />}/>
+                        <Route path=":id/tag/:tagname" element={<BlogTagSearchPage />}/>
                         <Route path=":id/:pid" element={<PostPage />}/>
                     </Route>
                 </Route>
