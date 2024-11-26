@@ -38,10 +38,11 @@ export const getTempPostCnt = async (blogId) => {
     return res.data;
 }
 
-export const getPostList = async ({blogId, isTemp, isPublic, page, size}) => {
+export const getPostList = async ({blogId, tagName, isTemp, isPublic, page, size}) => {
     const res = await client.get('/v1/post/getPostList', {
         params: {
             blogId: blogId,
+            tagName: tagName,
             isTemp: isTemp,
             isPublic: isPublic,
             page: page,

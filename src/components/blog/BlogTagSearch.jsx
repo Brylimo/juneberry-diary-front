@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGetPostListQuery } from '../../hooks/queries/post/useGetPostListQuery';
 import { useGetAllTagsQuery } from '../../hooks/queries/tag/useGetAllTagsQuery';
+import Pagination from '../common/Pagination';
 import { Helmet } from "react-helmet-async";
 import { Link } from 'react-router-dom';
 
@@ -225,13 +226,19 @@ const BlogTag = styled.span`
 
 
 const BlogTagSearch = () => {
-    const { id: blogId, tagname } = useParams()
+    const { id: blogId, tagname: tagName } = useParams()
     const navigate = useNavigate();
 
     const [page, setPage] = useState(1)
     const [limit, setLimit] = useState(5);
-    const { data } = useGetPostListQuery({blogId: blogId, page: page - 1, isTemp: false, isPublic: true, size: limit})
+    const { data } = useGetPostListQuery({blogId: blogId, tagName: tagName, page: page - 1, isTemp: false, isPublic: true, size: limit})
     const { data: blogTagList } = useGetAllTagsQuery({blogId: blogId})
+
+    const onClickPostCard = useCallback((index) => {
+        if (index) {
+            navigate(`/blog/${blogId}/${index}`)
+        }
+    }, [navigate, blogId])
 
     const onClickPortfolio = useCallback(() => {
         navigate(`/blog/${blogId}/about`)
@@ -240,19 +247,38 @@ const BlogTagSearch = () => {
     return (
         <>
             <Helmet>
-                <title>'{tagname}' 태그의 글 목록</title>
+                <title>'{tagName}' 태그의 글 목록</title>
             </Helmet>
             <BlogTagSearchWrapper>
                 <BlogTagSearchBlock>
                     <AreaMain>
                         <BlogTagSearchHeader>
-                            <HeaderTxt># {tagname}</HeaderTxt>
+                            <HeaderTxt># {tagName}</HeaderTxt>
                             { blogId === 'tourist0302' ?
                                 <PortfolioBtn onClick={onClickPortfolio} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>포트폴리오</PortfolioBtn> : null
                             }
                         </BlogTagSearchHeader>
                         <PostCardUl>
-                                
+                            {data?.postInfoList && data?.postInfoList.map(post => (
+                                <PostCardLi key={post.postId} onClick={() => onClickPostCard(post.index)}>
+                                    <PostCardTxtBlock>
+                                        <PostCardTitle>{post.title}</PostCardTitle>
+                                        <PostCardDesc>{post.description}</PostCardDesc>
+                                        <PostTagBlock>
+                                            {post.tags?.map((tag) => (
+                                                <PostTagBadge>{tag}</PostTagBadge>
+                                            ))}
+                                        </PostTagBlock>
+                                    </PostCardTxtBlock>
+                                    <PostCardThumbnailBlock>
+                                        {post.thumbnailPath ?
+                                        (<PostCardThumbnailImg src={post.thumbnailPath}/>) : 
+                                        (<PostCardConfigBlock>
+                                            <PostCardConfigImg alt="img icon" src="/image-icon.svg"/>
+                                        </PostCardConfigBlock>)}
+                                    </PostCardThumbnailBlock>
+                                </PostCardLi>
+                            ))}
                         </PostCardUl>
                     </AreaMain>
                     <AreaSide>
@@ -272,6 +298,12 @@ const BlogTagSearch = () => {
                         </TagBlock>
                     </AreaSide>
                 </BlogTagSearchBlock>
+                <Pagination 
+                    total={data?.totalCount}
+                    limit={limit}
+                    page={page}
+                    setPage={setPage}
+                />
             </BlogTagSearchWrapper>
         </>
     )
