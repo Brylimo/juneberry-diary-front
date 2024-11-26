@@ -130,7 +130,11 @@ const Post = ({ post, user, blogId, handleDeletePost }) => {
                     </PostContentBlock>
                     <PostTagBlock>
                         {post?.tags.map(tag => (
-                            <PostTagBadge>{tag}</PostTagBadge>
+                            <PostTagBadge>
+                                <Link to={`/blog/${blogId}/tag/${tag}`}>
+                                    {tag}
+                                </Link>
+                            </PostTagBadge>
                         ))}
                     </PostTagBlock>
                 </PostBlock>

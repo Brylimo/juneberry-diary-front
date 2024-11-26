@@ -260,7 +260,7 @@ const BlogHome  = ({ blogName }) => {
                 <BlogHomeBlock>
                     <AreaMain>
                         <BlogHomeHeader>
-                            <HeaderTxt>전체글</HeaderTxt>
+                            <HeaderTxt>전체글 ({data?.totalCount})</HeaderTxt>
                             { paramId === 'tourist0302' ?
                                 <PortfolioBtn onClick={onClickPortfolio} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>포트폴리오</PortfolioBtn> : null
                             }
