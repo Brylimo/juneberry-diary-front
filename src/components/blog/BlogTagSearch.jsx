@@ -253,7 +253,7 @@ const BlogTagSearch = () => {
                 <BlogTagSearchBlock>
                     <AreaMain>
                         <BlogTagSearchHeader>
-                            <HeaderTxt># {tagName} ({data?.totalCount})</HeaderTxt>
+                            <HeaderTxt># {tagName} ({data?.totalCount ? data?.totalCount : 0})</HeaderTxt>
                             { blogId === 'tourist0302' ?
                                 <PortfolioBtn onClick={onClickPortfolio} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>포트폴리오</PortfolioBtn> : null
                             }

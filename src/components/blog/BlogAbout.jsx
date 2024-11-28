@@ -260,9 +260,10 @@ const BlogAbout = () => {
                                 <BlogAboutTxtContentBlock>
                                     <BlogAboutUl>
                                         <li>AWS EC2, S3, RDS, Lambda, Cloudflare R2, Vercel, Cafe24, GoDaddy</li>
-                                        <li>Postgresql, MySQL, MariaDB, SQLite</li>
+                                        <li>Postgresql, MySQL, MariaDB, Redis, SQLite</li>
                                         <li>Jenkins</li>
                                         <li>Nginx, Tomcat, Docker</li>
+                                        <li>Prometheus, Grafana</li>
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
@@ -531,6 +532,7 @@ const BlogAbout = () => {
                                             <li>React + CodeMirror + R2를 이용해 블로그 에디터 자체 개발</li>
                                             <li>JPA, QueryDSL을 사용한 다수의 쿼리 튜닝 경험</li>
                                             <li>Jenkins 기반 CI/CD 파이프라인 구축</li>
+                                            <li>Prometheus, Grafana를 이용한 모니터링 시스템 구축</li>
                                             <li>https 프로토콜 기반 서비스 운영중</li>
                                         </ul>
                                     </BlogAboutUl>
