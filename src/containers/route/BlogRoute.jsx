@@ -22,7 +22,7 @@ export const BlogRoute = () => {
         blogId: blog.blogId
     }));
 
-    const { isPending: apiPending, isFetching: apiFetching, data: fetchedBlog } = useGetBlogByIdQuery(id, true);
+    const { isPending: apiPending, isFetching: apiFetching, data: fetchedBlog } = useGetBlogByIdQuery(id, (!blogId || blogId !== id));
 
     useEffect(() => {
         if (!user) {
