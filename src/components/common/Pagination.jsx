@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const Nav = styled.nav`
     display: flex;
@@ -10,7 +10,37 @@ const Nav = styled.nav`
 `
 
 const PageButton = styled.button`
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    color: #333;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 
+    ${props => props.active &&
+        css`
+            background-color: black;
+            color: #fff;
+            border: none;
+            cursor: default;
+        `
+    }
+
+    &:hover {
+        ${props => !props.active &&
+            css`
+                background-color: #ddd;
+            `
+        }
+    }
+
+    &:disabled {
+        background-color: #e0e0e0;
+        color: #aaa;
+        border-color: #ccc;
+        cursor: not-allowed;
+    }
 `
 
 const Pagination = ({ total, limit, page, setPage }) => {
@@ -29,6 +59,7 @@ const Pagination = ({ total, limit, page, setPage }) => {
                     <PageButton
                         key={i + 1} 
                         onClick={() => setPage(i + 1)}
+                        active={page === i + 1}
                         aria-current={page === i + 1 ? "page" : undefined}
                     >
                         {i + 1}

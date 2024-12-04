@@ -1,11 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGetPostListQuery } from '../../hooks/queries/post/useGetPostListQuery';
 import { useGetAllTagsQuery } from '../../hooks/queries/tag/useGetAllTagsQuery';
 import Pagination from '../common/Pagination';
 import { Helmet } from "react-helmet-async";
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 const BlogTagSearchWrapper = styled.div`
     width: 100%;
@@ -224,12 +224,16 @@ const BlogTag = styled.span`
     }
 `
 
+function isConvertibleToNumber(str) {
+    return /^[+-]?(\d+(\.\d+)?|\.\d+)$/.test(str.trim());
+}
 
 const BlogTagSearch = () => {
     const { id: blogId, tagname: tagName } = useParams()
+    const [searchParams] = useSearchParams()
     const navigate = useNavigate();
 
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState(searchParams.get("page") && isConvertibleToNumber(searchParams.get("page")) ? Number(searchParams.get("page")) : 1)
     const [limit, setLimit] = useState(5);
     const { data } = useGetPostListQuery({blogId: blogId, tagName: tagName, page: page - 1, isTemp: false, isPublic: true, size: limit})
     const { data: blogTagList } = useGetAllTagsQuery({blogId: blogId})
@@ -243,6 +247,10 @@ const BlogTagSearch = () => {
     const onClickPortfolio = useCallback(() => {
         navigate(`/blog/${blogId}/about`)
     }, [navigate, blogId])
+
+    useEffect(() => {
+        navigate(`/blog/${blogId}/tag/${tagName}?page=${page}`);
+    }, [page, tagName, blogId, navigate])
 
     return (
         <>

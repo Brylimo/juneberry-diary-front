@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import styled, {css} from 'styled-components';
 import { useQueryClient } from '@tanstack/react-query';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useGetPostListQuery } from '../../hooks/queries/post/useGetPostListQuery';
 import Pagination from '../common/Pagination';
 import { Helmet } from "react-helmet-async";
@@ -225,12 +225,17 @@ const BlogTag = styled.span`
     }
 `
 
+function isConvertibleToNumber(str) {
+    return /^[+-]?(\d+(\.\d+)?|\.\d+)$/.test(str.trim());
+}
+
 const BlogHome  = ({ blogName }) => {
     const { id: paramId } = useParams()
+    const [searchParams] = useSearchParams()
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState(searchParams.get("page") && isConvertibleToNumber(searchParams.get("page")) ? Number(searchParams.get("page")) : 1)
     const [limit, setLimit] = useState(5);
     const { data } = useGetPostListQuery({blogId: paramId, page: page - 1, isTemp: false, isPublic: true, size: limit})
     const { data: blogTagList } = useGetAllTagsQuery({blogId: paramId})
@@ -250,6 +255,10 @@ const BlogHome  = ({ blogName }) => {
             queryClient.invalidateQueries({ queryKey: ["getPostList"]});
         }
     }, [queryClient])
+
+    useEffect(() => {
+        navigate(`/blog/${paramId}?page=${page}`);
+    }, [page, paramId, navigate])
 
     return (
         <>

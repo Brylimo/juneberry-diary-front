@@ -40,7 +40,6 @@ const BlogRepository = ({ blogList }) => {
         navigate(`/blog/${blogId}`);
     }, [navigate])
 
-
     return (
         <BlogRepositoryWrapper>
             <BlogCardUl>
