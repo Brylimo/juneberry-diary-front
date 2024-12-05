@@ -54,13 +54,18 @@ const BlogTagSearchHeader = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid #7a583a;
+    border-bottom: 1px solid #e8e8e8;
 `
 
 const HeaderTxt = styled.div`
     font-size: 15px;
     padding: 8px 0;
-    color: #7a583a;
+    font-weight: 400;
+`
+
+const HeaderCnt = styled.span`
+    color: #ef402f;
+    line-height: 19px;
 `
 
 const PostCardUl = styled.ul`
@@ -84,7 +89,6 @@ const PostCardLi = styled.li`
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    border-bottom: 1px solid #d0d7de;
     padding: 30px 0;
     gap: 10px;
 `
@@ -108,6 +112,10 @@ const PostCardTitle = styled.div`
     font-size: 16px;
     font-weight: 700;
     margin-bottom: 10px;
+
+    &:hover {
+        text-decoration: underline;
+    }
 `
 
 const PostCardDesc = styled.div`
@@ -248,7 +256,7 @@ const BlogTagSearch = () => {
 
     const [page, setPage] = useState(searchParams.get("page") && isConvertibleToNumber(searchParams.get("page")) ? Number(searchParams.get("page")) : 1)
     const [limit, setLimit] = useState(5);
-    const { data } = useGetPostListQuery({blogId: blogId, tagName: tagName, page: page - 1, isTemp: false, isPublic: true, size: limit})
+    const { isPending, isLoading, isFetching, data } = useGetPostListQuery({blogId: blogId, tagName: tagName, page: page - 1, isTemp: false, isPublic: true, size: limit})
     const { data: blogTagList } = useGetAllTagsQuery({blogId: blogId})
 
     const onClickPostCard = useCallback((index) => {
@@ -271,6 +279,10 @@ const BlogTagSearch = () => {
         }
     }, [location])
 
+    if (isPending || isLoading || isFetching) {
+        return null
+    }
+
     return (
         <>
             <Helmet>
@@ -280,7 +292,7 @@ const BlogTagSearch = () => {
                 <BlogTagSearchBlock>
                     <AreaMain>
                         <BlogTagSearchHeader>
-                            <HeaderTxt># {tagName} ({data?.totalCount ? data?.totalCount : 0})</HeaderTxt>
+                            <HeaderTxt># {tagName} <HeaderCnt>{data?.totalCount ? data?.totalCount : 0}</HeaderCnt></HeaderTxt>
                             { blogId === 'tourist0302' ?
                                 <PortfolioBtn onClick={onClickPortfolio} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>포트폴리오</PortfolioBtn> : null
                             }

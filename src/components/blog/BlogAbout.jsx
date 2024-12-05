@@ -168,6 +168,11 @@ const BlogAboutRightSide = styled.div`
     flex: 3;
 `;
 
+const BlogSmInfoDiv = styled.div`
+    font-size: 14px;
+    margin-top: 5px;
+`
+
 const BlogAboutUl = styled.ul`
     list-style-type: disc;
     line-height: 1.5;
@@ -230,6 +235,7 @@ const BlogAbout = () => {
                             Skills
                         </BlogAboutSemiTitle>
                         <BlogHrLine />
+                        <BlogSmInfoDiv>※ 아래의 기술들을 프로젝트에서 편하게 사용할 수 있습니다.</BlogSmInfoDiv>
                         <BlogAboutSideBlock>
                             <BlogAboutLeftSide>
                                 <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
@@ -527,7 +533,7 @@ const BlogAbout = () => {
                                         <ul>
                                             <li>
                                                 redis, 휴리스틱 캐시를 이용해 달력 태그 렌더링 성능 개선<br/>
-                                                5초 → 0.5초 개선한 경험
+                                                <b>5초</b> → <b>0.5초</b> 개선한 경험
                                             </li>
                                             <li>React + CodeMirror + R2를 이용해 블로그 에디터 자체 개발</li>
                                             <li>JPA, QueryDSL을 사용한 다수의 쿼리 튜닝 경험</li>
