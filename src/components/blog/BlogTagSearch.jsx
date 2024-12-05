@@ -5,7 +5,7 @@ import { useGetPostListQuery } from '../../hooks/queries/post/useGetPostListQuer
 import { useGetAllTagsQuery } from '../../hooks/queries/tag/useGetAllTagsQuery';
 import Pagination from '../common/Pagination';
 import { Helmet } from "react-helmet-async";
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams, useLocation } from 'react-router-dom';
 
 const BlogTagSearchWrapper = styled.div`
     width: 100%;
@@ -65,6 +65,18 @@ const HeaderTxt = styled.div`
 
 const PostCardUl = styled.ul`
     width: 100%;
+`
+
+const PostDefault = styled.div`
+    margin-top: 25px;
+`
+
+const PostDefaultLi = styled.li`
+    list-style-type: disc;
+    padding-left: 7px;
+    line-height: 2;
+    font-size: 14px;
+    color: rgba(51, 51, 51, 0.5);
 `
 
 const PostCardLi = styled.li`
@@ -232,6 +244,7 @@ const BlogTagSearch = () => {
     const { id: blogId, tagname: tagName } = useParams()
     const [searchParams] = useSearchParams()
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [page, setPage] = useState(searchParams.get("page") && isConvertibleToNumber(searchParams.get("page")) ? Number(searchParams.get("page")) : 1)
     const [limit, setLimit] = useState(5);
@@ -252,6 +265,12 @@ const BlogTagSearch = () => {
         navigate(`/blog/${blogId}/tag/${tagName}?page=${page}`);
     }, [page, tagName, blogId, navigate])
 
+    useEffect(() => {
+        if (location.state?.reset) {
+            setPage(1)
+        }
+    }, [location])
+
     return (
         <>
             <Helmet>
@@ -267,26 +286,33 @@ const BlogTagSearch = () => {
                             }
                         </BlogTagSearchHeader>
                         <PostCardUl>
-                            {data?.postInfoList && data?.postInfoList.map(post => (
-                                <PostCardLi key={post.postId} onClick={() => onClickPostCard(post.index)}>
-                                    <PostCardTxtBlock>
-                                        <PostCardTitle>{post.title}</PostCardTitle>
-                                        <PostCardDesc>{post.description}</PostCardDesc>
-                                        <PostTagBlock>
-                                            {post.tags?.map((tag) => (
-                                                <PostTagBadge>{tag}</PostTagBadge>
-                                            ))}
-                                        </PostTagBlock>
-                                    </PostCardTxtBlock>
-                                    <PostCardThumbnailBlock>
-                                        {post.thumbnailPath ?
-                                        (<PostCardThumbnailImg src={post.thumbnailPath}/>) : 
-                                        (<PostCardConfigBlock>
-                                            <PostCardConfigImg alt="img icon" src="/image-icon.svg"/>
-                                        </PostCardConfigBlock>)}
-                                    </PostCardThumbnailBlock>
-                                </PostCardLi>
-                            ))}
+                            {(data?.postInfoList &&
+                             data?.postInfoList.length > 0) ? 
+                                data?.postInfoList.map(post => (
+                                    <PostCardLi key={post.postId} onClick={() => onClickPostCard(post.index)}>
+                                        <PostCardTxtBlock>
+                                            <PostCardTitle>{post.title}</PostCardTitle>
+                                            <PostCardDesc>{post.description}</PostCardDesc>
+                                            <PostTagBlock>
+                                                {post.tags?.map((tag) => (
+                                                    <PostTagBadge>{tag}</PostTagBadge>
+                                                ))}
+                                            </PostTagBlock>
+                                        </PostCardTxtBlock>
+                                        <PostCardThumbnailBlock>
+                                            {post.thumbnailPath ?
+                                            (<PostCardThumbnailImg src={post.thumbnailPath}/>) : 
+                                            (<PostCardConfigBlock>
+                                                <PostCardConfigImg alt="img icon" src="/image-icon.svg"/>
+                                            </PostCardConfigBlock>)}
+                                        </PostCardThumbnailBlock>
+                                    </PostCardLi>
+                                )) : (
+                                    <PostDefault>
+                                        <PostDefaultLi>선택하신 태그에 해당하는 글이 없습니다.</PostDefaultLi>
+                                        <PostDefaultLi>다른 태그를 사용하시거나, 검색 기능을 활용해 보세요.</PostDefaultLi>
+                                    </PostDefault>
+                                )}
                         </PostCardUl>
                     </AreaMain>
                     <AreaSide>
@@ -296,7 +322,7 @@ const BlogTagSearch = () => {
                             {
                                 blogTagList?.map(tag => (
                                     <BlogTag>
-                                        <Link to={`/blog/${blogId}/tag/${tag.name}`}>
+                                        <Link to={`/blog/${blogId}/tag/${tag.name}`} state={{ reset: true }}>
                                             {tag.name}, 
                                         </Link>
                                     </BlogTag>
@@ -306,12 +332,14 @@ const BlogTagSearch = () => {
                         </TagBlock>
                     </AreaSide>
                 </BlogTagSearchBlock>
-                <Pagination 
-                    total={data?.totalCount}
-                    limit={limit}
-                    page={page}
-                    setPage={setPage}
-                />
+                {(data?.postInfoList && data?.postInfoList.length > 0) ? (
+                    <Pagination 
+                        total={data?.totalCount}
+                        limit={limit}
+                        page={page}
+                        setPage={setPage}
+                    />
+                ) : null}
             </BlogTagSearchWrapper>
         </>
     )

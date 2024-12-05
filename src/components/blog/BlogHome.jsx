@@ -68,6 +68,18 @@ const PostCardUl = styled.ul`
     width: 100%;
 `
 
+const PostDefault = styled.div`
+    margin-top: 25px;
+`
+
+const PostDefaultLi = styled.li`
+    list-style-type: disc;
+    padding-left: 7px;
+    line-height: 2;
+    font-size: 14px;
+    color: rgba(51, 51, 51, 0.5);
+`
+
 const PostCardLi = styled.li`
     display: flex;
     justify-content: space-between;
@@ -260,6 +272,7 @@ const BlogHome  = ({ blogName }) => {
         navigate(`/blog/${paramId}?page=${page}`);
     }, [page, paramId, navigate])
 
+    console.log(data)
     return (
         <>
             <Helmet>
@@ -274,28 +287,35 @@ const BlogHome  = ({ blogName }) => {
                                 <PortfolioBtn onClick={onClickPortfolio} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>포트폴리오</PortfolioBtn> : null
                             }
                         </BlogHomeHeader>
-                        <PostCardUl>
-                            {data?.postInfoList && data?.postInfoList.map(post => (
-                                <PostCardLi key={post.postId} onClick={() => onClickPostCard(post.index)}>
-                                    <PostCardTxtBlock>
-                                        <PostCardTitle>{post.title}</PostCardTitle>
-                                        <PostCardDesc>{post.description}</PostCardDesc>
-                                        <PostTagBlock>
-                                            {post.tags?.map((tag) => (
-                                                <PostTagBadge>{tag}</PostTagBadge>
-                                            ))}
-                                        </PostTagBlock>
-                                    </PostCardTxtBlock>
-                                    <PostCardThumbnailBlock>
-                                        {post.thumbnailPath ?
-                                        (<PostCardThumbnailImg src={post.thumbnailPath}/>) : 
-                                        (<PostCardConfigBlock>
-                                            <PostCardConfigImg alt="img icon" src="/image-icon.svg"/>
-                                        </PostCardConfigBlock>)}
-                                    </PostCardThumbnailBlock>
-                                </PostCardLi>
-                            ))}
-                        </PostCardUl>
+                            <PostCardUl>
+                                {(data?.postInfoList && 
+                                 data?.postInfoList.length > 0) ? 
+                                    data?.postInfoList.map(post => (
+                                        <PostCardLi key={post.postId} onClick={() => onClickPostCard(post.index)}>
+                                            <PostCardTxtBlock>
+                                                <PostCardTitle>{post.title}</PostCardTitle>
+                                                <PostCardDesc>{post.description}</PostCardDesc>
+                                                <PostTagBlock>
+                                                    {post.tags?.map((tag) => (
+                                                        <PostTagBadge>{tag}</PostTagBadge>
+                                                    ))}
+                                                </PostTagBlock>
+                                            </PostCardTxtBlock>
+                                            <PostCardThumbnailBlock>
+                                                {post.thumbnailPath ?
+                                                (<PostCardThumbnailImg src={post.thumbnailPath}/>) : 
+                                                (<PostCardConfigBlock>
+                                                    <PostCardConfigImg alt="img icon" src="/image-icon.svg"/>
+                                                </PostCardConfigBlock>)}
+                                            </PostCardThumbnailBlock>
+                                        </PostCardLi>
+                                    )) : (
+                                        <PostDefault>
+                                            <PostDefaultLi>선택하신 태그에 해당하는 글이 없습니다.</PostDefaultLi>
+                                            <PostDefaultLi>다른 태그를 사용하시거나, 검색 기능을 활용해 보세요.</PostDefaultLi>
+                                        </PostDefault>
+                                    )}
+                            </PostCardUl>
                     </AreaMain>
                     <AreaSide>
                         <TagBlock>
@@ -314,12 +334,14 @@ const BlogHome  = ({ blogName }) => {
                         </TagBlock>
                     </AreaSide>
                 </BlogHomeBlock>
-                <Pagination 
-                    total={data?.totalCount}
-                    limit={limit}
-                    page={page}
-                    setPage={setPage}
-                />
+                {(data?.postInfoList && data?.postInfoList.length > 0) ? (
+                    <Pagination 
+                        total={data?.totalCount}
+                        limit={limit}
+                        page={page}
+                        setPage={setPage}
+                    />
+                ) : null}
             </BlogHomeWrapper>
         </>)
 }
