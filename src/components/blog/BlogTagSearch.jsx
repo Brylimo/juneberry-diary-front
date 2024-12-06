@@ -29,6 +29,10 @@ const BlogTagSearchBlock = styled.div`
 const AreaMain = styled.div`
     width: 70%;
     margin-top: 4rem;
+
+    ${({ theme }) => theme.md`
+        width: 92%;
+    `};
 `
 
 const AreaSide = styled.div`

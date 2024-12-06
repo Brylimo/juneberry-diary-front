@@ -14,6 +14,7 @@ import config from '../../configs/markdoc'
 import { Table } from '@lezer/markdown';
 import { markdownLanguage } from '@codemirror/lang-markdown';
 import SaveModalForm from '../../containers/post/SaveModalForm';
+import CustomSelect from '../common/CustomSelect';
 
 const PublishPage = styled.div`
     width: 893px;
@@ -226,6 +227,10 @@ const MarkdownEditor = ({
         <>
             <Toolbar onToolbarItemClick={onToolbarItemClick} />
             <PublishPage>
+                <CustomSelect
+                    placeholder="카테고리"
+                    options={[{value: "", label: "카테고리 없음"}, {value: "1", label: "안녕"}]}
+                />
                 <TitleTextarea
                     ref={titleElement}
                     placeholder='제목'
