@@ -10,9 +10,7 @@ import { Link } from 'react-router-dom';
 
 const BlogHomeWrapper = styled.div`
     width: 100%;
-    margin-top: 8rem;
     height: auto;
-    min-height: calc(100vh - 8rem);
     box-sizing: border-box;
     display: flex;
     flex-direction: column;

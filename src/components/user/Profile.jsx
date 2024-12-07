@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import ProfileCard from './ProfileCard';
 
 const ProfileBlock = styled.div`
-    position: absolute;
-    top: 8rem;
     min-height: calc(100vh - 8rem);
     width: 100%;
     display: flex;

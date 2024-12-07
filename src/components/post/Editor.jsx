@@ -5,8 +5,6 @@ import MarkdownConfirmForm from '../../containers/post/MarkdownConfirmForm';
 
 const EditorFrameWrapper = styled.div`
     width: 100%;
-    position: absolute;
-    top: 8rem;
     background-color: #F9F9F9;
     height: auto;
     min-height: calc(100vh - 8rem);
@@ -18,9 +16,6 @@ const EditorFrameWrapper = styled.div`
 
 const ConfirmFrameWrapper = styled.div`
     width: 100%;
-    position: absolute;
-    top: 8rem;
-    min-height: calc(100vh - 8rem);
     height: calc(100vh - 8rem);
     box-sizing: border-box;
     overflow: hidden;

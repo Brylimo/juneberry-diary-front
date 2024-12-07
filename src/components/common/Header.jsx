@@ -6,8 +6,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import Switch from '@mui/material/Switch';
 
 const HeaderBlock = styled.div`
-    position: fixed;
-    top: 0;
     z-index: 320;
     height: 8rem;
     width: 100%;

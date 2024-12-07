@@ -11,8 +11,6 @@ const FrameWrapper = styled.div`
     flex-direction: row;
     width: 100%;
     height: calc(100vh - 8rem);
-    position: absolute;
-    top: 8rem;
     background-color: #fffcfb;
 
     ${

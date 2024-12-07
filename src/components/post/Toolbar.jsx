@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
@@ -18,6 +18,7 @@ const ToolbarBlock = styled.div`
     padding: 0 2rem;
     gap: 0.5rem;
     position: fixed;
+    top: ${({ headerTop }) => `${headerTop}px`};
     z-index: 31;
 `;
 
@@ -110,52 +111,77 @@ const PhotoIconCustom = styled(PhotoIcon)`
 `;
 
 const Toolbar = ({ onToolbarItemClick }) => {
+    const [headerTop, setHeaderTop] = useState(80);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+        
+            // 스크롤 다운 시 header top을 0으로 설정
+            if (currentScrollY > 80) {
+                setHeaderTop(0)
+            } else if (currentScrollY > 0) {
+                setHeaderTop(80 - currentScrollY)
+            } else {
+                setHeaderTop(80)
+            }
+         };
+    
+        // 스크롤 이벤트 리스너 추가
+        window.addEventListener("scroll", handleScroll);
+    
+        // 클린업 함수로 리스너 제거
+        return () => {
+          window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
+
     return (
-    <ToolbarBlock>
-        <ToolbarItem onClick={() => onToolbarItemClick('heading1')}>
-            <Heading>
-                H<span>1</span>
-            </Heading>
-        </ToolbarItem>
-        <ToolbarItem onClick={() => onToolbarItemClick('heading2')}>
-            <Heading>
-                H<span>2</span>
-            </Heading>
-        </ToolbarItem>
-        <ToolbarItem onClick={() => onToolbarItemClick('heading3')}>
-            <Heading>
-                H<span>3</span>
-            </Heading>
-        </ToolbarItem>
-        <ToolbarItem onClick={() => onToolbarItemClick('heading4')}>
-            <Heading>
-                H<span>4</span>
-            </Heading>
-        </ToolbarItem>
-        <Bar />
-        <ToolbarItem onClick={() => onToolbarItemClick('bold')}>
-            <FormatBoldIconCustom />
-        </ToolbarItem>
-        <ToolbarItem onClick={() => onToolbarItemClick('italic')}>
-            <FormatItalicIconCustom  />
-        </ToolbarItem>
-        <ToolbarItem onClick={() => onToolbarItemClick('strike')}>
-            <FormatStrikethroughIconCustom />
-        </ToolbarItem>
-        <Bar />
-        <ToolbarItem onClick={() => onToolbarItemClick('quote')}>
-            <FormatQuoteIconCustom />
-        </ToolbarItem>
-        <ToolbarItem onClick={() => onToolbarItemClick('link')}>
-            <InsertLinkIconCustom />
-        </ToolbarItem>
-        <ToolbarItem onClick={() => onToolbarItemClick('image')}>
-            <PhotoIconCustom />
-        </ToolbarItem>
-        <ToolbarItem onClick={() => onToolbarItemClick('code')}>
-            <CodeIconCustom />
-        </ToolbarItem>
-    </ToolbarBlock>);
+        <ToolbarBlock headerTop={headerTop}>
+            <ToolbarItem onClick={() => onToolbarItemClick('heading1')}>
+                <Heading>
+                    H<span>1</span>
+                </Heading>
+            </ToolbarItem>
+            <ToolbarItem onClick={() => onToolbarItemClick('heading2')}>
+                <Heading>
+                    H<span>2</span>
+                </Heading>
+            </ToolbarItem>
+            <ToolbarItem onClick={() => onToolbarItemClick('heading3')}>
+                <Heading>
+                    H<span>3</span>
+                </Heading>
+            </ToolbarItem>
+            <ToolbarItem onClick={() => onToolbarItemClick('heading4')}>
+                <Heading>
+                    H<span>4</span>
+                </Heading>
+            </ToolbarItem>
+            <Bar />
+            <ToolbarItem onClick={() => onToolbarItemClick('bold')}>
+                <FormatBoldIconCustom />
+            </ToolbarItem>
+            <ToolbarItem onClick={() => onToolbarItemClick('italic')}>
+                <FormatItalicIconCustom  />
+            </ToolbarItem>
+            <ToolbarItem onClick={() => onToolbarItemClick('strike')}>
+                <FormatStrikethroughIconCustom />
+            </ToolbarItem>
+            <Bar />
+            <ToolbarItem onClick={() => onToolbarItemClick('quote')}>
+                <FormatQuoteIconCustom />
+            </ToolbarItem>
+            <ToolbarItem onClick={() => onToolbarItemClick('link')}>
+                <InsertLinkIconCustom />
+            </ToolbarItem>
+            <ToolbarItem onClick={() => onToolbarItemClick('image')}>
+                <PhotoIconCustom />
+            </ToolbarItem>
+            <ToolbarItem onClick={() => onToolbarItemClick('code')}>
+                <CodeIconCustom />
+            </ToolbarItem>
+        </ToolbarBlock>);
 };
 
 export default Toolbar;

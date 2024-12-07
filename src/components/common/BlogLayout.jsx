@@ -7,7 +7,7 @@ const BlogLayout = () => {
     return (
         <>
             <HeaderForm/>
-            <main style={{minHeight: '100vh'}}>
+            <main style={{minHeight: 'calc(100vh - 8rem)'}}>
                 <Outlet/>
             </main>
             <Footer />

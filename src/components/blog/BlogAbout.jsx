@@ -6,9 +6,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 
 const BlogAboutWrapper = styled.div`
     width: 100%;
-    margin-top: 8rem;
     height: auto;
-    min-height: calc(100vh - 8rem);
     box-sizing: border-box;
     display: flex;
     justify-content: center;
