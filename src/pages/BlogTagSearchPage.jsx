@@ -1,10 +1,10 @@
-import BlogTagSearch from "../components/blog/BlogTagSearch";
+import BlogTagSearchForm from "../containers/blog/BlogTagSearchForm";
 
 const BlogTagSearchPage = () => {
     return (
         <>
             <div style={{ position: 'relative', height: '100%' }}>
-                <BlogTagSearch />
+                <BlogTagSearchForm />
             </div>
         </>
     )

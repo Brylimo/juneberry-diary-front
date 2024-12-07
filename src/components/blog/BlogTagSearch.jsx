@@ -6,6 +6,7 @@ import { useGetAllTagsQuery } from '../../hooks/queries/tag/useGetAllTagsQuery';
 import Pagination from '../common/Pagination';
 import { Helmet } from "react-helmet-async";
 import { Link, useSearchParams, useLocation } from 'react-router-dom';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const BlogTagSearchWrapper = styled.div`
     width: 100%;
@@ -246,11 +247,26 @@ const BlogTag = styled.span`
     }
 `
 
+const LeftSideBlock = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 10px;
+`
+
+const SettingIconCustom = styled(SettingsIcon)`
+    cursor: pointer;
+    color: #d0d7de;
+
+    &:hover {
+        color: black;
+    }
+`;
+
 function isConvertibleToNumber(str) {
     return /^[+-]?(\d+(\.\d+)?|\.\d+)$/.test(str.trim());
 }
 
-const BlogTagSearch = () => {
+const BlogTagSearch = ({ user }) => {
     const { id: blogId, tagname: tagName } = useParams()
     const [searchParams] = useSearchParams()
     const navigate = useNavigate();
@@ -269,6 +285,10 @@ const BlogTagSearch = () => {
 
     const onClickPortfolio = useCallback(() => {
         navigate(`/blog/${blogId}/about`)
+    }, [navigate, blogId])
+
+    const onClickBlogSetting = useCallback(() => {
+        navigate(`/blog/${blogId}/manage/category`);
     }, [navigate, blogId])
 
     useEffect(() => {
@@ -295,9 +315,12 @@ const BlogTagSearch = () => {
                     <AreaMain>
                         <BlogTagSearchHeader>
                             <HeaderTxt># {tagName} <HeaderCnt>{data?.totalCount ? data?.totalCount : 0}</HeaderCnt></HeaderTxt>
-                            { blogId === 'tourist0302' ?
-                                <PortfolioBtn onClick={onClickPortfolio} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>포트폴리오</PortfolioBtn> : null
-                            }
+                            <LeftSideBlock>
+                                {user && <SettingIconCustom onClick={onClickBlogSetting} />}
+                                { blogId === 'tourist0302' ?
+                                    <PortfolioBtn onClick={onClickPortfolio} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>포트폴리오</PortfolioBtn> : null
+                                }
+                            </LeftSideBlock>
                         </BlogTagSearchHeader>
                         <PostCardUl>
                             {(data?.postInfoList &&

@@ -1,12 +1,12 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import styled, {css} from 'styled-components';
 import { useQueryClient } from '@tanstack/react-query';
-import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useGetPostListQuery } from '../../hooks/queries/post/useGetPostListQuery';
+import { useGetAllTagsQuery } from '../../hooks/queries/tag/useGetAllTagsQuery';
 import Pagination from '../common/Pagination';
 import { Helmet } from "react-helmet-async";
-import { useGetAllTagsQuery } from '../../hooks/queries/tag/useGetAllTagsQuery';
-import { Link } from 'react-router-dom';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const BlogHomeWrapper = styled.div`
     width: 100%;
@@ -247,11 +247,26 @@ const BlogTag = styled.span`
     }
 `
 
+const LeftSideBlock = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 10px;
+`
+
+const SettingIconCustom = styled(SettingsIcon)`
+    cursor: pointer;
+    color: #d0d7de;
+
+    &:hover {
+        color: black;
+    }
+`;
+
 function isConvertibleToNumber(str) {
     return /^[+-]?(\d+(\.\d+)?|\.\d+)$/.test(str.trim());
 }
 
-const BlogHome  = ({ blogName }) => {
+const BlogHome  = ({ user, blogName }) => {
     const { id: paramId } = useParams()
     const [searchParams] = useSearchParams()
     const navigate = useNavigate();
@@ -270,6 +285,10 @@ const BlogHome  = ({ blogName }) => {
 
     const onClickPortfolio = useCallback(() => {
         navigate(`/blog/${paramId}/about`)
+    }, [navigate, paramId])
+
+    const onClickBlogSetting = useCallback(() => {
+        navigate(`/blog/${paramId}/manage/category`);
     }, [navigate, paramId])
 
     useEffect(() => {
@@ -296,9 +315,12 @@ const BlogHome  = ({ blogName }) => {
                     <AreaMain>
                         <BlogHomeHeader>
                             <HeaderTxt>전체 글 <HeaderCnt>{data?.totalCount ? data?.totalCount : 0}</HeaderCnt></HeaderTxt>
-                            { paramId === 'tourist0302' ?
-                                <PortfolioBtn onClick={onClickPortfolio} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>포트폴리오</PortfolioBtn> : null
-                            }
+                            <LeftSideBlock>
+                                {user && <SettingIconCustom onClick={onClickBlogSetting} />}
+                                { paramId === 'tourist0302' ?
+                                    <PortfolioBtn onClick={onClickPortfolio} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>포트폴리오</PortfolioBtn> : null
+                                }
+                            </LeftSideBlock>
                         </BlogHomeHeader>
                             <PostCardUl>
                                 {(data?.postInfoList && 

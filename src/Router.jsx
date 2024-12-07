@@ -7,6 +7,7 @@ import {
     BlogAboutPage,
     BlogTagSearchPage,
     BlogRepositoryPage,
+    BlogManageCategoryPage,
     CalendarPage,
     LoginPage,
     RegisterPage,
@@ -19,8 +20,9 @@ import {
 import { ProtectedBlogRoute } from "./containers/route/ProtectedBlogRoute";
 import { ProtectedRoute } from "./containers/route/ProtectedRoute";
 import { BlogRoute } from "./containers/route/BlogRoute";
-import Layout from "./components/common/Layout";
-import BlogLayout from "./components/common/BlogLayout";
+import Layout from "./components/layout/Layout";
+import BlogLayout from "./components/layout/BlogLayout";
+import BlogManageSectionForm from "./containers/sectioin/BlogManageSectionForm";
 
 function Router() {
     return (
@@ -49,6 +51,9 @@ function Router() {
                     <Route element={<ProtectedBlogRoute/>}>
                         <Route path="/blog/*" element={<Layout />}>
                             <Route path=":id/publish" element={<PublishPage/>} />
+                            <Route path=":id/manage" element={<BlogManageSectionForm />}>
+                                <Route path="category" element={<BlogManageCategoryPage/>} />
+                            </Route>
                         </Route>
                     </Route>
                     <Route path="/setting" element={<Layout />}>

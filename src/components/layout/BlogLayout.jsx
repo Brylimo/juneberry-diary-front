@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import HeaderForm from '../../containers/HeaderForm';
 import BlogHeaderForm from '../../containers/BlogHeaderForm';
-import Footer from './Footer';
+import Footer from '../common/Footer';
 
 const BlogLayout = () => {
     return (
