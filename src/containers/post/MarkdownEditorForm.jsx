@@ -338,7 +338,7 @@ ${selectedTxt}
         const codemirror = codemirrorRef.current;
         if (!codemirror) return;
         
-        console.log("still alive")
+        console.log("still alive", codemirror)
         const view = codemirror.view.viewState;
         const lines = view.state.doc.text
         console.log("real", lines)
