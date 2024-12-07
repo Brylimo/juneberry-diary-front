@@ -341,6 +341,7 @@ ${selectedTxt}
         console.log("still alive")
         const view = codemirror.view.viewState;
         const lines = view.state.doc.text
+        console.log("real", lines)
         const lineIdx = lines.findIndex(line => line.includes('![업로드중..]'))
         console.log("star", lineIdx)
         if (lineIdx === -1) return
