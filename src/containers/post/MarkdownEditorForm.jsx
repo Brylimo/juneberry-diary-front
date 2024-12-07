@@ -334,17 +334,21 @@ ${selectedTxt}
     }, [])
 
     const appendImagePath = useCallback(imagePath => {
+        console.log("star appendImagePath")
         const codemirror = codemirrorRef.current;
         if (!codemirror) return;
         
+        console.log("still alive")
         const view = codemirror.view.viewState;
         const lines = view.state.doc.text
         const lineIdx = lines.findIndex(line => line.includes('![업로드중..]'))
+        console.log("star", lineIdx)
         if (lineIdx === -1) return
 
         const targetLineObj = view.state.doc.line(lineIdx + 1)
         codemirror.view.dispatch({ changes: { from: targetLineObj.from, to: targetLineObj.to, insert: `![](${imagePath})` }})
         codemirror.view.focus();
+        console.log("success")
     }, [])
     
     const saveDraft = useCallback(
