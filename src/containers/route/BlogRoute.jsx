@@ -63,7 +63,7 @@ export const BlogRoute = () => {
     if (!id) return <NotFoundPage />
     if (!isVoid && (loading || apiPending || apiFetching || blogId !== id)) {
         //return "로딩중입니다....";
-        console.log("apt", !isVoid, (loading || apiPending || apiFetching || blogId !== id))
+        console.log("apt", !isVoid, (loading || apiPending || apiFetching || blogId !== id), loading, apiPending, apiFetching, blogId !== id)
         return null;
     }
 
