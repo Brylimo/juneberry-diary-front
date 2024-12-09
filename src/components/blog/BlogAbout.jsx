@@ -216,7 +216,7 @@ const BlogAbout = () => {
                         </BlogAboutImgBlock>
                         <BlogAboutIntro>
                             제주도청 주관 '<i>퍼스널 모빌리티 안전 사고 다발지역 안내 서비스</i>'를 Project Leader로 준공해 1억 4천 만원 가량의 회사 매출을 창출한 경험이 있으며 블로그/다이어리 서비스인 '준베리다이어리'를 개발해 운영하고 있다.
-                            '준베리다이어리' 캘린더 태그 표출시 성능 4.5초 개선, '지능형 디지털 트윈 연합 프로젝트' 수집기 서버 메모리 점유율 28% 절감 등 다수의 성능 개선 경험이 있고 미국에서 현지 학생들과 대학교 수강신청 서비스를 개발해 5팀 중 1등을 한 경험이 있다.
+                            '준베리다이어리' 캘린더 태그 표출시 성능 4.5초 개선, '지능형 디지털 트윈 연합 프로젝트' 수집기 서버 평균 메모리 점유율 83.13% 절감 등 다수의 성능 개선 경험이 있고 미국에서 현지 학생들과 대학교 수강신청 서비스를 개발해 5팀 중 1등을 한 경험이 있다.
                         </BlogAboutIntro>
                         <BlogAboutLink>
                             <b>Blog</b> : <BlogLink href="https://juneberrydiary.com/blog/tourist0302" target="_blank" rel="noopener noreferrer">https://juneberrydiary.com/blog/tourist0302</BlogLink>
@@ -328,7 +328,9 @@ const BlogAbout = () => {
                                             <li style={{fontWeight: "400"}}>데이터 수집기 개발</li>
                                             <ul>
                                                 <li>Spring으로 개발된 데이터 수집기를 node.js 기반 데이터 수집기로 변경<br/>
-                                                    → 수집기 서버 메모리 점유율 <b>28%</b> 절감 경험 (320MiB → 230.4MiB)
+                                                    → 수집기 서버 평균 메모리 점유율 <b>83.13%</b> 절감 경험 (652 MiB → 110 MiB) <br />
+                                                    <span style={{marginLeft: "20px"}}>- <span style={{fontWeight: "400", marginLeft: "10px"}}>Spring 데이터 수집기</span> 메모리 점유율 : 200MiB 후반 ~ 1GiB</span> <br />
+                                                    <span style={{marginLeft: "20px"}}>- <span style={{fontWeight: "400", marginLeft: "10px"}}>node.js 데이터 수집기</span> 메모리 점유율 : 90MiB ~ 130MiB</span>
                                                 </li>
                                                 <li>가변 데이터 처리 가능하도록 NoSQL인 couch DB + 스프링 기반 데이터 수집기 개발</li>
                                             </ul>
