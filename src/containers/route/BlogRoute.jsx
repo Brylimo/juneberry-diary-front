@@ -26,6 +26,7 @@ export const BlogRoute = () => {
 
     useEffect(() => {
         if (!user) {
+            console.log("user line")
             const fetchData = async () => {
                 setLoading(true);
                 try {
@@ -62,6 +63,7 @@ export const BlogRoute = () => {
     if (!id) return <NotFoundPage />
     if (!isVoid && (loading || apiPending || apiFetching || blogId !== id)) {
         //return "로딩중입니다....";
+        console.log("apt", !isVoid, (loading || apiPending || apiFetching || blogId !== id))
         return null;
     }
 

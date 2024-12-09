@@ -303,6 +303,7 @@ const BlogHome  = ({ user, blogName }) => {
         }
     }, [page, paramId, searchParams, navigate])
 
+    console.log("star")
     if (isPending || isLoading || isFetching) {
         return null
     }
