@@ -67,13 +67,7 @@ export const BlogRoute = () => {
         }
     }, [fetchedBlog, dispatch, apiFetching, apiPending])
 
-    useEffect(() => {
-        if (id && blogId !== id) {
-            queryClient.invalidateQueries(["getBlogById", { id }]);
-        }
-    }, [id, blogId, queryClient]);
-
-    if (loading || apiPending || apiFetching) {
+    if (loading || ((!blogId || blogId !== id) && (apiPending || apiFetching))) { // api가 enabled이고 api를 가지고오는 중
         //return "로딩중입니다....";
         console.log("apt", (loading || apiPending || apiFetching), loading, apiPending, apiFetching, blogId !== id)
         return null;
