@@ -14,7 +14,7 @@ export const BlogRoute = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const queryClient = useQueryClient();
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [isVoid, setIsVoid] = useState(false);
 
     const { user, blogId } = useSelector(({ user, blog }) => ({
@@ -36,11 +36,16 @@ export const BlogRoute = () => {
                         dispatch(initializeEventHash());
                         queryClient.removeQueries();
                     }
-                } catch (e) {}
-                setLoading(false);
+                } catch (e) {
+                    console.error(e);
+                } finally {
+                    setLoading(false)
+                }
             };
 
             fetchData();
+        } else {
+            setLoading(false)
         }
     }, [user, dispatch, navigate, queryClient]);
 
@@ -55,19 +60,20 @@ export const BlogRoute = () => {
                 blogId: fetchedBlog.blogId,
                 blogName: fetchedBlog.blogName
             }))
+            setIsVoid(false)
         } else if (fetchedBlog) {
             setIsVoid(true)
         }
-    }, [fetchedBlog, dispatch, navigate, apiFetching, apiPending])
+    }, [fetchedBlog, dispatch, apiFetching, apiPending])
 
-    if (!id) return <NotFoundPage />
-    if (!isVoid && (loading || apiPending || apiFetching || blogId !== id)) {
+    if (loading || apiPending || apiFetching) {
         //return "로딩중입니다....";
-        console.log("apt", !isVoid, (loading || apiPending || apiFetching || blogId !== id), loading, apiPending, apiFetching, blogId !== id)
+        console.log("apt", (loading || apiPending || apiFetching), loading, apiPending, apiFetching, blogId !== id)
         return null;
     }
 
-    if (isVoid) return <NotFoundPage />
+    console.log("pass")
+    if (isVoid || !id || blogId !== id) return <NotFoundPage />
     
     return <Outlet />
 }
