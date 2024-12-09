@@ -22,8 +22,9 @@ export const BlogRoute = () => {
         blogId: blog.blogId
     }));
 
-    const { isPending: apiPending, isFetching: apiFetching, data: fetchedBlog } = useGetBlogByIdQuery(id, (!blogId || blogId !== id));
+    const { isPending: apiPending, isFetching: apiFetching, data: fetchedBlog } = useGetBlogByIdQuery(id, Boolean(!blogId || blogId !== id));
 
+    console.log("crown", (!blogId || blogId !== id), blogId, id);
     useEffect(() => {
         if (!user) {
             console.log("user line")
@@ -65,6 +66,12 @@ export const BlogRoute = () => {
             setIsVoid(true)
         }
     }, [fetchedBlog, dispatch, apiFetching, apiPending])
+
+    useEffect(() => {
+        if (id && blogId !== id) {
+            queryClient.invalidateQueries(["getBlogById", { id }]);
+        }
+    }, [id, blogId, queryClient]);
 
     if (loading || apiPending || apiFetching) {
         //return "로딩중입니다....";
