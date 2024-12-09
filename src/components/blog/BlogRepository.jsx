@@ -35,7 +35,7 @@ const BlogRepository = ({ blogList }) => {
     const navigate = useNavigate();
 
     const onClickBlogCard = useCallback((blogId) => {
-        navigate(`/blog/${blogId}`);
+        navigate(`/blog/${blogId}?page=1`);
     }, [navigate])
 
     return (

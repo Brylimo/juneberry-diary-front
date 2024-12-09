@@ -298,8 +298,10 @@ const BlogHome  = ({ user, blogName }) => {
     }, [queryClient])
 
     useEffect(() => {
-        navigate(`/blog/${paramId}?page=${page}`);
-    }, [page, paramId, navigate])
+        if (!searchParams.get("page")) {
+            navigate(`/blog/${paramId}?page=${page}`);
+        }
+    }, [page, paramId, searchParams, navigate])
 
     if (isPending || isLoading || isFetching) {
         return null

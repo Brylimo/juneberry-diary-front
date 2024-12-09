@@ -292,8 +292,10 @@ const BlogTagSearch = ({ user }) => {
     }, [navigate, blogId])
 
     useEffect(() => {
-        navigate(`/blog/${blogId}/tag/${tagName}?page=${page}`);
-    }, [page, tagName, blogId, navigate])
+        if (!searchParams.get("page")) {
+            navigate(`/blog/${blogId}/tag/${tagName}?page=${page}`);
+        }
+    }, [page, tagName, blogId, searchParams, navigate])
 
     useEffect(() => {
         if (location.state?.reset) {

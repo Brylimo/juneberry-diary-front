@@ -57,7 +57,7 @@ export const BlogRoute = () => {
         } else if (fetchedBlog) {
             setIsVoid(true)
         }
-    }, [fetchedBlog, dispatch, navigate])
+    }, [fetchedBlog, dispatch, navigate, apiFetching, apiPending])
 
     if (!id) return <NotFoundPage />
     if (!isVoid && (loading || apiPending || apiFetching || blogId !== id)) {
