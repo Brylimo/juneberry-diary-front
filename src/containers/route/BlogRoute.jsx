@@ -24,10 +24,8 @@ export const BlogRoute = () => {
 
     const { isPending: apiPending, isFetching: apiFetching, data: fetchedBlog } = useGetBlogByIdQuery(id, Boolean(!blogId || blogId !== id));
 
-    console.log("crown", (!blogId || blogId !== id), blogId, id);
     useEffect(() => {
         if (!user) {
-            console.log("user line")
             const fetchData = async () => {
                 setLoading(true);
                 try {
@@ -69,11 +67,9 @@ export const BlogRoute = () => {
 
     if (loading || ((!blogId || blogId !== id) && (apiPending || apiFetching))) { // api가 enabled이고 api를 가지고오는 중
         //return "로딩중입니다....";
-        console.log("apt", (loading || apiPending || apiFetching), loading, apiPending, apiFetching, blogId !== id)
         return null;
     }
 
-    console.log("pass")
     if (isVoid || !id || blogId !== id) return <NotFoundPage />
     
     return <Outlet />
