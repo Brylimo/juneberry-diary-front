@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import BlogManageCategory from '../components/blog/BlogManageCategory';
+import BlogManageCategoryForm from '../containers/blog/BlogManageCategoryForm';
 
 const BlogManageCategoryPage = () => {
     return (
@@ -8,7 +8,7 @@ const BlogManageCategoryPage = () => {
             <Helmet>
                 <title>카테고리 관리</title>
             </Helmet>
-            <BlogManageCategory />
+            <BlogManageCategoryForm />
         </>
     )
 }

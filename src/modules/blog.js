@@ -15,7 +15,8 @@ const initialState = {
     blogId: null,
     blogName: null,
     tempCnt: 0,
-    tempPosts: []
+    tempPosts: [],
+    categories: []
 }
 
 const blog = handleActions(

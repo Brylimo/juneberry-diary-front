@@ -4,7 +4,13 @@ import { Link, useParams, useLocation } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 
 const BlogManageBlock = styled.div`
+    max-width: 1150px;
     padding: 24px 40px 0px 40px;
+    margin: 0 auto;
+
+    ${({ theme }) => theme.sm`
+        width: 100%;
+    `};
 `
 
 const BlogManageHeader = styled.div`
@@ -19,6 +25,10 @@ const BlogMangeBody = styled.div`
     display: flex;
     flex-direction: row;
     width: 100%;
+
+    ${({ theme }) => theme.sm`
+        flex-direction: column;
+    `};
 `
 
 const BlogManageHeaderLeft = styled.div`
@@ -42,6 +52,12 @@ const BlogManageSideBar = styled.div`
     flex: 1;
     padding-right: 24px;
     max-width: 296px;
+
+    ${({ theme }) => theme.sm`
+        margin-bottom: 30px;
+        padding-right: 0;
+        min-width: 100%;
+    `};
 `
 
 const BlogManageMain = styled.div`

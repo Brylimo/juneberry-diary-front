@@ -71,7 +71,7 @@ juneberry diary frontend project
 ![](https://cdn.juneberrydiary.com/d30a57b3-fe07-4505-b9e8-6da5f3dee4f0.jpg)
 
 ### 블로그 관리
-![](https://cdn.juneberrydiary.com/5a4e6335-3d86-4def-ad67-6f461eb60a3e.jpg)
+![](https://cdn.juneberrydiary.com/c36c14c6-137b-4e0d-b955-eda7834ee03a.jpg)
 
 ### 마이페이지
 ![](https://cdn.juneberrydiary.com/ef434a5a-c0c1-48d1-b246-41f6b066176e.png)
