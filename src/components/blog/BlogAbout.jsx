@@ -38,7 +38,6 @@ const BlogAboutName = styled.div`
 const BlogAboutSemiTitle = styled.div`
     font-size: 26px;
     font-weight: 600;
-    margin-bottom: 12px;
     margin-top: 35px;
     display: flex;
     gap: 14px;
@@ -128,7 +127,7 @@ const BlogAboutTxtContentBlock = styled.div`
     flex-direction: column;
     font-size: 18px;
     padding: 15px 20px;
-    font-weight: 400;
+    font-weight: 100;
 `
 
 const BlogAboutTag = styled.div`
@@ -158,7 +157,7 @@ const BlogAboutSideBlock = styled.div`
 `;
 
 const BlogAboutLeftSide = styled.div`
-    flex: 1.3;
+    flex: 1;
     max-width: 263px;
 `;
 
@@ -214,26 +213,83 @@ const BlogAbout = () => {
                         <BlogAboutImgBlock>
                             <BlogAboutImg src="/chaejin.jpg"/>
                         </BlogAboutImgBlock>
-                        <BlogAboutIntro>
+
+                        {/*<BlogAboutIntro>
                             제주도청 주관 '<i>퍼스널 모빌리티 안전 사고 다발지역 안내 서비스</i>'를 Project Leader로 준공해 1억 4천 만원 가량의 회사 매출을 창출한 경험이 있으며 블로그/다이어리 서비스인 '준베리다이어리'를 개발해 운영하고 있다.
                             '준베리다이어리' 캘린더 태그 표출시 성능 4.5초 개선, '지능형 디지털 트윈 연합 프로젝트' 수집기 서버 평균 메모리 점유율 83.13% 절감 등 다수의 성능 개선 경험이 있고 미국에서 현지 학생들과 대학교 수강신청 서비스를 개발해 5팀 중 1등을 한 경험이 있다.
-                        </BlogAboutIntro>
-                        <BlogAboutLink>
-                            <b>Blog</b> : <BlogLink href="https://juneberrydiary.com/blog/tourist0302" target="_blank" rel="noopener noreferrer">https://juneberrydiary.com/blog/tourist0302</BlogLink>
-                            <br />
+                        </BlogAboutIntro>*/}
+
+                        <BlogAboutSemiTitle>
+                            About Me
+                        </BlogAboutSemiTitle>
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide style={{ flex: '0.6' }}>
+                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
+                                    Introduce
+                                </BlogAboutHighlightTitle>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>안녕하세요! 주니어 백엔드 개발자 임채진 입니다.</li>
+                                        <li>Cloudflare 모니터링 기준 한달 고유 방문자 1.02k명의 자체 서비스를 운영중입니다.</li>
+                                        <li>Spring/Spring Boot 기반 10개 이상의 프로젝트에 참여하였습니다.</li>
+                                        <li>감리가 필요한 1억원대 규모 프로젝트 포함 3번의 프로젝트 리딩을 경험했습니다.</li>
+                                        <li>redis, jpa 최적화 및 sql 튜닝 등 다수의 성능 최적화를 경험했습니다.</li>
+                                        <li>미국에 9개월 가량 거주하여 영어로 편하게 의사소통 가능합니다.</li>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide style={{ flex: '0.6' }}>
+                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
+                                    Blog
+                                </BlogAboutHighlightTitle>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>🔗<BlogLink href="https://juneberrydiary.com/blog/tourist0302" target="_blank" rel="noopener noreferrer">https://juneberrydiary.com/blog/tourist0302</BlogLink></li>
+                                        <li>react + spring boot로 자체 개발한 블로그를 이용하고 있습니다.</li>
+                                        <li>같은 실수를 반복하지 않기 위해 시작했습니다.</li>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide style={{ flex: '0.6' }}>
+                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
+                                    etc
+                                </BlogAboutHighlightTitle>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>Career Summary : 🔗<BlogLink href="https://docs.google.com/document/d/1_lEl3kxrgruhx6m9kaZ0h1zMR4ZRba9CD6_SWnp0xe0/edit?usp=sharing" target="_blank" rel="noopener noreferrer">경력 기술서</BlogLink></li>
+                                        <li>Github : 🔗<BlogLink href="https://github.com/Brylimo" target="_blank" rel="noopener noreferrer">https://github.com/Brylimo</BlogLink></li>
+                                        <li>Email : icj0103@gmail.com</li>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+
+                        {/*<BlogAboutLink>
                             <b>Github</b> : <BlogLink href="https://github.com/Brylimo" target="_blank" rel="noopener noreferrer">https://github.com/Brylimo</BlogLink>
                             <br />
                             <b>Email</b> : icj0103@gmail.com
                             <br/>
                             <br/>
-                            <b>Career Summary</b> : <br/>
+                            <b>Career Summary (경력 기술서)</b> : <br/>
                             <BlogLink href="https://docs.google.com/document/d/1_lEl3kxrgruhx6m9kaZ0h1zMR4ZRba9CD6_SWnp0xe0/edit?usp=sharing" target="_blank" rel="noopener noreferrer">https://docs.google.com/document/d/1_lEl3kxrgruhx6m9kaZ0h1zMR4ZRba9CD6_SWnp0xe0/edit?usp=sharing</BlogLink>
-                        </BlogAboutLink>
+                        </BlogAboutLink>*/}
+
                         <BlogAboutSemiTitle>
                             Skills
                         </BlogAboutSemiTitle>
-                        <BlogHrLine />
-                        <BlogSmInfoDiv>※ 아래의 기술들을 프로젝트에서 편하게 사용할 수 있습니다.</BlogSmInfoDiv>
+                        <BlogSmInfoDiv>※ (1) - Novice, (2) - Developing, (3) - Proficient, (4) - Advanced</BlogSmInfoDiv>
                         <BlogAboutSideBlock>
                             <BlogAboutLeftSide>
                                 <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
@@ -243,12 +299,12 @@ const BlogAbout = () => {
                             <BlogAboutRightSide>
                                 <BlogAboutTxtContentBlock>
                                     <BlogAboutUl>
-                                        <li>Java, node.js, python</li>
-                                        <li>Spring Boot, Spring MVC, Spring Data JPA, Spring Security</li>
-                                        <li>JPA, Querydsl, MyBatis, Prisma</li>
-                                        <li>Gradle, Maven</li>
-                                        <li>IntelliJ, Visual Studio Code, Vim, DBeaver, HeidiSQL</li>
-                                        <li>Git</li>
+                                        <li>Java (4), JavaScript (4), node.js (4), python (3)</li>
+                                        <li>Spring Boot (3), Spring MVC (4), Spring Data JPA (4), Spring Security (3)</li>
+                                        <li>JPA (4), Querydsl (3), MyBatis (4), Prisma (3)</li>
+                                        <li>Gradle (4), Maven (4)</li>
+                                        <li>IntelliJ (4), Visual Studio Code (4), Vim (4), DBeaver (4), HeidiSQL (4)</li>
+                                        <li>Git (4)</li>
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
@@ -263,11 +319,11 @@ const BlogAbout = () => {
                             <BlogAboutRightSide>
                                 <BlogAboutTxtContentBlock>
                                     <BlogAboutUl>
-                                        <li>AWS EC2, S3, RDS, Lambda, Cloudflare R2, Vercel, Cafe24, GoDaddy</li>
-                                        <li>Postgresql, MySQL, MariaDB, Redis, SQLite</li>
-                                        <li>Jenkins</li>
-                                        <li>Nginx, Tomcat, Docker</li>
-                                        <li>Prometheus, Grafana</li>
+                                        <li>AWS EC2 (4), AWS S3 (3), AWS RDS (3), AWS Lambda (3), Cloudflare R2 (4), Vercel (4), Cafe24 (4), GoDaddy (4)</li>
+                                        <li>Postgresql (4), MySQL (4), MariaDB (4), Redis (3), SQLite (3)</li>
+                                        <li>Jenkins (3)</li>
+                                        <li>Nginx (3), Tomcat (4), Docker (4)</li>
+                                        <li>Prometheus (3), Grafana (3)</li>
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
@@ -282,9 +338,9 @@ const BlogAbout = () => {
                             <BlogAboutRightSide>
                                 <BlogAboutTxtContentBlock>
                                     <BlogAboutUl>
-                                        <li>HTML5, CSS, JS(ES5, ES6), Thymeleaf, Pug, JSP, Sass, BootStrap, JQuery</li>
-                                        <li>React.js</li>
-                                        <li>React Query, Redux, Styled Components, CodeMirror</li>
+                                        <li>HTML5 (4), CSS (4), JS(ES5, ES6) (4), Thymeleaf (4), Pug (3), JSP (4), Sass (4), BootStrap (3), JQuery (4)</li>
+                                        <li>React.js (3)</li>
+                                        <li>React Query (3), Redux (3), Styled Components (4), CodeMirror (3)</li>
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
@@ -299,7 +355,7 @@ const BlogAbout = () => {
                             <BlogAboutRightSide>
                                 <BlogAboutTxtContentBlock>
                                     <BlogAboutUl>
-                                        <li>Slack</li>
+                                        <li>Slack (3)</li>
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
@@ -309,7 +365,6 @@ const BlogAbout = () => {
                             <span>Work Experience & Projects</span>
                             <BlogAboutTag>총 경력 2년</BlogAboutTag>
                         </BlogAboutSemiTitle>
-                        <BlogHrLine />
                         <BlogAboutSideBlock>
                             <BlogAboutLeftSide>
                                 <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
@@ -516,7 +571,6 @@ const BlogAbout = () => {
                         <BlogAboutSemiTitle>
                             <span>Personal Experience & Projects</span>
                         </BlogAboutSemiTitle>
-                        <BlogHrLine />
 
                         <BlogAboutSideBlock>
                             <BlogAboutLeftSide>
@@ -617,8 +671,6 @@ const BlogAbout = () => {
                         <BlogAboutSemiTitle>
                             Presentation & Article
                         </BlogAboutSemiTitle>
-                        <BlogHrLine />
-
                         <BlogAboutSideBlock>
                             <BlogAboutLeftSide>
                                 <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
@@ -693,8 +745,6 @@ const BlogAbout = () => {
                         <BlogAboutSemiTitle>
                             Education
                         </BlogAboutSemiTitle>
-                        <BlogHrLine />
-
                         <BlogAboutSideBlock>
                             <BlogAboutLeftSide>
                                 <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
@@ -753,7 +803,6 @@ const BlogAbout = () => {
                         <BlogAboutSemiTitle>
                             Community
                         </BlogAboutSemiTitle>
-                        <BlogHrLine />
                         <BlogAboutHighlightTitle style={{marginTop: '10px', display: 'flex', gap: '7px'}}>
                             알고리즘 스터디(햇살마을) / 2023.10 ~ 현재
                             <a href="https://github.com/HaessalTown/Coding-Test-Study" target="_blank" rel="noopener noreferrer">

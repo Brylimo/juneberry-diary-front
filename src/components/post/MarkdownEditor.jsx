@@ -229,7 +229,7 @@ const MarkdownEditor = ({
             <PublishPage>
                 <CustomSelect
                     placeholder="카테고리"
-                    options={[{value: "", label: "카테고리 없음"}, {value: "1", label: "안녕"}]}
+                    options={[{value: "", label: "카테고리 없음"}]}
                 />
                 <TitleTextarea
                     ref={titleElement}
