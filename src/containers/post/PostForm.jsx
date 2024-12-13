@@ -1,6 +1,6 @@
 import React, {useEffect, useCallback} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { initialize, storePost } from '../../modules/publish';
 import { useGetPostByIndexQuery } from '../../hooks/queries/post/useGetPostByIndexQuery';
 import { useDeletePostMutation } from '../../hooks/mutations/post/useDeletePostMutation';
@@ -9,6 +9,7 @@ import Post from '../../components/post/Post';
 const PostForm = () => {
     const { id: blogId, pid: index } = useParams();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { user } = useSelector(({ user }) => ({
         user: user.user
     }));
@@ -17,9 +18,17 @@ const PostForm = () => {
 
     const handleDeletePost = useCallback((id) => {
         if (window.confirm("정말 포스트를 삭제하시겠습니까?")) {
-            deletePostMutate(id);
+            deletePostMutate(id, {
+                onSuccess: () => {
+                    alert("삭제되었습니다.");
+                    navigate(`/blog/${blogId}`);
+                },
+                onError: (error) => {
+                    alert("삭제가 실패했습니다.");
+                }
+            });
         }
-    }, [deletePostMutate])
+    }, [blogId, navigate, deletePostMutate])
 
     useEffect(() => {
         return () => {
