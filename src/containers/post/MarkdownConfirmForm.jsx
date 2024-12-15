@@ -26,7 +26,9 @@ const MarkdownConfirmForm = () => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { title, description, mrkdown, tags, isPublic, postId, thumbnailPath } = useSelector(({ publish }) => ({
+    const { category, subCategory, title, description, mrkdown, tags, isPublic, postId, thumbnailPath } = useSelector(({ publish }) => ({
+        category: publish.category,
+        subCategory: publish.subCategory,
         title: publish.title,
         description: publish.description,
         mrkdown: publish.mrkdown,
@@ -56,6 +58,8 @@ const MarkdownConfirmForm = () => {
                 await addPostMutateAsync(
                     {
                         date: new Date(),
+                        category: category,
+                        subCategory: subCategory,
                         title: title,
                         description: description,
                         content: mrkdown,
@@ -96,6 +100,8 @@ const MarkdownConfirmForm = () => {
                 updatePostMutate(
                     {
                         postId: id,
+                        category: category,
+                        subCategory: subCategory,
                         title: title,
                         description: description,
                         content: mrkdown,
@@ -130,7 +136,7 @@ const MarkdownConfirmForm = () => {
                     })
             }
         },
-        [blogId, thumbnailURL, imgFile, description, isPublic, mrkdown, title, postId, tags, onChangeField, addPostMutateAsync, updatePostMutate, navigate, queryClient])
+        [blogId, category, subCategory, thumbnailURL, imgFile, description, isPublic, mrkdown, title, postId, tags, onChangeField, addPostMutateAsync, updatePostMutate, navigate, queryClient])
 
     const onClickImgBtn = useCallback(() => {
         imgUpload()

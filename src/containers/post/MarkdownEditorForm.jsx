@@ -16,12 +16,14 @@ const MarkdownEditorForm = ({ tempPost }) => {
     const { id: blogId } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { user, saveActive, submitActive, tempCntActive, isTemp, title, mrkdown, postId } = useSelector(({ user, publish }) => ({
+    const { user, saveActive, submitActive, tempCntActive, isTemp, category, subCategory, title, mrkdown, postId } = useSelector(({ user, publish }) => ({
         user: user.user,
         saveActive: publish.saveActive,
         submitActive: publish.submitActive,
         tempCntActive: publish.tempCntActive,
         isTemp: publish.isTemp,
+        category: publish.category,
+        subCategory: publish.subCategory,
         title: publish.title,
         mrkdown: publish.mrkdown,
         postId: publish.postId,
@@ -40,6 +42,8 @@ const MarkdownEditorForm = ({ tempPost }) => {
     const codemirrorRef = useRef(null)
     const codemirrorBlockRef = useRef(null)
     const postIdRef = useRef(postId)
+    const categoryRef = useRef(category)
+    const subCategoryRef = useRef(subCategory)
     const titleRef = useRef(title)
     const contentRef = useRef(mrkdown)
 
@@ -77,10 +81,14 @@ const MarkdownEditorForm = ({ tempPost }) => {
             if (!id) {
                 const title = titleRef.current || '';
                 const content = contentRef.current || '';
+                const category = categoryRef.current || '';
+                const subCategory = subCategoryRef.current || '';
 
                 await addPostMutateAsync(
                     {
                         date: new Date(),
+                        category: category,
+                        subCategory: subCategory,
                         title: title,
                         content: content,
                         blogId: blogId,
@@ -147,7 +155,7 @@ const MarkdownEditorForm = ({ tempPost }) => {
                     }
                 }
             )
-        }, [blogId, uploadImageMutateAsync, setImgFile, onChangeField, addPostMutateAsync, navigate, tempPost]
+        }, [blogId, uploadImageMutateAsync, setImgFile, onChangeField, addPostMutateAsync, navigate, tempPost, queryClient]
     );
 
     const onToolbarItemClick = useCallback((mode) => {
@@ -352,6 +360,8 @@ ${selectedTxt}
         async ()=> {
             const title = titleRef.current || '';
             const content = contentRef.current || '';
+            const category = categoryRef.current || '';
+            const subCategory = subCategoryRef.current || '';
 
             if (!title || !content) {
                 toast.error("제목 또는 내용이 비어있습니다.")
@@ -363,6 +373,8 @@ ${selectedTxt}
                 await addPostMutateAsync(
                     {
                         date: new Date(),
+                        category: category,
+                        subCategory: subCategory,
                         title: title,
                         content: content,
                         blogId: blogId,
@@ -407,6 +419,8 @@ ${selectedTxt}
                 updatePostMutate(
                 {
                     postId: id,
+                    category: category,
+                    subCategory: subCategory,
                     title: title,
                     content: content,
                     blogId: blogId,
@@ -436,7 +450,7 @@ ${selectedTxt}
                 })
             }
         }, 
-        [isTemp, navigate, addPostMutateAsync, onChangeField, updatePostMutate])
+        [isTemp, navigate, blogId, addPostMutateAsync, onChangeField, updatePostMutate, queryClient])
 
     useEffect(() => {
         if (!imgFile) return;
@@ -462,7 +476,9 @@ ${selectedTxt}
     useEffect(() => {
         contentRef.current = mrkdown
         titleRef.current = title
-    }, [mrkdown, title])
+        categoryRef.current = category
+        subCategoryRef.current = subCategory
+    }, [mrkdown, title, category, subCategory])
 
     useEffect(() => {
         if (saveActive) {
@@ -486,6 +502,8 @@ ${selectedTxt}
     return <MarkdownEditor
         tempCntActive={tempCntActive} 
         onChangeField={onChangeField} 
+        category={category}
+        subCategory={subCategory}
         title={title}
         mrkdown={mrkdown}
         linkTxt={linkTxt}

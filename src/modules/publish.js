@@ -17,6 +17,8 @@ const initialState = {
     tempCntActive: false,
     isTemp: false,
     isPublic: true,
+    category: '',
+    subCategory: '',
     title: '',
     description: '',
     mrkdown: '',
@@ -30,9 +32,11 @@ const initialState = {
 const publish = handleActions(
     {
         [INITIALIZE]: state => initialState,
-        [STORE_POST]: (state, { payload: {id, title, description, mrkdown, postTags, updateDt, isTemp, isPublic, thumbnailPath }}) => ({
+        [STORE_POST]: (state, { payload: {id, category, subCategory, title, description, mrkdown, postTags, updateDt, isTemp, isPublic, thumbnailPath }}) => ({
             ...state,
             postId: id,
+            category: category,
+            subCategory: subCategory,
             title: title,
             description: description || '',
             mrkdown: mrkdown,

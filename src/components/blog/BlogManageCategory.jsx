@@ -1,9 +1,13 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, {css} from 'styled-components';
+import { useParams } from 'react-router-dom';
 import { DragDropContext, Droppable, Draggable, Drag } from "react-beautiful-dnd";
+import { useGetAllCategories } from '../../hooks/queries/blog/useGetAllCategories';
+import { useAddCategoriesMutation } from '../../hooks/mutations/blog/useAddCategoriesMutation';
 import MenuIcon from '@mui/icons-material/Menu';
 import AddIcon from '@mui/icons-material/Add';
 import CircleIcon from '@mui/icons-material/Circle';
+import { toast } from 'react-toastify'
 
 const BlogMangeHeading = styled.div`
     font-size: 24px;
@@ -183,9 +187,14 @@ const CircleIconCustom = styled(CircleIcon)`
 `
 
 const BlogManageCategory = () => {
-    const [categoryInputs, setCategoryInputs] = useState([]);
+    const { id: blogId } = useParams()
 
-    const [array, setArray] = useState([])
+    const { data: categoryData } = useGetAllCategories(blogId)
+    const { mutate: addCategoriesMutate } = useAddCategoriesMutation(blogId)
+    
+    const [ tempCategories, setTempCategories ] = useState([]);
+    const [categoryInputs, setCategoryInputs] = useState([]);
+    const [subCategoryInputs, setSubCategoryInputs] = useState(Array.from({ length: tempCategories.length }, () => []));
 
     const handleCategoryTxtChange = useCallback((index, value) => {
         setCategoryInputs((prevInputs) => {
@@ -195,14 +204,48 @@ const BlogManageCategory = () => {
         })
     }, [])
 
+    const handleSubCategoryTxtChange = useCallback((index, sIndex, value) => {
+        setSubCategoryInputs((prevInputs) => {
+            const newSubCategoryInputs = [...prevInputs]
+            newSubCategoryInputs[index][sIndex] = value;
+            return newSubCategoryInputs 
+        })
+    }, [])
+
     const handleCategoryConfirmBtn = useCallback((index) => {
-        setArray(prev => [...prev, {text: categoryInputs[index]?.text, children: []}])
+        const hasCategoryInput = tempCategories.some(
+            (category) => category.categoryName === categoryInputs[index]?.text
+        )
+
+        if (hasCategoryInput) {
+            alert("중복되는 카테고리 이름이 이미 존재합니다.")
+            return
+        }
+        
+        setTempCategories(prev => [...prev, {categoryName: categoryInputs[index]?.text, children: []}])
         setCategoryInputs((prevInputs) => {
             const newInputs = [...prevInputs]
             newInputs.splice(index, 1)
             return newInputs
         })
-    }, [categoryInputs])
+    }, [categoryInputs, setTempCategories, tempCategories])
+
+    const handleSubCategoryConfirmBtn = useCallback((index, input) => {
+        const hasSubcategoryInput = tempCategories[index + 1]?.children.some(
+            (child) => child.subCategoryName === input
+        )
+
+        if (hasSubcategoryInput) {
+            alert("중복되는 하위 카테고리 이름이 이미 존재합니다.")
+            return
+        }
+        
+        setTempCategories((prevCategories) => {
+            const newCategories = [...prevCategories]
+            newCategories[index + 1]?.children.push({ subCategoryName: input })
+            return newCategories
+        })
+    }, [setTempCategories, tempCategories])
 
     const handleCategoryDeleteBtn = useCallback((index) => {
         setCategoryInputs((prevInputs) => {
@@ -212,18 +255,54 @@ const BlogManageCategory = () => {
         })
     }, [])
 
-    const handleSecondCategoryAddBtn = useCallback((index) => {
-        setArray((prevArray) => {
-            const newArray = [...prevArray]
-            newArray[index]?.children.push("hi")
-            console.log(newArray)
-            return newArray
+    const handleSubCategoryDeleteBtn = useCallback((index, sIndex) => {
+        setSubCategoryInputs((prev) => {
+            const newSubCategoryInputs = [...prev]
+            newSubCategoryInputs[index].splice(sIndex, 1);
+            return newSubCategoryInputs
         })
+    }, [])
+
+    const handleSecondCategoryAddBtn = useCallback((index) => {
+       setSubCategoryInputs((prev) => {
+            const newSubCategoryInputs = [...prev]
+            newSubCategoryInputs[index]?.push("")
+            return newSubCategoryInputs;
+       })
     }, [])
 
     const onClickCategoryAddBtn = useCallback(e => {
         setCategoryInputs((prevInputs) => [...prevInputs, {text: ""}]);
+        setSubCategoryInputs(prev => [...prev, []]);
     }, [])
+
+    const onClickSaveAllBtn = useCallback(() => {
+        addCategoriesMutate(
+            {
+                blogId,
+                categoryInfos: tempCategories
+            },
+            {
+                onSuccess: () => {
+                    
+                },
+                onError: () => {
+                    toast.error("카테고리 저장에 실패했습니다.");
+                    return;
+                }
+            }
+        )
+    }, [tempCategories, blogId, addCategoriesMutate]);
+
+    useEffect(() => {
+        if (tempCategories) {
+            setSubCategoryInputs(Array.from({ length: tempCategories.length }, () => []))
+        }
+    }, [tempCategories])
+
+    useEffect(() => {
+        setTempCategories(categoryData || [])
+    }, [categoryData])
 
     return (
         <>
@@ -243,8 +322,8 @@ const BlogManageCategory = () => {
                                 <Droppable droppableId="category-container" type="CATEGORY">
                                     {(provided) => (
                                         <div ref={provided.innerRef} {...provided.droppableProps}>
-                                        {array.map((elem, index) => (
-                                            <Draggable key={index} draggableId={`${elem.text}-${index}`} index={index}>
+                                        {tempCategories.filter(category => category.categoryName !== "").map((category, index) => (
+                                            <Draggable key={index} draggableId={`${category?.categoryName}-${index}`} index={index}>
                                             {(provided) => (
                                               <div
                                                 ref={provided.innerRef}
@@ -255,7 +334,7 @@ const BlogManageCategory = () => {
                                                         <div {...provided.dragHandleProps}>
                                                             <MenuIconCustom/>
                                                         </div>
-                                                        {elem.text}
+                                                        {category?.categoryName}
                                                     </CategoryLinearSegment>
                                                     <CategoryLinearRight>
                                                         <UtilBtn onClick={() => handleSecondCategoryAddBtn(index)}>추가</UtilBtn>
@@ -267,34 +346,45 @@ const BlogManageCategory = () => {
                                                 <Droppable droppableId="second-category-container" type={`SUBCATEGORY`}>
                                                     {(p) => (
                                                         <SecondCategoryBlock ref={p.innerRef} {...p.droppableProps}>
-                                                            {elem.children?.length > 0 &&
-                                                                elem.children.map((txt, childIndex) => (
-                                                                    <Draggable key={`${txt}-${childIndex}`} draggableId={`child11-${txt}-${childIndex}`} index={childIndex}>
-                                                                        {(provided) => (
-                                                                            <div
-                                                                                ref={provided.innerRef}
-                                                                                {...provided.draggableProps}
-                                                                            >
-                                                                                <CategoryLinearBlock>
-                                                                                    <CategoryLinearSegment>
-                                                                                        <div {...provided.dragHandleProps}>
-                                                                                            <MenuIconCustom />
-                                                                                        </div>
-                                                                                        {txt}
-                                                                                    </CategoryLinearSegment>
-                                                                                    <CategoryLinearRight>
-                                                                                        <UtilBtn>추가</UtilBtn>
-                                                                                        <CategoryLinearTail>
-                                                                                            <CircleIconCustom />
-                                                                                        </CategoryLinearTail>
-                                                                                    </CategoryLinearRight>
-                                                                                </CategoryLinearBlock>
-                                                                            </div>
-                                                                        )}
-                                                                    </Draggable>
+                                                            {category.children?.length > 0 &&
+                                                                category.children
+                                                                    .filter(child => child.subCategoryName !== "")
+                                                                    .map((subCategory, childIndex) => (
+                                                                        <Draggable key={`${subCategory?.subCategoryName}-${childIndex}`} draggableId={`child11-${subCategory?.subCategoryName}-${childIndex}`} index={childIndex}>
+                                                                            {(provided) => (
+                                                                                <div
+                                                                                    ref={provided.innerRef}
+                                                                                    {...provided.draggableProps}
+                                                                                >
+                                                                                    <CategoryLinearBlock>
+                                                                                        <CategoryLinearSegment>
+                                                                                            <div {...provided.dragHandleProps}>
+                                                                                                <MenuIconCustom />
+                                                                                            </div>
+                                                                                            {subCategory?.subCategoryName}
+                                                                                        </CategoryLinearSegment>
+                                                                                        <CategoryLinearRight>
+                                                                                            <UtilBtn>추가</UtilBtn>
+                                                                                            <CategoryLinearTail>
+                                                                                                <CircleIconCustom />
+                                                                                            </CategoryLinearTail>
+                                                                                        </CategoryLinearRight>
+                                                                                    </CategoryLinearBlock>
+                                                                                </div>
+                                                                            )}
+                                                                        </Draggable>
                                                                 ))
                                                             }
                                                             {p.placeholder}
+                                                            {subCategoryInputs[index] && subCategoryInputs[index].map((subCategoryInput, sIndex) => (
+                                                                <CategoryLinearBlock key={sIndex}>
+                                                                    <CategoryAddInput value={subCategoryInput} placeholder="하위 카테고리명을 입력하세요." onChange={(e) => handleSubCategoryTxtChange(index, sIndex, e.target.value)} />
+                                                                    <CategoryAddBtnGroup>
+                                                                        <CategoryBtn onClick={() => handleSubCategoryDeleteBtn(index, sIndex)}>취소</CategoryBtn>
+                                                                        <CategoryBtn onClick={() => handleSubCategoryConfirmBtn(index, subCategoryInput)}>확인</CategoryBtn>
+                                                                    </CategoryAddBtnGroup>
+                                                                </CategoryLinearBlock>
+                                                            ))}
                                                         </SecondCategoryBlock>
                                                     )}
                                                 </Droppable>
@@ -324,11 +414,11 @@ const BlogManageCategory = () => {
                     </CategoryUpperSubBlock>
                 </CategoryUpperBlock>
                 <CategoryLowerBlock>
-                    <SaveBtn>변경사항 저장</SaveBtn>
+                    <SaveBtn onClick={onClickSaveAllBtn}>변경사항 저장</SaveBtn>
                 </CategoryLowerBlock>
             </CategoryBlock>
         </>
     )
 }
 
-export default BlogManageCategory;
+export default React.memo(BlogManageCategory);

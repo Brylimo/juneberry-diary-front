@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { useParams } from 'react-router-dom';
 import CodeMirror from '@uiw/react-codemirror';
 import { languages } from '@codemirror/language-data';
 import { EditorView, rectangularSelection, keymap } from '@codemirror/view';
@@ -13,6 +14,7 @@ import richEditor from '../../plugins/rich-markdoc';
 import config from '../../configs/markdoc'
 import { Table } from '@lezer/markdown';
 import { markdownLanguage } from '@codemirror/lang-markdown';
+import { useGetAllCategories } from '../../hooks/queries/blog/useGetAllCategories';
 import SaveModalForm from '../../containers/post/SaveModalForm';
 import CustomSelect from '../common/CustomSelect';
 
@@ -187,6 +189,8 @@ const myTheme = createTheme({
 const MarkdownEditor = ({
     tempCntActive, 
     onChangeField,
+    category,
+    subCategory,
     title, 
     mrkdown,
     linkTxt,
@@ -199,17 +203,33 @@ const MarkdownEditor = ({
     onClickAddLinkSubmit,
     onClickAddLinkCancel 
 }) => {
+    const { id: blogId } = useParams()
+
+    const { data: categoryData } = useGetAllCategories(blogId)
+
+    const [options, setOptions] = useState([{value: '', label: '카테고리 없음'}])
     const [titleHeight, setTitleHeight] = useState(0)
     const titleElement = useRef(null)
     const addLinkBlockRef = useRef(null)
 
     const onChangeTitle = e => {
-        onChangeField({ key: 'title', value: e.target.value });
+        onChangeField({ key: 'title', value: e.target.value })
     }
 
     const onChangeMrkdown = useCallback((val, viewUpdate) => {
         onChangeField({ key: 'mrkdown', value: val})
     }, [onChangeField])
+
+    const handleChange = (option) => {
+        const values = option.value.split('-');
+
+        if (values.length === 1) {
+            onChangeField({ key: 'category', value: values[0]})
+        } else if (values.length === 2) {
+            onChangeField({ key: 'category', value: values[0]})
+            onChangeField({ key: 'subCategory', value: values[1]})
+        }
+    };
 
     useEffect(() => {
         if (titleElement.current) {
@@ -223,13 +243,49 @@ const MarkdownEditor = ({
         }
     }, [title])
 
+    useEffect(() => {
+        if (categoryData) {
+            const optionList = []
+
+            categoryData.forEach((item, index) => {
+                if (item.categoryName === '') {
+                    optionList.push({
+                        value: '',
+                        selectedLabel: "카테고리",
+                        label: "카테고리 없음"
+                    })
+                } else {
+                    
+                    // 1차. 카테고리
+                    optionList.push({
+                        value: item.categoryName,
+                        selectedLabel: item.categoryName,
+                        label: item.categoryName
+                    })
+
+                    // 2차. 하위 카테고리
+                    item.children.filter(subItem => !!subItem.subCategoryName).forEach((subItem) => {
+                        optionList.push({
+                            value: `${item.categoryName}-${subItem.subCategoryName}`,
+                            selectedLabel: subItem.subCategoryName,
+                            label: `- ${subItem.subCategoryName}`
+                        })
+                    })
+                }
+            })
+
+            setOptions(optionList)
+        }
+    }, [categoryData])
+
     return (
         <>
             <Toolbar onToolbarItemClick={onToolbarItemClick} />
             <PublishPage>
                 <CustomSelect
-                    placeholder="카테고리"
-                    options={[{value: "", label: "카테고리 없음"}]}
+                    placeholder={subCategory ? subCategory : (category ? category : "카테고리")}
+                    options={options}
+                    onChange={handleChange}
                 />
                 <TitleTextarea
                     ref={titleElement}

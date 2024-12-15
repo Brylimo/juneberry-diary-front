@@ -26,6 +26,8 @@ const EditorForm = () => {
         if (tempPost && !Array.isArray(tempPost)) { 
             dispatch(storePost({
                 id: tempPost.id,
+                category: tempPost.category,
+                subCategory: tempPost.subCategory,
                 title: tempPost.title,
                 description: tempPost.description,
                 mrkdown: tempPost.content,

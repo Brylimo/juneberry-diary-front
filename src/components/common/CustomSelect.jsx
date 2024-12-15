@@ -96,7 +96,7 @@ const CustomSelect = ({ options = [], placeholder, onChange }) => {
             onClick={toggleDropdown}
             tabIndex={0}
           >
-            {selectedOption ? selectedOption.label : placeholder || "Select..."}
+            {selectedOption ? selectedOption.selectedLabel : placeholder || "Select..."}
             <ExpandMoreIconCustom />
           </CustomSelectTrigger>
           {isOpen && (

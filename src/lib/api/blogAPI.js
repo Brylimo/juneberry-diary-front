@@ -14,7 +14,19 @@ export const getAllBlogsByUser = async () => {
     return res.data;
 }
 
+export const getAllCategories = async ({ blogId }) => {
+    const res = await client.get(`/v1/blog/${blogId}/category/categories`)
+    return res.data;
+}
+
 export const createBlog = async ({ blogId, blogName }) => {
     const res = await client.post('/v1/blog/createBlog', { blogId, blogName })
+    return res.data;
+}
+
+export const addCategories = async ({ blogId, categoryInfos }) => {
+    const res = await client.post(`/v1/blog/${blogId}/category`, {
+        categoryInfos
+    })
     return res.data;
 }
