@@ -294,6 +294,15 @@ const BlogManageCategory = () => {
         )
     }, [tempCategories, blogId, addCategoriesMutate]);
 
+    const onCategoryDragEnd = useCallback((droppedItem) => {
+        if (!droppedItem.destination) return;
+
+        let updatedList = [...tempCategories]
+        const [reorderedItem] = updatedList.splice(droppedItem.source.index + 1, 1)
+        updatedList.splice(droppedItem.destination.index + 1, 0, reorderedItem)
+        setTempCategories(updatedList)
+    }, [tempCategories])
+
     useEffect(() => {
         if (tempCategories) {
             setSubCategoryInputs(Array.from({ length: tempCategories.length }, () => []))
@@ -318,7 +327,7 @@ const BlogManageCategory = () => {
                                     전체 카테고리
                                 </CategoryLinearSegment>
                             </CategoryLinearBlock>
-                            <DragDropContext>
+                            <DragDropContext onDragEnd={onCategoryDragEnd}>
                                 <Droppable droppableId="category-container" type="CATEGORY">
                                     {(provided) => (
                                         <div ref={provided.innerRef} {...provided.droppableProps}>

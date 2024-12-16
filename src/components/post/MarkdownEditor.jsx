@@ -225,6 +225,7 @@ const MarkdownEditor = ({
 
         if (values.length === 1) {
             onChangeField({ key: 'category', value: values[0]})
+            onChangeField({ key: 'subCategory', value: ''})
         } else if (values.length === 2) {
             onChangeField({ key: 'category', value: values[0]})
             onChangeField({ key: 'subCategory', value: values[1]})

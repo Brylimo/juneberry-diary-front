@@ -40,6 +40,8 @@ const PostForm = () => {
         if (post && !Array.isArray(post)) { 
             dispatch(storePost({
                 id: post.id,
+                category: post.category,
+                subCategory: post.subCategory,
                 title: post.title,
                 description: post.description,
                 mrkdown: post.content,

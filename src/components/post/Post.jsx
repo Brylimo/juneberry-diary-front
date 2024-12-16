@@ -36,6 +36,22 @@ const PostTitle = styled.div`
     color: #111;
 `
 
+const PostCategory = styled.div`
+    font-size: 14px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    font-weight: 400;
+`
+
+const PostCategorySpan = styled.span`
+    padding: 6px 0 0 0;
+    color: #808080;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #a3a3a3
+`
+
 const PostWriterBlock = styled.div`
     display: flex;
     gap: 10px;
@@ -109,6 +125,12 @@ const Post = ({ post, user, blogId, handleDeletePost }) => {
             <PostWrapper>
                 <PostBlock ref={pdfRef}>
                     <PostHeaderBlock>
+                        <PostCategory>
+                            {post?.category && (<PostCategorySpan>
+                                {post?.category} 
+                                {post?.subCategory ? ` / ${post?.subCategory}` : null}
+                            </PostCategorySpan>)}
+                        </PostCategory>
                         <PostTitle>{post?.title}</PostTitle>
                         <PostWriterBlock>
                             <PostWriter><b>{blogId}</b> · {formatDate(post?.registeredDateTime)}</PostWriter>

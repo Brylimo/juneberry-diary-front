@@ -22,7 +22,9 @@ import { ProtectedRoute } from "./containers/route/ProtectedRoute";
 import { BlogRoute } from "./containers/route/BlogRoute";
 import Layout from "./components/layout/Layout";
 import BlogLayout from "./components/layout/BlogLayout";
+
 import BlogManageSectionForm from "./containers/sectioin/BlogManageSectionForm";
+import BlogListSection from "./components/section/BlogListSection";
 
 function Router() {
     return (
@@ -64,9 +66,16 @@ function Router() {
 
                 <Route element={<BlogRoute />}>
                     <Route path="blog" element={<BlogLayout />} >
-                        <Route path=":id" element={<BlogHomePage />}/>
+                        <Route path=":id" element={<BlogListSection />}>
+                            <Route index element={<BlogHomePage />}/>
+                        </Route>
                         <Route path=":id/about" element={<BlogAboutPage />}/>
-                        <Route path=":id/tag/:tagname" element={<BlogTagSearchPage />}/>
+                        <Route path=":id/category/:categoryname" element={<BlogListSection />}>
+                            <Route index element={<BlogTagSearchPage />}/>
+                        </Route>
+                        <Route path=":id/tag/:tagname" element={<BlogListSection />}>
+                            <Route index element={<BlogTagSearchPage />}/>
+                        </Route>
                         <Route path=":id/:pid" element={<PostPage />}/>
                     </Route>
                 </Route>

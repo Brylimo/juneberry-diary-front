@@ -55,7 +55,7 @@ const EventModalForm = ({ selectedDate }) => {
         updatedList.splice(droppedItem.destination.index, 0, reorderedItem);
         setIsScrollDown(false);
         setTempEvents(updatedList);
-    }, [tempEvents]);
+    }, [tempEvents])
 
     const onClickFlushBtn = useCallback(async () => {
         if (tempEvents?.length || events?.length) {
