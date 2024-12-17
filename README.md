@@ -52,7 +52,7 @@ juneberry diary frontend project
 
 ### 블로그 에디터
 (블로그 작성)
-![](https://cdn.juneberrydiary.com/304157bc-f7b1-4d43-8c74-8c1838437206.png)
+![](https://cdn.juneberrydiary.com/e50590d2-8cec-4ff6-9e54-c632dc77ae88.jpg)
 ![](https://cdn.juneberrydiary.com/f967979b-6fb9-4f69-a137-fa4accf96672.png)
 ![](https://cdn.juneberrydiary.com/2144ad3b-5a9e-446a-a662-b39412e9a2dd.png)
 
@@ -62,13 +62,13 @@ juneberry diary frontend project
 
 ### 블로그
 (메인 블로그, 전체 글)
-![](https://cdn.juneberrydiary.com/539bcdeb-1b7f-488d-8533-bf565338cc0f.jpg)
+![](https://cdn.juneberrydiary.com/c44cbb3c-96cc-458e-b13c-1af47a152185.jpg)
 
 (태그 검색)
-![](https://cdn.juneberrydiary.com/f3a5b62c-d946-4744-94b4-5100063c60d7.jpg)
+![](https://cdn.juneberrydiary.com/7424ceed-bca6-48e6-ab97-58707da9b4e8.jpg)
 
 (블로그 포스트)
-![](https://cdn.juneberrydiary.com/d30a57b3-fe07-4505-b9e8-6da5f3dee4f0.jpg)
+![](https://cdn.juneberrydiary.com/d3a30ca4-f7f5-414c-b8c3-22cfa522aa20.jpg)
 
 ### 블로그 관리
 ![](https://cdn.juneberrydiary.com/c36c14c6-137b-4e0d-b955-eda7834ee03a.jpg)
