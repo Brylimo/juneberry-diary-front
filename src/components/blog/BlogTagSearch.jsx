@@ -212,7 +212,7 @@ const BlogTagSearch = ({ user }) => {
     }, [navigate, blogId])
 
     const callback = (page) => {
-        navigate(`/blog/${blogId}?page=${page}`)
+        navigate(`/blog/${blogId}/tag/${tagName}?page=${page}`)
         return
     }
 

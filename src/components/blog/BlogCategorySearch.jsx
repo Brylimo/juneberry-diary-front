@@ -197,7 +197,13 @@ const BlogCategorySearch = ({ user }) => {
     }, [navigate, blogId])
 
     const callback = (page) => {
-        navigate(`/blog/${blogId}?page=${page}`)
+        if (category && subCategory) {
+            navigate(`/blog/${blogId}/category/${category}/${subCategory}?page=${page}`);
+        } else if (category) {
+            navigate(`/blog/${blogId}/category/${category}?page=${page}`);
+        } else {
+            navigate(`/blog/${blogId}/category?page=${page}`);
+        }
         return
     }
 
