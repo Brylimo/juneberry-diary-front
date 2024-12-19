@@ -91,20 +91,6 @@ const PostCategoryBlock = styled.div`
     font-weight: 300;
 `
 
-/*const PostTagBadge = styled.div`
-    background-color: #F5F5F5;
-    color: green;
-    font-size: 14px;
-    padding: 0.1rem 1.5rem;
-    border-radius: 7px;
-    cursor: default;
-    font-weight: 400;
-
-    ${({ theme }) => theme.xs`
-        font-size: 10px;
-    `};
-`;*/
-
 const PostCardThumbnailBlock = styled.div`
     width: 210px;
     height: 148px;
@@ -183,17 +169,18 @@ const SettingIconCustom = styled(SettingsIcon)`
     }
 `;
 
-function isConvertibleToNumber(str) {
-    return /^[+-]?(\d+(\.\d+)?|\.\d+)$/.test(str.trim());
-}
-
 const BlogHome  = ({ user, blogName }) => {
     const { id: paramId } = useParams()
     const [searchParams] = useSearchParams()
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
-    const [page, setPage] = useState(searchParams.get("page") && isConvertibleToNumber(searchParams.get("page")) ? Number(searchParams.get("page")) : 1)
+    const getPageFromParams = () => {
+        const pageParam = searchParams.get("page");
+        return pageParam && !isNaN(Number(pageParam)) ? Number(pageParam) : 1;
+    };
+
+    const [page, setPage] = useState(getPageFromParams())
     const [limit, setLimit] = useState(5)
 
     const { isPending, isLoading, isFetching, data } = useGetPostListQuery({blogId: paramId, page: page - 1, isTemp: false, isPublic: true, size: limit})
@@ -212,6 +199,11 @@ const BlogHome  = ({ user, blogName }) => {
         navigate(`/blog/${paramId}/manage/category`);
     }, [navigate, paramId])
 
+    const callback = (page) => {
+        navigate(`/blog/${paramId}?page=${page}`)
+        return
+    }
+
     useEffect(() => {
         return () => {
             queryClient.invalidateQueries({ queryKey: ["getPostList"]});
@@ -219,8 +211,11 @@ const BlogHome  = ({ user, blogName }) => {
     }, [queryClient])
 
     useEffect(() => {
-        navigate(`/blog/${paramId}?page=${page}`);
-    }, [page, paramId, searchParams, navigate])
+        const newPage = getPageFromParams();
+        if (page !== newPage) {
+            setPage(newPage);
+        }
+    }, [searchParams, page]);
 
     if (isPending || isLoading || isFetching) {
         return null
@@ -274,6 +269,7 @@ const BlogHome  = ({ user, blogName }) => {
                         limit={limit}
                         page={page}
                         setPage={setPage}
+                        callback={callback}
                     />
                 ) : null}
         </>)

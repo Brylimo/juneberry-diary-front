@@ -181,18 +181,20 @@ const SettingIconCustom = styled(SettingsIcon)`
     }
 `;
 
-function isConvertibleToNumber(str) {
-    return /^[+-]?(\d+(\.\d+)?|\.\d+)$/.test(str.trim());
-}
-
 const BlogTagSearch = ({ user }) => {
     const { id: blogId, tagname: tagName } = useParams()
     const [searchParams] = useSearchParams()
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [page, setPage] = useState(searchParams.get("page") && isConvertibleToNumber(searchParams.get("page")) ? Number(searchParams.get("page")) : 1)
+    const getPageFromParams = () => {
+        const pageParam = searchParams.get("page");
+        return pageParam && !isNaN(Number(pageParam)) ? Number(pageParam) : 1;
+    };
+
+    const [page, setPage] = useState(getPageFromParams())
     const [limit, setLimit] = useState(5);
+
     const { isPending, isLoading, isFetching, data } = useGetPostListQuery({blogId: blogId, tagName: tagName, page: page - 1, isTemp: false, isPublic: true, size: limit})
 
     const onClickPostCard = useCallback((index) => {
@@ -209,15 +211,17 @@ const BlogTagSearch = ({ user }) => {
         navigate(`/blog/${blogId}/manage/category`);
     }, [navigate, blogId])
 
-    useEffect(() => {
-        navigate(`/blog/${blogId}/tag/${tagName}?page=${page}`);
-    }, [page, tagName, blogId, searchParams, navigate])
+    const callback = (page) => {
+        navigate(`/blog/${blogId}?page=${page}`)
+        return
+    }
 
     useEffect(() => {
-        if (location.state?.reset) {
-            setPage(1)
+        const newPage = getPageFromParams();
+        if (page !== newPage) {
+            setPage(newPage);
         }
-    }, [location])
+    }, [searchParams, page]);
 
     if (isPending || isLoading || isFetching) {
         return null
@@ -271,6 +275,7 @@ const BlogTagSearch = ({ user }) => {
                     limit={limit}
                     page={page}
                     setPage={setPage}
+                    callback={callback}
                 />
             ) : null}
         </>

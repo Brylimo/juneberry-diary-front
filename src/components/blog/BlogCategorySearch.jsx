@@ -166,18 +166,20 @@ const SettingIconCustom = styled(SettingsIcon)`
     }
 `;
 
-function isConvertibleToNumber(str) {
-    return /^[+-]?(\d+(\.\d+)?|\.\d+)$/.test(str.trim());
-}
-
 const BlogCategorySearch = ({ user }) => {
     const { id: blogId, category1: category, category2: subCategory } = useParams()
     const [searchParams] = useSearchParams()
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [page, setPage] = useState(searchParams.get("page") && isConvertibleToNumber(searchParams.get("page")) ? Number(searchParams.get("page")) : 1)
+    const getPageFromParams = () => {
+        const pageParam = searchParams.get("page");
+        return pageParam && !isNaN(Number(pageParam)) ? Number(pageParam) : 1;
+    };
+
+    const [page, setPage] = useState(getPageFromParams())
     const [limit, setLimit] = useState(5);
+
     const { isPending, isLoading, isFetching, data } = useGetPostListQuery({blogId: blogId, page: page - 1, category: category, subCategory: subCategory, isTemp: false, isPublic: true, size: limit})
 
     const onClickPostCard = useCallback((index) => {
@@ -194,19 +196,17 @@ const BlogCategorySearch = ({ user }) => {
         navigate(`/blog/${blogId}/manage/category`);
     }, [navigate, blogId])
 
-    useEffect(() => {
-        if (category && subCategory) {
-            navigate(`/blog/${blogId}/category/${category}/${subCategory}?page=${page}`);
-        } else if (category) {
-            navigate(`/blog/${blogId}/category/${category}?page=${page}`);
-        }
-    }, [page, category, subCategory, blogId, searchParams, navigate])
+    const callback = (page) => {
+        navigate(`/blog/${blogId}?page=${page}`)
+        return
+    }
 
     useEffect(() => {
-        if (location.state?.reset) {
-            setPage(1)
+        const newPage = getPageFromParams();
+        if (page !== newPage) {
+            setPage(newPage);
         }
-    }, [location])
+    }, [searchParams, page]);
 
     if (isPending || isLoading || isFetching) {
         return null
@@ -260,6 +260,7 @@ const BlogCategorySearch = ({ user }) => {
                     limit={limit}
                     page={page}
                     setPage={setPage}
+                    callback={callback}
                 />
             ) : null}
         </>

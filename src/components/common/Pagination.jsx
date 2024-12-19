@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled, { css } from "styled-components";
 
 const Nav = styled.nav`
@@ -43,14 +43,19 @@ const PageButton = styled.button`
     }
 `
 
-const Pagination = ({ total, limit, page, setPage }) => {
+const Pagination = ({ total, limit, page, setPage, callback }) => {
     if (!total) return null;
 
     const numPages = Math.ceil(total / limit);
 
+    const handleBtnClick = (page) => {
+        if (callback) callback(page)
+        setPage(page)
+    }
+
     return (
         <Nav>
-            <PageButton onClick={() => setPage(page - 1)} disabled={page === 1}>
+            <PageButton onClick={() => handleBtnClick(page - 1)} disabled={page === 1}>
                 &lt;
             </PageButton>
             {Array(numPages)
@@ -58,14 +63,14 @@ const Pagination = ({ total, limit, page, setPage }) => {
                 .map((_, i) => (
                     <PageButton
                         key={i + 1} 
-                        onClick={() => setPage(i + 1)}
+                        onClick={() => handleBtnClick(i + 1)}
                         active={page === i + 1}
                         aria-current={page === i + 1 ? "page" : undefined}
                     >
                         {i + 1}
                     </PageButton>
                 ))}
-            <PageButton onClick={() => setPage(page + 1)} disabled={page === numPages}>
+            <PageButton onClick={() => handleBtnClick(page + 1)} disabled={page === numPages}>
                 &gt;
             </PageButton>
         </Nav>
