@@ -6,6 +6,7 @@ import {
     BlogJoinPage,
     BlogAboutPage,
     BlogTagSearchPage,
+    BlogCategorySearchPage,
     BlogRepositoryPage,
     BlogManageCategoryPage,
     CalendarPage,
@@ -70,8 +71,10 @@ function Router() {
                             <Route index element={<BlogHomePage />}/>
                         </Route>
                         <Route path=":id/about" element={<BlogAboutPage />}/>
-                        <Route path=":id/category/:categoryname" element={<BlogListSection />}>
-                            <Route index element={<BlogTagSearchPage />}/>
+                        <Route path=":id/category/*" element={<BlogListSection />}>
+                            <Route index element={<BlogCategorySearchPage />}/>
+                            <Route path=":category1" element={<BlogCategorySearchPage />}/>
+                            <Route path=":category1/:category2" element={<BlogCategorySearchPage />}/>
                         </Route>
                         <Route path=":id/tag/:tagname" element={<BlogListSection />}>
                             <Route index element={<BlogTagSearchPage />}/>

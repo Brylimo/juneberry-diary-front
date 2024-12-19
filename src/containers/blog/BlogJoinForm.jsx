@@ -4,6 +4,7 @@ import { useGetBlogByIdQuery } from '../../hooks/queries/blog/useGetBlogByIdQuer
 import { useCreateBlogMutation } from '../../hooks/mutations/blog/useCreateBlogMutation';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { changeUserField } from '../../modules/user';
 import useDebounce from '../../hooks/useDebounce';
 import BlogJoin from '../../components/blog/BlogJoin';
 import { toast } from 'react-toastify';
@@ -64,6 +65,7 @@ const BlogJoinForm = () => {
             {
                 onSuccess: (res) => {
                     const blogId = res.data.blogId;
+                    changeUserField({ key: 'user', value: { ...user, hasBlog: true }})
                     navigate(`/blog/${blogId}`)
                 },
                 onError: () => {
@@ -72,7 +74,7 @@ const BlogJoinForm = () => {
                 }
             }
         )
-    }, [blogname, blogId, createBlogMutate, navigate])
+    }, [blogname, blogId, user, createBlogMutate, navigate])
 
     useEffect(() => {
         if (Array.isArray(blog) && blog.length === 0) {

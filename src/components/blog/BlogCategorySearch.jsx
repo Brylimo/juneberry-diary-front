@@ -1,13 +1,12 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled, { css } from 'styled-components';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useGetPostListQuery } from '../../hooks/queries/post/useGetPostListQuery';
+import { useParams, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import Pagination from '../common/Pagination';
-import { Helmet } from "react-helmet-async";
-import { Link, useSearchParams, useLocation } from 'react-router-dom';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { useGetPostListQuery } from '../../hooks/queries/post/useGetPostListQuery';
 
-const BlogTagSearchHeader = styled.div`
+const BlogCategorySearchHeader = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -88,20 +87,6 @@ const PostCategoryBlock = styled.div`
     gap: 5px;
     flex-wrap: wrap;
 `
-
-/*const PostTagBadge = styled.div`
-    background-color: #F5F5F5;
-    color: green;
-    font-size: 14px;
-    padding: 0.1rem 1.5rem;
-    border-radius: 7px;
-    cursor: default;
-    font-weight: 400;
-
-    ${({ theme }) => theme.xs`
-        font-size: 10px;
-    `};
-`;*/
 
 const PostCardThumbnailBlock = styled.div`
     width: 210px;
@@ -185,15 +170,15 @@ function isConvertibleToNumber(str) {
     return /^[+-]?(\d+(\.\d+)?|\.\d+)$/.test(str.trim());
 }
 
-const BlogTagSearch = ({ user }) => {
-    const { id: blogId, tagname: tagName } = useParams()
+const BlogCategorySearch = ({ user }) => {
+    const { id: blogId, category1: category, category2: subCategory } = useParams()
     const [searchParams] = useSearchParams()
     const navigate = useNavigate();
     const location = useLocation();
 
     const [page, setPage] = useState(searchParams.get("page") && isConvertibleToNumber(searchParams.get("page")) ? Number(searchParams.get("page")) : 1)
     const [limit, setLimit] = useState(5);
-    const { isPending, isLoading, isFetching, data } = useGetPostListQuery({blogId: blogId, tagName: tagName, page: page - 1, isTemp: false, isPublic: true, size: limit})
+    const { isPending, isLoading, isFetching, data } = useGetPostListQuery({blogId: blogId, page: page - 1, category: category, subCategory: subCategory, isTemp: false, isPublic: true, size: limit})
 
     const onClickPostCard = useCallback((index) => {
         if (index) {
@@ -210,8 +195,12 @@ const BlogTagSearch = ({ user }) => {
     }, [navigate, blogId])
 
     useEffect(() => {
-        navigate(`/blog/${blogId}/tag/${tagName}?page=${page}`);
-    }, [page, tagName, blogId, searchParams, navigate])
+        if (category && subCategory) {
+            navigate(`/blog/${blogId}/category/${category}/${subCategory}?page=${page}`);
+        } else if (category) {
+            navigate(`/blog/${blogId}/category/${category}?page=${page}`);
+        }
+    }, [page, category, subCategory, blogId, searchParams, navigate])
 
     useEffect(() => {
         if (location.state?.reset) {
@@ -226,17 +215,17 @@ const BlogTagSearch = ({ user }) => {
     return (
         <>
             <Helmet>
-                <title>'{tagName}' 태그의 글 목록</title>
+                <title>'{(category && subCategory) ? `${category}/${subCategory}` : category ? category : '전체 카테고리'}' 카테고리 글 목록</title>
             </Helmet>
-            <BlogTagSearchHeader>
-                <HeaderTxt># {tagName} <HeaderCnt>{data?.totalCount ? data?.totalCount : 0}</HeaderCnt></HeaderTxt>
+            <BlogCategorySearchHeader>
+                <HeaderTxt>{(category && subCategory) ? `${category}/${subCategory}` : category ? category : '전체 카테고리'} <HeaderCnt>{data?.totalCount ? data?.totalCount : 0}</HeaderCnt></HeaderTxt>
                 <LeftSideBlock>
                     {user && <SettingIconCustom onClick={onClickBlogSetting} />}
                     { blogId === 'tourist0302' ?
                         <PortfolioBtn onClick={onClickPortfolio} bgColor={"#f6f6f7"} hoverColor={"#e0e0e0"}>포트폴리오</PortfolioBtn> : null
                     }
                 </LeftSideBlock>
-            </BlogTagSearchHeader>
+            </BlogCategorySearchHeader>
             <PostCardUl>
                 {(data?.postInfoList &&
                     data?.postInfoList.length > 0) ? 
@@ -259,8 +248,8 @@ const BlogTagSearch = ({ user }) => {
                         </PostCardLi>
                     )) : (
                         <PostDefault>
-                            <PostDefaultLi>선택하신 태그에 해당하는 글이 없습니다.</PostDefaultLi>
-                            <PostDefaultLi>다른 태그를 사용하시거나, 검색 기능을 활용해 보세요.</PostDefaultLi>
+                            <PostDefaultLi>선택하신 카테고리에 해당하는 글이 없습니다.</PostDefaultLi>
+                            <PostDefaultLi>다른 카테고리를 선택하시거나, 검색 기능을 활용해 보세요.</PostDefaultLi>
                         </PostDefault>
                     )}
             </PostCardUl>
@@ -274,7 +263,7 @@ const BlogTagSearch = ({ user }) => {
                 />
             ) : null}
         </>
-    )
+    );
 }
 
-export default BlogTagSearch;
+export default BlogCategorySearch;

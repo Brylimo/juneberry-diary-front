@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
-import { Link, useParams, useLocation } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useGetAllCategories } from '../../hooks/queries/blog/useGetAllCategories';
 import { useGetAllTagsQuery } from '../../hooks/queries/tag/useGetAllTagsQuery';
 import { Outlet } from 'react-router-dom';
@@ -102,12 +102,6 @@ const BlogTag = styled.span`
     }
 `
 
-const LeftSideBlock = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 10px;
-`
-
 const BlogListSection = () => {
     const { id: blogId } = useParams()
     const [categories, setCategories] = useState([])
@@ -123,21 +117,27 @@ const BlogListSection = () => {
                 if (item.categoryName === '') {
                     optionList.push({
                         type: "category",
-                        text: "전체 카테고리"
+                        text: "전체 카테고리",
+                        category: "",
+                        subCategory: ""
                     })
                 } else {
                     
                     // 1차. 카테고리
                     optionList.push({
                         type: "category",
-                        text: item.categoryName
+                        text: item.categoryName,
+                        category: item.categoryName,
+                        subCategory: ""
                     })
 
                     // 2차. 하위 카테고리
                     item.children.filter(subItem => !!subItem.subCategoryName).forEach((subItem) => {
                         optionList.push({
                             type: "sub",
-                            text: `- ${subItem.subCategoryName}`
+                            text: `- ${subItem.subCategoryName}`,
+                            category: item.categoryName,
+                            subCategory: subItem.subCategoryName
                         })
                     })
                 }
@@ -159,7 +159,21 @@ const BlogListSection = () => {
                         <div>
                             {
                                 categories?.map(category => (
-                                    <BlogCategory type={category.type}>{category.text}</BlogCategory>
+                                    <BlogCategory type={category.type}>
+                                        {(category.category && category.subCategory) ? (
+                                            <Link to={`/blog/${blogId}/category/${category.category}/${category.subCategory}`}>
+                                                {category.text}
+                                            </Link>
+                                        ) : (category.category) ? (
+                                            <Link to={`/blog/${blogId}/category/${category.category}`}>
+                                                {category.text}
+                                            </Link>
+                                        ) : (
+                                            <Link to={`/blog/${blogId}/category`}>
+                                                {category.text}
+                                            </Link>
+                                        )}
+                                    </BlogCategory>
                                 ))
                             }
                         </div>

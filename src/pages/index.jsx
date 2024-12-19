@@ -9,6 +9,7 @@ export { default as BlogJoinPage } from './BlogJoinPage';
 export { default as BlogAboutPage } from './BlogAboutPage';
 export { default as BlogRepositoryPage } from './BlogRepositoryPage';
 export { default as BlogTagSearchPage } from './BlogTagSearchPage';
+export { default as BlogCategorySearchPage } from './BlogCategorySearchPage';
 
 export { default as BlogManageCategoryPage } from './BlogManageCategoryPage';
 
