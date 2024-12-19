@@ -30,3 +30,8 @@ export const addCategories = async ({ blogId, categoryInfos }) => {
     })
     return res.data;
 }
+
+export const getAllTags = async({ blogId }) => {
+    const res = await client.get(`/v1/blog/${blogId}/tag/tags`)
+    return res.data;
+}

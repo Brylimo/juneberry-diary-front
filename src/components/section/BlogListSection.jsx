@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { Link, useParams } from 'react-router-dom';
 import { useGetAllCategories } from '../../hooks/queries/blog/useGetAllCategories';
-import { useGetAllTagsQuery } from '../../hooks/queries/tag/useGetAllTagsQuery';
+import { useGetAllTagsQuery } from '../../hooks/queries/blog/useGetAllTagsQuery';
 import { Outlet } from 'react-router-dom';
 
 const BlogListWrapper = styled.div`

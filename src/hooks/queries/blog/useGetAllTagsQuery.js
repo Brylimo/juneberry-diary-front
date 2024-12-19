@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import * as tagAPI from '../../../lib/api/tagAPI';
+import * as blogAPI from '../../../lib/api/blogAPI';
 
-export const useGetAllTagsQuery = ({blogId}) => {
+export const useGetAllTagsQuery = ({ blogId }) => {
     const {
         isPending,
         data
     } = useQuery({
         queryKey: ["getAllTags", {blogId: blogId}],
-        queryFn: () => tagAPI.getAllTags(blogId),
+        queryFn: () => blogAPI.getAllTags({ blogId }),
         select: (res) => res?.data
     });
 

@@ -67,6 +67,9 @@ juneberry diary frontend project
 (태그 검색)
 ![](https://cdn.juneberrydiary.com/7424ceed-bca6-48e6-ab97-58707da9b4e8.jpg)
 
+(카테고리 검색)
+![](https://cdn.juneberrydiary.com/338312e7-578c-4d17-866e-d6629a4c0266.jpg)
+
 (블로그 포스트)
 ![](https://cdn.juneberrydiary.com/d3a30ca4-f7f5-414c-b8c3-22cfa522aa20.jpg)
 
