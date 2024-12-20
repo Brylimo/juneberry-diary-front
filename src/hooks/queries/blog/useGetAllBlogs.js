@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import * as blogAPI from '../../../lib/api/blogAPI';
 
-export const useGetAllBlogsByUser = () => {
+export const useGetAllBlogs = () => {
     const {
         isPending,
         data
     } = useQuery({
-        queryKey: ["getAllBlogsByUser"],
-        queryFn:() => blogAPI.getAllBlogsByUser(),
+        queryKey: ["getAllBlogs"],
+        queryFn:() => blogAPI.getAllBlogs(),
         select: (res) => res?.data
     });
 

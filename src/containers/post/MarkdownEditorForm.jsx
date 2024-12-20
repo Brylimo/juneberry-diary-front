@@ -139,7 +139,6 @@ const MarkdownEditorForm = ({ tempPost }) => {
 
             await uploadImageMutateAsync(
                 {
-                    blogId: blogId,
                     postId: id,
                     editorImg: imgFile
                 },

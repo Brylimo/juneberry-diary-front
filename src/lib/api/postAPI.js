@@ -1,18 +1,17 @@
 import client from './client';
 
-export const uploadImg = async ({editorImg, blogId, postId}) => {
+export const uploadImg = async ({editorImg, postId}) => {
     const config = {
         headers: { 'Content-Type': 'multipart/form-data' },
     };
 
-    const res = await client.post('/v1/post/uploadPostImage', { editorImg, blogId, postId }, config);
+    const res = await client.post(`/v1/post/${postId}/image`, { editorImg }, config);
     return res.data;
 }
 
-export const getPost = async (blogId, id) => {
-    const res = await client.get('/v1/post/getPost', {
+export const getPost = async ({ id }) => {
+    const res = await client.get('/v1/post', {
         params: {
-            blogId: blogId,
             id: id
         }
     })
@@ -20,7 +19,7 @@ export const getPost = async (blogId, id) => {
 }
 
 export const getPostByIndex = async (blogId, index) => {
-    const res = await client.get('/v1/post/getPostByIndex', {
+    const res = await client.get('/v1/posts', {
         params: {
             blogId: blogId,
             index: index
@@ -30,7 +29,7 @@ export const getPostByIndex = async (blogId, index) => {
 }
 
 export const getTempPostCnt = async (blogId) => {
-    const res = await client.get('/v1/post/getTempPostCnt', {
+    const res = await client.get('/v1/post/temp/count', {
         params: {
             blogId: blogId
         }
@@ -39,7 +38,7 @@ export const getTempPostCnt = async (blogId) => {
 }
 
 export const getPostList = async ({blogId, category, subCategory, tagName, isTemp, isPublic, page, size}) => {
-    const res = await client.get('/v1/post/getPostList', {
+    const res = await client.get('/v1/post/posts', {
         params: {
             blogId: blogId,
             category: category,
@@ -59,7 +58,7 @@ export const updatePost = async ({ postId, category, subCategory, title, descrip
         headers: { 'Content-Type': 'multipart/form-data' },
     };
     
-    const res = await client.post('/v1/post/updatePost', {
+    const res = await client.put('/v1/post', {
         postId, category, subCategory, title, description, content, blogId, isTemp, isPublic, tags, thumbnailImg, thumbnailPath
     }, config)
     return res.data;
@@ -79,6 +78,6 @@ export const addPost = async ({ date, category, subCategory, title, description,
     const month = ('0' + (date.getMonth() + 1)).slice(-2);
     const day = ('0' + date.getDate()).slice(-2);
 
-    const res = await client.post('/v1/post/addPost', { date: `${year}-${month}-${day}`, category, subCategory, title, description, content, isTemp, isPublic, blogId, tags, thumbnailImg, thumbnailPath }, config)
+    const res = await client.post('/v1/post', { date: `${year}-${month}-${day}`, category, subCategory, title, description, content, isTemp, isPublic, blogId, tags, thumbnailImg, thumbnailPath }, config)
     return res.data;
 }

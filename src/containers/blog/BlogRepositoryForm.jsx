@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import BlogRepositories from '../../components/blog/BlogRepository';
-import { useGetAllBlogsByUser } from '../../hooks/queries/blog/useGetAllBlogsByUser';
+import { useGetAllBlogs } from '../../hooks/queries/blog/useGetAllBlogs';
 
 const BlogRepositoryForm = () => {
-    const { data: blogList } = useGetAllBlogsByUser();
+    const { data: blogList } = useGetAllBlogs();
 
     return <BlogRepositories 
             blogList={blogList}

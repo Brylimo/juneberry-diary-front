@@ -284,7 +284,7 @@ const BlogManageCategory = () => {
             },
             {
                 onSuccess: () => {
-                    
+                    toast.success("카테고리 저장에 성공했습니다.");
                 },
                 onError: () => {
                     toast.error("카테고리 저장에 실패했습니다.");
