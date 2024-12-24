@@ -211,7 +211,7 @@ const BlogAbout = () => {
                     </BlogAboutHeader>
                     <BlogAboutContent>
                         <BlogAboutImgBlock>
-                            <BlogAboutImg src="/chaejin.jpg"/>
+                            <BlogAboutImg src="/chaejin.jpeg"/>
                         </BlogAboutImgBlock>
 
                         {/*<BlogAboutIntro>
