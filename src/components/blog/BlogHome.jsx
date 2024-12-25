@@ -217,10 +217,6 @@ const BlogHome  = ({ user, blogName }) => {
         }
     }, [searchParams, page]);
 
-    if (isPending || isLoading || isFetching) {
-        return null
-    }
-
     return (
         <>
             <Helmet>
@@ -236,7 +232,7 @@ const BlogHome  = ({ user, blogName }) => {
                     </LeftSideBlock>
                 </BlogHomeHeader>
                 <PostCardUl>
-                    {(data?.postInfoList && 
+                    {(isPending || isLoading || isFetching) ? null : (data?.postInfoList && 
                         data?.postInfoList.length > 0) ? 
                         data?.postInfoList.map(post => (
                             <PostCardLi key={post.postId} onClick={() => onClickPostCard(post.index)}>

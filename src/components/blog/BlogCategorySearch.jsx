@@ -214,10 +214,6 @@ const BlogCategorySearch = ({ user }) => {
         }
     }, [searchParams, page]);
 
-    if (isPending || isLoading || isFetching) {
-        return null
-    }
-
     return (
         <>
             <Helmet>
@@ -233,7 +229,7 @@ const BlogCategorySearch = ({ user }) => {
                 </LeftSideBlock>
             </BlogCategorySearchHeader>
             <PostCardUl>
-                {(data?.postInfoList &&
+                {(isPending || isLoading || isFetching) ? null : (data?.postInfoList &&
                     data?.postInfoList.length > 0) ? 
                     data?.postInfoList.map(post => (
                         <PostCardLi key={post.postId} onClick={() => onClickPostCard(post.index)}>
