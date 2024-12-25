@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import * as authAPI from '../../../lib/api/authAPI';
+import * as tokenAPI from '../../../lib/api/tokenAPI';
 
 export const useLogoutQuery = () => {
     const {
         refetch: logoutRefetch
     } = useQuery({
         queryKey: ["logout"],
-        queryFn: authAPI.logout,
+        queryFn: tokenAPI.logout,
         enabled: false,
         retry: 0
     });

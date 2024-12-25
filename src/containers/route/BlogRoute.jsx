@@ -6,7 +6,7 @@ import { storeBlog } from '../../modules/blog';
 import { initializeEventHash } from '../../modules/cal';
 import { useGetBlogByIdQuery } from '../../hooks/queries/blog/useGetBlogByIdQuery';
 import { useQueryClient } from '@tanstack/react-query';
-import * as authAPI from '../../lib/api/authAPI';
+import * as tokenAPI from '../../lib/api/tokenAPI';
 import { NotFoundPage } from '../../pages';
 
 export const BlogRoute = () => {
@@ -29,7 +29,7 @@ export const BlogRoute = () => {
             const fetchData = async () => {
                 setLoading(true);
                 try {
-                    const response = await authAPI.validate();
+                    const response = await tokenAPI.validate();
                     if (response.status === 200) {
                         dispatch(signin(response.data?.data));
                         dispatch(initializeEventHash());

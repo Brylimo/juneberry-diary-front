@@ -4,7 +4,7 @@ import { useNavigate, Outlet } from "react-router-dom";
 import { signin } from '../../modules/user';
 import { initializeEventHash } from '../../modules/cal';
 import { useQueryClient } from '@tanstack/react-query';
-import * as authAPI from '../../lib/api/authAPI';
+import * as tokenAPI from '../../lib/api/tokenAPI';
 
 export const ProtectedRoute = () => {
     const dispatch = useDispatch();
@@ -21,7 +21,7 @@ export const ProtectedRoute = () => {
             const fetchData = async () => {
                 setLoading(true);
                 try {
-                    const response = await authAPI.validate();
+                    const response = await tokenAPI.validate();
                     if (response.status === 403) {
                         navigate("/login");
                     } else if (response.status === 200) {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate, Outlet } from "react-router-dom";
 import { signin } from '../../modules/user';
-import * as authAPI from '../../lib/api/authAPI';
+import * as tokenAPI from '../../lib/api/tokenAPI';
 
 export const AuthRoute = () => {
     const dispatch = useDispatch();
@@ -19,7 +19,7 @@ export const AuthRoute = () => {
             const fetchData = async () => {
                 setLoading(true);
                 try {
-                    const response = await authAPI.validate();
+                    const response = await tokenAPI.validate();
                     if (response.status === 200) {
                         dispatch(signin(response.data?.data));
                     }

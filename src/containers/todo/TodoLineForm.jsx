@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import TodoLine from '../../components/todo/TodoLine';
 import { useAddOneTodoMutation } from '../../hooks/mutations/todo/useAddOneTodoMutation';
-import { useUpdateTodoChkMutation } from '../../hooks/mutations/todo/useUpdateTodoChkMutation';
+import { useUpdateTodoMutation } from '../../hooks/mutations/todo/useUpdateTodoMutation';
 import useDebounce from './../../hooks/useDebounce';
 import { changeTodo } from '../../modules/todo';
 import { useQueryClient } from '@tanstack/react-query';
@@ -27,7 +27,7 @@ const TodoLineForm = ({ index, selectedDate }) => {
     const [isPending, debouncedValue] = useDebounce(lineGroupTxt + lineContentTxt, 2000);
     const queryClient = useQueryClient();
     const { mutate: addOneTodoMutate, isPending: apiPending } = useAddOneTodoMutation();
-    const { mutate: updateTodoChkMutate } = useUpdateTodoChkMutation();
+    const { mutate: updateTodoMutate } = useUpdateTodoMutation();
 
     const onFocusTodoInput = useCallback(() => {
         setPendingActive(true);
@@ -119,10 +119,9 @@ const TodoLineForm = ({ index, selectedDate }) => {
 
     useEffect(() => {
         if (chkValue !== 'none' && chkValue !== todo?.chkStatus) {
-            updateTodoChkMutate(
+            updateTodoMutate(
                 {
-                    selectedDate,
-                    position: index,
+                    id: todo?.id,
                     chkStatus: chkValue
                 },
                 {
