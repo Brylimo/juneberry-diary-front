@@ -7,7 +7,8 @@ import { useAddCategoriesMutation } from '../../hooks/mutations/blog/useAddCateg
 import MenuIcon from '@mui/icons-material/Menu';
 import AddIcon from '@mui/icons-material/Add';
 import CircleIcon from '@mui/icons-material/Circle';
-import { toast } from 'react-toastify'
+import { toast } from 'react-toastify';
+import {produce} from 'immer';
 
 const BlogMangeHeading = styled.div`
     font-size: 24px;
@@ -192,9 +193,9 @@ const BlogManageCategory = () => {
     const { data: categoryData } = useGetAllCategories(blogId)
     const { mutate: addCategoriesMutate } = useAddCategoriesMutation(blogId)
     
-    const [ tempCategories, setTempCategories ] = useState([]);
+    const [tempCategories, setTempCategories ] = useState({ total: 0, categoryInfoList: []});
     const [categoryInputs, setCategoryInputs] = useState([]);
-    const [subCategoryInputs, setSubCategoryInputs] = useState(Array.from({ length: tempCategories.length }, () => []));
+    const [subCategoryInputs, setSubCategoryInputs] = useState(Array.from({ length: tempCategories?.categoryInfoList.length }, () => []));
 
     const handleCategoryTxtChange = useCallback((index, value) => {
         setCategoryInputs((prevInputs) => {
@@ -213,7 +214,7 @@ const BlogManageCategory = () => {
     }, [])
 
     const handleCategoryConfirmBtn = useCallback((index) => {
-        const hasCategoryInput = tempCategories.some(
+        const hasCategoryInput = tempCategories?.categoryInfoList.some(
             (category) => category.categoryName === categoryInputs[index]?.text
         )
 
@@ -222,7 +223,12 @@ const BlogManageCategory = () => {
             return
         }
         
-        setTempCategories(prev => [...prev, {categoryName: categoryInputs[index]?.text, children: []}])
+        setTempCategories(prev => 
+            produce(prev, draft => {
+                draft.categoryInfoList.push({categoryName: categoryInputs[index]?.text, children: []})
+            })
+        )
+
         setCategoryInputs((prevInputs) => {
             const newInputs = [...prevInputs]
             newInputs.splice(index, 1)
@@ -231,7 +237,7 @@ const BlogManageCategory = () => {
     }, [categoryInputs, setTempCategories, tempCategories])
 
     const handleSubCategoryConfirmBtn = useCallback((index, input) => {
-        const hasSubcategoryInput = tempCategories[index + 1]?.children.some(
+        const hasSubcategoryInput = tempCategories?.categoryInfoList[index + 1]?.children.some(
             (child) => child.subCategoryName === input
         )
 
@@ -239,12 +245,11 @@ const BlogManageCategory = () => {
             alert("중복되는 하위 카테고리 이름이 이미 존재합니다.")
             return
         }
-        
-        setTempCategories((prevCategories) => {
-            const newCategories = [...prevCategories]
-            newCategories[index + 1]?.children.push({ subCategoryName: input })
-            return newCategories
-        })
+        setTempCategories(prev => 
+            produce(prev, draft => {
+                draft.categoryInfoList[index + 1]?.children.push({ subCategoryName: input })
+            })
+        )
     }, [setTempCategories, tempCategories])
 
     const handleCategoryDeleteBtn = useCallback((index) => {
@@ -280,7 +285,7 @@ const BlogManageCategory = () => {
         addCategoriesMutate(
             {
                 blogId,
-                categoryInfos: tempCategories
+                categoryInfos: tempCategories?.categoryInfoList
             },
             {
                 onSuccess: () => {
@@ -297,20 +302,26 @@ const BlogManageCategory = () => {
     const onCategoryDragEnd = useCallback((droppedItem) => {
         if (!droppedItem.destination) return;
 
-        let updatedList = [...tempCategories]
+        let updatedList = [...tempCategories?.categoryInfoList]
         const [reorderedItem] = updatedList.splice(droppedItem.source.index + 1, 1)
         updatedList.splice(droppedItem.destination.index + 1, 0, reorderedItem)
-        setTempCategories(updatedList)
+        setTempCategories(prev => produce(prev, draft => {
+            draft.categoryInfoList = updatedList
+        }))
     }, [tempCategories])
 
     useEffect(() => {
         if (tempCategories) {
-            setSubCategoryInputs(Array.from({ length: tempCategories.length }, () => []))
+            setSubCategoryInputs(Array.from({ length: tempCategories?.categoryInfoList.length }, () => []))
         }
     }, [tempCategories])
 
     useEffect(() => {
-        setTempCategories(categoryData || [])
+        setTempCategories(categoryData || 
+            {
+                total: 0,
+                categoryInfoList: []
+            })
     }, [categoryData])
 
     return (
@@ -324,14 +335,14 @@ const BlogManageCategory = () => {
                             <CategoryLinearBlock style={{ cursor: "default" }}>
                                 <CategoryLinearSegment>
                                     <MenuIconCustom />
-                                    전체 카테고리
+                                    전체 카테고리 ({tempCategories?.total})
                                 </CategoryLinearSegment>
                             </CategoryLinearBlock>
                             <DragDropContext onDragEnd={onCategoryDragEnd}>
                                 <Droppable droppableId="category-container" type="CATEGORY">
                                     {(provided) => (
                                         <div ref={provided.innerRef} {...provided.droppableProps}>
-                                        {tempCategories.filter(category => category.categoryName !== "").map((category, index) => (
+                                        {tempCategories?.categoryInfoList.filter(category => category.categoryName !== "").map((category, index) => (
                                             <Draggable key={index} draggableId={`${category?.categoryName}-${index}`} index={index}>
                                             {(provided) => (
                                               <div
@@ -343,7 +354,7 @@ const BlogManageCategory = () => {
                                                         <div {...provided.dragHandleProps}>
                                                             <MenuIconCustom/>
                                                         </div>
-                                                        {category?.categoryName}
+                                                        {category?.categoryName} ({category?.count})
                                                     </CategoryLinearSegment>
                                                     <CategoryLinearRight>
                                                         <UtilBtn onClick={() => handleSecondCategoryAddBtn(index)}>추가</UtilBtn>
@@ -370,7 +381,7 @@ const BlogManageCategory = () => {
                                                                                             <div {...provided.dragHandleProps}>
                                                                                                 <MenuIconCustom />
                                                                                             </div>
-                                                                                            {subCategory?.subCategoryName}
+                                                                                            {subCategory?.subCategoryName} ({subCategory?.count})
                                                                                         </CategoryLinearSegment>
                                                                                         <CategoryLinearRight>
                                                                                             <UtilBtn>추가</UtilBtn>

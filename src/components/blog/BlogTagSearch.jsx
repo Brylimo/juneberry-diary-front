@@ -265,7 +265,7 @@ const BlogTagSearch = ({ user }) => {
                     )}
             </PostCardUl>
 
-            {(data?.postInfoList && data?.postInfoList.length > 0) ? (
+            {(isPending || isLoading || isFetching) ? null : (data?.postInfoList && data?.postInfoList.length > 0) ? (
                 <Pagination 
                     total={data?.totalCount}
                     limit={limit}

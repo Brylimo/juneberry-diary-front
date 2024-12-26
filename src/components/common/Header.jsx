@@ -496,7 +496,7 @@ const Header = ({
                                             <DropdownLine />
                                             <DropdownMenu onClick={onClickMapFlag}>지도</DropdownMenu>
                                             <DropdownMenu onClick={onClickCalendarFlag}>캘린더</DropdownMenu>
-                                            <DropdownMenu onClick={onClickDiaryFlag}>다이어리</DropdownMenu>
+                                            { /* <DropdownMenu onClick={onClickDiaryFlag}>다이어리</DropdownMenu> */ }
                                             { user.hasBlog ? (<DropdownMenu onClick={onClickBlogFlag}>내 블로그</DropdownMenu>) : (<DropdownMenu onClick={onClickBlogStart}>블로그 시작하기</DropdownMenu>) }
                                             <DropdownLine />
                                             <DropdownMenu onClick={onClickSettingFlag}>설정</DropdownMenu>
@@ -534,7 +534,7 @@ const Header = ({
                             <FlagBottomUl>
                                 <FlagLi active={pathname === "/geo/map"} onClick={onClickMapFlag}>map</FlagLi>
                                 <FlagLi active={pathname === "/cal/calendar"} onClick={onClickCalendarFlag}>calendar</FlagLi>
-                                <FlagLi active={pathname === "/diary/main"} onClick={onClickDiaryFlag}>diary</FlagLi>
+                                {/* <FlagLi active={pathname === "/diary/main"} onClick={onClickDiaryFlag}>diary</FlagLi> */}
                                 { user.hasBlog && (<FlagLi active={pathname === "/blogs/repositories"} onClick={onClickBlogFlag}>blogs</FlagLi>) }
                             </FlagBottomUl>
                         </FlagBottomNav>)

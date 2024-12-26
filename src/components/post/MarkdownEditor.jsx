@@ -248,7 +248,7 @@ const MarkdownEditor = ({
         if (categoryData) {
             const optionList = []
 
-            categoryData.forEach((item, index) => {
+            categoryData.categoryInfoList.forEach((item, index) => {
                 if (item.categoryName === '') {
                     optionList.push({
                         value: '',

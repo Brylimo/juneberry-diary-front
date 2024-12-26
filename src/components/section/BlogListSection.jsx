@@ -109,17 +109,19 @@ const BlogListSection = () => {
     const { data: categoryData } = useGetAllCategories(blogId)
     const { data: blogTagList } = useGetAllTagsQuery({blogId: blogId})
 
+    console.log(categoryData)
     useEffect(() => {
         if (categoryData) {
             const optionList = []
 
-            categoryData.forEach((item) => {
+            categoryData.categoryInfoList.forEach((item) => {
                 if (item.categoryName === '') {
                     optionList.push({
                         type: "category",
                         text: "전체 카테고리",
                         category: "",
-                        subCategory: ""
+                        subCategory: "",
+                        count: categoryData.total
                     })
                 } else {
                     
@@ -128,7 +130,8 @@ const BlogListSection = () => {
                         type: "category",
                         text: item.categoryName,
                         category: item.categoryName,
-                        subCategory: ""
+                        subCategory: "",
+                        count: item.count
                     })
 
                     // 2차. 하위 카테고리
@@ -137,7 +140,8 @@ const BlogListSection = () => {
                             type: "sub",
                             text: `- ${subItem.subCategoryName}`,
                             category: item.categoryName,
-                            subCategory: subItem.subCategoryName
+                            subCategory: subItem.subCategoryName,
+                            count: subItem.count
                         })
                     })
                 }
@@ -162,15 +166,15 @@ const BlogListSection = () => {
                                     <BlogCategory type={category.type}>
                                         {(category.category && category.subCategory) ? (
                                             <Link to={`/blog/${blogId}/category/${category.category}/${category.subCategory}`}>
-                                                {category.text}
+                                                {category.text} ({category?.count})
                                             </Link>
                                         ) : (category.category) ? (
                                             <Link to={`/blog/${blogId}/category/${category.category}`}>
-                                                {category.text}
+                                                {category.text} ({category?.count})
                                             </Link>
                                         ) : (
                                             <Link to={`/blog/${blogId}/category`}>
-                                                {category.text}
+                                                {category.text} ({category?.count})
                                             </Link>
                                         )}
                                     </BlogCategory>
