@@ -435,7 +435,11 @@ const MarkdownConfirm = ({
             }
             setTagTxt('')
         } else if (event.key === 'Backspace') {
-            onChangeField({ key: 'postTags', value: tags.slice(0, tags.length - 1)})
+            const tagText = tagTxt.trim();
+
+            if (tagText.length === 0) { // tagText가 비어있을 때만 삭제 가능
+                onChangeField({ key: 'postTags', value: tags.slice(0, tags.length - 1)})
+            }
         }
     }, [tags, tagTxt, onChangeField])
 

@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { changeField, initializeForm } from "../../modules/auth";
-import AuthForm from "../../components/auth/AuthForm";
+import Register from "../../components/auth/Register";
 import { useNavigate } from "react-router-dom";
-import { useRegisterMutation } from "../../hooks/mutations/auth/useRegisterMutation";
+import { useRegisterMutation } from "../../hooks/mutations/user/useRegisterMutation";
 
 const RegisterForm = () => {
     const dispatch = useDispatch();
@@ -63,7 +63,7 @@ const RegisterForm = () => {
     }, [dispatch]);
 
     return (
-        <AuthForm
+        <Register
             type="register"
             form={form}
             onChange={onChange}

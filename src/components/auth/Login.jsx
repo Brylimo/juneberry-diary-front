@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Button from '../common/Button';
 import palette from '../../lib/styles/palette';
 
-const AuthFormBlock = styled.div`
+const LoginBlock = styled.div`
     flex: 1;
     padding: 0.2rem;
     display: flex;
@@ -21,8 +21,11 @@ const StyledInput = styled.input`
     font-size: 2rem;
     padding: 1rem;
     outline: none;
-    border: none;
-    border-bottom: 1px solid ${palette.gray[4]};
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-image: initial;
+    border-bottom: 1px solid rgb(206, 212, 218);
     &:focus {
         border-bottom: 1px solid ${palette.violet[8]};
     }
@@ -36,10 +39,10 @@ const textMap = {
     register: '회원가입'
 }
 
-const AuthForm = ({ type, form, onChange, onSubmit }) => {
+const Login = ({ type, form, onChange, onSubmit }) => {
     const text = textMap[type];
     return (
-        <AuthFormBlock>
+        <LoginBlock>
             <form onSubmit={onSubmit}>
                 {type === 'register' && (
                     <>
@@ -86,8 +89,8 @@ const AuthForm = ({ type, form, onChange, onSubmit }) => {
                 )}
                 <Button cyan fullWidth>{ text }</Button>
             </form>
-        </AuthFormBlock>
+        </LoginBlock>
     )
 }
 
-export default AuthForm;
+export default Login;

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { changeField, initializeForm } from "../../modules/auth";
-import AuthForm from "../../components/auth/AuthForm";
+import Login from "../../components/auth/Login";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../hooks/mutations/auth/useLoginMutation";
 import { signin } from '../../modules/user';
@@ -52,7 +52,7 @@ const LoginForm = () => {
     }, [dispatch]);
 
     return (
-        <AuthForm
+        <Login
             type="login"
             form={form}
             onChange={onChange}

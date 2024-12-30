@@ -109,7 +109,6 @@ const BlogListSection = () => {
     const { data: categoryData } = useGetAllCategories(blogId)
     const { data: blogTagList } = useGetAllTagsQuery({blogId: blogId})
 
-    console.log(categoryData)
     useEffect(() => {
         if (categoryData) {
             const optionList = []

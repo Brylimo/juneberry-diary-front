@@ -1,5 +1,5 @@
 import React from 'react';
-import AuthTemplate from '../components/auth/AuthTemplate';
+import LoginTemplate from '../components/auth/LoginTemplate';
 import LoginForm from '../containers/auth/LoginForm';
 import { Helmet } from "react-helmet-async";
 
@@ -9,9 +9,9 @@ const LoginPage = () => {
             <Helmet>
                 <title>로그인</title>
             </Helmet>
-            <AuthTemplate type="login" >
+            <LoginTemplate type="login" >
                 <LoginForm type="login" />
-            </AuthTemplate>
+            </LoginTemplate>
         </>
     );
 };

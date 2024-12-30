@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import palette from '../../lib/styles/palette';
 import { Link } from 'react-router-dom';
 
-const AuthTemplateBlock = styled.div`
+const LoginTemplateBlock = styled.div`
     position: absolute;
     left: 0;
     top: 0;
@@ -85,6 +85,7 @@ const WhiteBox = styled.div`
         font-size: 2.7rem;
         margin-bottom: 1rem;
         font-family: Georgia;
+        cursor: default;
         ${({ theme }) => theme.xxs`
             font-size: 2rem;
         `};
@@ -110,9 +111,9 @@ const StyledLink = styled(Link)`
     color: ${palette.blue[5]};
 `
 
-const AuthTemplate = ({ type, children }) => {
+const LoginTemplate = ({ type, children }) => {
     return (
-        <AuthTemplateBlock>
+        <LoginTemplateBlock>
             <LogoBox type={type}>
                 <LogoCell>
                     <LogoImg src="/logo.svg"></LogoImg>
@@ -123,7 +124,7 @@ const AuthTemplate = ({ type, children }) => {
                 <WhiteBoxWrapper>
                     <WhiteBox>
                         <div className="logo-box">
-                            <Link to="/">JUNEBERRY DIARY</Link>
+                            JUNEBERRY DIARY
                         </div>
                         { children }
                     </WhiteBox>
@@ -143,8 +144,8 @@ const AuthTemplate = ({ type, children }) => {
                     </SmallWhiteBox>
                 </WhiteBoxWrapper>
             </AuthBox>
-        </AuthTemplateBlock>
+        </LoginTemplateBlock>
     );
 };
 
-export default AuthTemplate;
+export default LoginTemplate;

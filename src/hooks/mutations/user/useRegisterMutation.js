@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
-import * as tokenAPI from '../../../lib/api/tokenAPI';
+import * as userAPI from '../../../lib/api/userAPI';
 
 export const useRegisterMutation = () => {
     return useMutation({
-        mutationFn: tokenAPI.register
+        mutationFn: userAPI.register
     })
 };
