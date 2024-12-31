@@ -13,3 +13,10 @@ export const getUserByEmail = async ({ email }) => {
     })
     return res.data;
 }
+
+export const verifyCode = async ({ email, code }) => {
+    const res = await client.post('/v1/user/verification-code', {
+        email, code
+    })
+    return res.data;
+}

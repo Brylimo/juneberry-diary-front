@@ -1,11 +1,13 @@
 import React, {useCallback, useState, useEffect} from 'react';
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSendCodeMutation } from '../../hooks/mutations/email/useSendCodeMutation';
+import { useVerifyCodeMutation } from '../../hooks/mutations/user/useVerifyCodeMutation';
 import * as userAPI from "../../lib/api/userAPI";
 import Button from '../common/Button';
 import RegisterInput from '../common/RegisterInput';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 
 const RegisterTemplateBlock = styled.div`
     padding: 32px 16px;
@@ -44,7 +46,6 @@ const Logo = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
     background-color: #fff;
 
     &:hover {
@@ -72,34 +73,67 @@ const RegisterBlock = styled.div`
     flex-direction: column;
 `;
 
+const StepHeader = styled.div`
+    font-size: 16px;
+    color: white;
+    display: flex;
+`
+
+const StepHeaderContent = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+
+const KeyboardArrowLeftIconCustom = styled(KeyboardArrowLeftIcon)`
+    height: 100%;
+`
+
 const Register = ({ type, form, onChange, onSubmit }) => {
     const queryClient = useQueryClient();
     const location = useLocation();
+    const navigate = useNavigate();
 
+    const [ initialSubmit, setInitialSubmit ] = useState(false);
+    const [ initialNextSubmit, setInitialNextSubmit ] = useState(false);
     const [ firstSubmit, setFirstSubmit ] = useState(false);
-    const [ firstNext, setFirstNext ] = useState(false);
-    const [ firstStates, setFirstStates ]  = useState({
-        email: false
+
+    const [ initialNext, setInitialNext ] = useState(false);
+    const [ firstStep, setFirstStep ] = useState(false);
+    const [ initialStates, setInitialStates ]  = useState({
+        email: ''
+    })
+    const [ initialNextStates, setInitialNextStates ] = useState({
+        code: ''
     })
 
     const { mutate: sendCodeMutate } = useSendCodeMutation()
-
-    const onClickLogo = useCallback(() => {
-        window.open('/', '_blank');
-    }, [])
+    const { mutate: verifyCodeMutate } = useVerifyCodeMutation()
 
     const onSubmitAuthRequest = useCallback(() => {
-        setFirstSubmit(true)
+        setInitialSubmit(true)
+    }, [])
+
+    const onSubmitAuthVerify = useCallback(() => {
+        setInitialNextSubmit(true)
     }, [])
 
     // custom submit success function
-    const emailSubmitSuccessCallback = () => {
-        setFirstStates(prev => ({...prev, email: true}))
+    const emailSubmitSuccessCallback = (inputTxt) => {
+        setInitialStates(prev => ({...prev, email: inputTxt}))
+    }
+
+    const verificationCodeSubmitSuccessCallback = (inputTxt) => {
+        setInitialNextStates(prev => ({...prev, code: inputTxt}))
     }
 
     // custom submit failed function
     const emailSubmitFailedCallback = () => {
-        setFirstSubmit(false)
+        setInitialSubmit(false)
+    }
+
+    // custom timer failed function
+    const codeTimerFailedCallback = () => {
+        setInitialNext(false)
     }
 
     // custom validate function
@@ -139,26 +173,52 @@ const Register = ({ type, form, onChange, onSubmit }) => {
         }
     }
 
-    useEffect(() => { // first step submit monitoring
-        if (firstStates && firstSubmit) { // 현재 제출을 한 상태
+    useEffect(() => {
+        if (location.hash && location.hash.startsWith("#step=")) {
+            const step = location.hash.match(/#step=(\d+)/)?.[1] || null;
+            
+            if (step == 1) {
+                let isOkay = true;
+                Object.values(initialStates).forEach(state => { // initialStates 존재 여부 확인
+                    if (!state) {
+                        isOkay = false
+                    }
+                });
+                Object.values(initialNextStates).forEach(state => { // initialNextStates 존재 여부 확인
+                    if (!state) {
+                        isOkay = false
+                    }
+                });
+
+                if (isOkay) {
+                    setFirstStep(1)
+                } else {
+                    navigate(`${location.pathname}`)
+                }
+            }
+        }
+    }, [location, navigate])
+
+    useEffect(() => { // initial step submit monitoring
+        if (initialStates && initialSubmit) { // 현재 제출을 한 상태
             let isOkay = true;
-            Object.values(firstStates).forEach(state => {
+            Object.values(initialStates).forEach(state => {
                 if (!state) {
                     isOkay = false
                 }
             });
 
-            setFirstSubmit(false)
+            setInitialSubmit(false)
 
             if (isOkay) {
                 // send code via email
                 sendCodeMutate(
                     {
-                        email: "icj0103@gmail.com"
+                        email: initialStates.email
                     },
                     {
                         onSuccess: () => {
-                            alert("hihi")
+                            // 코드 발송
                         },
                         onError: (error) => {
 
@@ -166,31 +226,68 @@ const Register = ({ type, form, onChange, onSubmit }) => {
                     }
                 )
 
-                setFirstNext(true)
+                setInitialNext(true)
             }
         }
-    }, [firstStates, sendCodeMutate])
+    }, [initialStates, sendCodeMutate])
 
-    console.log(location.hash)
+    useEffect(() => { // initial next step submit monitoring
+        if (initialNextStates && initialNextSubmit) {
+            let isOkay = true;
+            Object.values(initialNextStates).forEach(state => {
+                if (!state) {
+                    isOkay = false
+                }
+            });
+
+            setInitialNextSubmit(false)
+
+            if (isOkay) {
+                // verify code via email
+                verifyCodeMutate(
+                    {
+                        email: initialStates.email,
+                        code: initialNextStates.code
+                    },
+                    {
+                        onSuccess: (res) => {
+                            navigate(`${location.pathname}#step=1`)
+                        },
+                        onError: (error) => {
+                            if (error.response?.status === 400) {
+                                alert("인증코드가 틀렸습니다."); // 400 상태 코드 처리
+                              } else {
+                                console.error(error);
+                                alert("알 수 없는 오류가 발생했습니다."); // 기타 오류 처리
+                              }
+                        }
+                    }
+                )
+            }
+        }
+    }, [initialNextStates, initialStates, verifyCodeMutate])
 
     return (
         <RegisterTemplateBlock>
             <RegisterWrapper>
                 <LogoBlock>
-                    <Logo onClick={onClickLogo}>
+                    <Logo>
                         <img src="/logo.svg" style={{width:'40px', height:'40px'}} alt="logo" />
                     </Logo>
                 </LogoBlock>
-                <TextBlock>
+                {!firstStep && 
+                (<TextBlock>
                     가입하고<br/>
                     나만의 기록을<br/> 
                     공유하세요
-                </TextBlock>
-                <RegisterBlock>
+                </TextBlock>)}
+                
+                {!firstStep && 
+                (<RegisterBlock>
                     <RegisterInput
                         purpose="email" 
                         validate={emailValidate}
-                        isSubmit={firstSubmit}
+                        isSubmit={initialSubmit}
                         submitSuccess={emailSubmitSuccessCallback}
                         submitFailed={emailSubmitFailedCallback}
                         inputLabel="이메일 주소" 
@@ -198,21 +295,47 @@ const Register = ({ type, form, onChange, onSubmit }) => {
                         placeholder="name@domain.com"
                         required
                     />
-                    {firstNext && (
+                    {initialNext && (
                         <RegisterInput 
+                            purpose="code"
                             inputLabel="인증코드" 
                             name="verify-code" 
+                            isSubmit={initialNextSubmit}
+                            timerFailed={codeTimerFailedCallback}
+                            submitSuccess={verificationCodeSubmitSuccessCallback}
                             required
                         />
                     )}
 
-                    {!firstNext ? (
+                    {!initialNext ? (
                         <Button cyan fullWidth style={{ marginTop: "20px" }} onClick={onSubmitAuthRequest}>인증요청</Button>
                     ) : (
-                        <Button cyan fullWidth style={{ marginTop: "20px" }}>다음</Button>
+                        <Button cyan fullWidth style={{ marginTop: "20px" }} onClick={onSubmitAuthVerify}>다음</Button>
                     )}
                     
-                </RegisterBlock>
+                </RegisterBlock>)}
+                {firstStep && 
+                (<>
+                    <StepHeader>
+                        <KeyboardArrowLeftIconCustom />
+                        <StepHeaderContent>
+                            <span>1/2 단계</span>
+                            <span>비밀번호를 만드세요.</span>
+                        </StepHeaderContent>
+                    </StepHeader>
+                    <RegisterBlock>
+                        <RegisterInput
+                            purpose="password" 
+                            validate={null}
+                            isSubmit={firstSubmit}
+                            submitSuccess={null}
+                            submitFailed={null}
+                            inputLabel="비밀번호" 
+                            name="password" 
+                            required
+                        />
+                    </RegisterBlock>
+                </>)}
                 {/*<RegisterBlock>
                     <form onSubmit={onSubmit}>
                         <StyledInput 

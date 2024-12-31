@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
 
 const RegisterInputBlock = styled.div`
@@ -7,11 +7,18 @@ const RegisterInputBlock = styled.div`
     margin-bottom: 8px;
 `
 
-const StyledInputLabel = styled.label`
+const StyledInputLabel = styled.div`
     font-size: 15px;
     font-weight: 700;
     color: white;
     letter-spacing: 1px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+`
+
+const TimerSpan = styled.span`
+    color: #ed2c3f;
 `
 
 const StyledInput = styled.input`
@@ -46,9 +53,14 @@ const ErrorTip = styled.div`
     color: #f3727f;
 `
 
-const RegisterInput = ({ inputLabel = "", purpose, validate, isSubmit, submitSuccess, submitFailed, ...inputProps }) => {
+const RegisterInput = ({ inputLabel = "", purpose, validate, isSubmit, submitSuccess, submitFailed, timerFailed, ...inputProps }) => {
     const [ inputTxt, setInputTxt ] = useState('')
     const [ error, setError ] = useState('')
+
+    const [ min, setMin ] = useState(5)
+    const [ sec, setSec ] = useState(0)
+    const time = useRef(300) // defualt : 초 단위로 5분
+    const timerId = useRef(null)
     
     // RegisterInput 전처리 (value, onChange, onBlur 제거)
     if ('value' in inputProps) {
@@ -63,13 +75,22 @@ const RegisterInput = ({ inputLabel = "", purpose, validate, isSubmit, submitSuc
         delete inputProps.onBlur;
     }
 
+    const startTimer = () => {
+        // 5분 타이머 시작
+        timerId.current = setInterval(() => {
+            setMin(parseInt(time.current / 60))
+            setSec(time.current % 60)
+            time.current -= 1;
+        }, 1000)
+    }
+
     const onInputChange = useCallback(e => {
         setInputTxt(e.target.value)
     }, [])
 
     const handleBlur = useCallback(() => { // 검증 작업
         // required 처리
-        if (!inputTxt) {
+        if (!inputTxt && inputProps.required) {
             setError(`${inputLabel}는 필수 정보입니다.`)
             return
         }
@@ -129,8 +150,27 @@ const RegisterInput = ({ inputLabel = "", purpose, validate, isSubmit, submitSuc
     }, [error])
 
     useEffect(() => {
+        if (purpose === "code") { // 인증코드인 경우
+            // 타이머 시작
+            startTimer()
+
+            return () => clearInterval(timerId.current)
+        }
+    }, [purpose])
+
+    useEffect(() => {
+        if (time.current <= 0) { // time over
+            clearInterval(timerId.current)
+
+            if (timerFailed && typeof timerFailed === "function") { // 타이머 실패시 처리
+                timerFailed()
+            }
+        }
+    }, [sec, timerFailed])
+
+    useEffect(() => {
         if (isSubmit) { // submit 되었으면 -> 전체 유효성 검사 다시
-            if (!inputTxt) { // required인데 값이 없으면 리턴
+            if (!inputTxt && inputProps.required) { // required인데 값이 없으면 리턴
                 if (submitFailed && typeof submitFailed === "function") {
                     submitFailed()
                 }
@@ -194,7 +234,7 @@ const RegisterInput = ({ inputLabel = "", purpose, validate, isSubmit, submitSuc
                         } else { // 검증 통과
                             // submit custom callback -> 검증을 모두 통과했을 때만 실행
                             if (submitSuccess && typeof submitSuccess === "function") {
-                                submitSuccess()
+                                submitSuccess(inputTxt)
                             }
                         }
                     }).catch((err) => {
@@ -209,18 +249,18 @@ const RegisterInput = ({ inputLabel = "", purpose, validate, isSubmit, submitSuc
                     if (submitFailed && typeof submitFailed === "function") {
                         submitFailed()
                     }
-                    
+
                     return
                 } else if (typeof res === "string" && res.length === 0) { // 검증 통과
                     // submit custom callback -> 검증을 모두 통과했을 때만 실행
                     if (submitSuccess && typeof submitSuccess === "function") {
-                        submitSuccess()
+                        submitSuccess(inputTxt)
                     }
                 }
             } else { // 검증 통과
                 // submit custom callback -> 검증을 모두 통과했을 때만 실행
                 if (submitSuccess && typeof submitSuccess === "function") {
-                    submitSuccess()
+                    submitSuccess(inputTxt)
                 }
             }
         }
@@ -230,8 +270,9 @@ const RegisterInput = ({ inputLabel = "", purpose, validate, isSubmit, submitSuc
         <RegisterInputBlock>
             <StyledInputLabel>
                 <span>{inputLabel}{inputProps?.required ? "*" : null}</span>
+                {purpose === "code" && (<TimerSpan>{min}:{String(sec).padStart(2, '0')}</TimerSpan>)}
             </StyledInputLabel>
-            <StyledInput 
+            <StyledInput
                 value={inputTxt} 
                 onChange={onInputChange} 
                 onFocus={handleFocus} 

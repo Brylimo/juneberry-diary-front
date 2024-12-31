@@ -362,213 +362,6 @@ const BlogAbout = () => {
                         </BlogAboutSideBlock>
                         
                         <BlogAboutSemiTitle>
-                            <span>Work Experience & Projects</span>
-                            <BlogAboutTag>총 경력 2년</BlogAboutTag>
-                        </BlogAboutSemiTitle>
-                        <BlogAboutSideBlock>
-                            <BlogAboutLeftSide>
-                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
-                                    지능형 디지털 트윈 연합 프로젝트
-                                </BlogAboutHighlightTitle>
-                                <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
-                                    2024.04 ~ 2024.07 (총 4개월) / 2명
-                                </BlogAboutTextBlock>
-                                <BlogAboutSmTag>(주)진우소프트이노베이션</BlogAboutSmTag>
-                            </BlogAboutLeftSide>
-                            <BlogAboutRightSide>
-                                <BlogAboutTxtContentBlock>
-                                    <BlogAboutUl>
-                                        <li>제주도 내 데이터들(미세먼지, 교통 상황)을 활용한 디지털 데이터 트윈 서비스</li>
-                                        <ul>
-                                            <li style={{fontWeight: "400"}}>데이터 수집기 개발</li>
-                                            <ul>
-                                                <li>Spring으로 개발된 데이터 수집기를 node.js 기반 데이터 수집기로 변경<br/>
-                                                    → 수집기 서버 평균 메모리 점유율 <b>83.13%</b> 절감 경험 (652 MiB → 110 MiB) <br />
-                                                    <span style={{marginLeft: "20px"}}>- <span style={{fontWeight: "400", marginLeft: "10px"}}>Spring 데이터 수집기</span> 메모리 점유율 : 200MiB 후반 ~ 1GiB</span> <br />
-                                                    <span style={{marginLeft: "20px"}}>- <span style={{fontWeight: "400", marginLeft: "10px"}}>node.js 데이터 수집기</span> 메모리 점유율 : 90MiB ~ 130MiB</span>
-                                                </li>
-                                                <li>가변 데이터 처리 가능하도록 NoSQL인 couch DB + 스프링 기반 데이터 수집기 개발</li>
-                                            </ul>
-                                            <li style={{fontWeight: "400"}}>데이터 포털 사이트 개발</li>
-                                            <ul>
-                                                <li>휴대폰 본인확인 서비스 개발</li>
-                                                <li>실시간 데이터 변화를 data activity graph로 시각화</li>
-                                            </ul>
-                                        </ul>
-                                    </BlogAboutUl>
-                                </BlogAboutTxtContentBlock>
-                            </BlogAboutRightSide>
-                        </BlogAboutSideBlock>
-
-                        <BlogAboutSideBlock>
-                            <BlogAboutLeftSide>
-                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
-                                    JCMS 프로젝트[Frontend PL]
-                                </BlogAboutHighlightTitle>
-                                <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
-                                    2024.01 ~ 2024.07 (총 7개월) / 2명
-                                </BlogAboutTextBlock>
-                                <BlogAboutSmTag>(주)진우소프트이노베이션</BlogAboutSmTag>
-                            </BlogAboutLeftSide>
-                            <BlogAboutRightSide>
-                                <BlogAboutTxtContentBlock>
-                                    <BlogAboutUl>
-                                        <li>(주)진우소프트이노베이션 사내 CMS 솔루션 프로젝트</li>
-                                        <ul>
-                                            <li>공통적으로 사용되는 Sass, js 코드를 라이브러리로 만들어 개발 업무 효율성 증대</li>
-                                            <li>라이트 / 다크 모드 개발</li>
-                                            <li>JCMS 라이브러리 사용법 매뉴얼 제작 및 전 개발자 대상 <b>사내 교육 담당</b></li>
-                                        </ul>
-                                    </BlogAboutUl>
-                                </BlogAboutTxtContentBlock>
-                            </BlogAboutRightSide>
-                        </BlogAboutSideBlock>
-
-                        <BlogAboutSideBlock>
-                            <BlogAboutLeftSide>
-                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
-                                    퍼스널 모빌리티(PM) 안전사고 다발지역 안내 서비스[PL]
-                                </BlogAboutHighlightTitle>
-                                <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
-                                    2023.04 ~ 2023.10 (총 7개월) / 2명
-                                </BlogAboutTextBlock>
-                                <BlogAboutTextBlock style={{marginBottom: '10px'}}>
-                                    <BlogLink href="https://juneberrydiary.com/blog/tourist0302/16" target="_blank" rel="noopener noreferrer">https://juneberrydiary.com/blog/tourist0302/16</BlogLink>
-                                </BlogAboutTextBlock>
-                                <BlogAboutSmTag>(주)진우소프트이노베이션</BlogAboutSmTag>
-                            </BlogAboutLeftSide>
-                            <BlogAboutRightSide>
-                                <BlogAboutTxtContentBlock>
-                                    <BlogAboutUl>
-                                        <li>퍼스널 모빌리티의 실시간 이용, 사고 데이터 모니터링 기능을 제공하여 도청 공무원들의 의사결정을 도와주는 서비스</li>
-                                        <ul>
-                                            <li>PM 불법 주차 판단 알고리즘을 개발하여 PM 불법 주차 여부를 실시간으로 판단하는 과정 자동화</li>
-                                            <li>제주도 PM 이용 정보/사고 정보를 그래프, 지도 표출로 시각화</li>
-                                            <li>여러 유형의 사고 다발지역 표출 기능 구현</li>
-                                            <li>데이터마트 DB를 서비스 DB가 항상 동기화하도록 개발<br/>
-                                                → DB 운영 효율 개선 및 서비스 안정성 향상</li>
-                                            <li>
-                                                중간 감리, 최종 감리, 시큐리티 코딩 테스트 대응<br/>
-                                                → <b>1억 4천 만원</b> 규모의 회사 매출 창출
-                                            </li>
-                                        </ul>
-                                    </BlogAboutUl>
-                                </BlogAboutTxtContentBlock>
-                            </BlogAboutRightSide>
-                        </BlogAboutSideBlock>
-                        
-                        {/*<BlogAboutSideBlock>
-                            <BlogAboutLeftSide>
-                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
-                                    평광건설 출퇴근 관리 키오스크
-                                </BlogAboutHighlightTitle>
-                                <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
-                                    2023.03 ~ 2023.03 (총 1개월) / 2명
-                                </BlogAboutTextBlock>
-                                <BlogAboutSmTag>(주)투비스마트</BlogAboutSmTag>
-                            </BlogAboutLeftSide>
-                            <BlogAboutRightSide>
-                                <BlogAboutTxtContentBlock>
-                                    <BlogAboutUl>
-                                        <li>평광건설 출퇴근 관리 키오스크 개발</li>
-                                        <ul>
-                                            <li>QR 코드 기반 출퇴근 처리 기능 개발</li>
-                                            <li>일기예보 안내 기능을 포함한 키오스크 DID 개발</li>
-                                        </ul>
-                                    </BlogAboutUl>
-                                </BlogAboutTxtContentBlock>
-                            </BlogAboutRightSide>
-                        </BlogAboutSideBlock>*/}
-
-                        <BlogAboutSideBlock>
-                            <BlogAboutLeftSide>
-                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
-                                    슈슈댕(셀프 펫 목욕탕 업체) 키오스크 관리 서비스
-                                </BlogAboutHighlightTitle>
-                                <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
-                                    2022.12 ~ 2023.03 (총 4개월) / 3명
-                                </BlogAboutTextBlock>
-                                <BlogAboutTextBlock style={{marginBottom: '10px'}}>
-                                    <BlogLink href="https://juneberrydiary.com/blog/tourist0302/15" target="_blank" rel="noopener noreferrer">https://juneberrydiary.com/blog/tourist0302/15</BlogLink>
-                                </BlogAboutTextBlock>
-                                <BlogAboutSmTag>(주)투비스마트</BlogAboutSmTag>
-                            </BlogAboutLeftSide>
-                            <BlogAboutRightSide>
-                                <BlogAboutTxtContentBlock>
-                                    <BlogAboutUl>
-                                        <li>슈슈댕 키오스크 사용 현황 및 슈슈댕 지점별 실시간 정산을 관리하는 서비스</li>
-                                        <ul>
-                                            <li>문자 요청시 메시지 정보 이력을 저장하는 미들웨어 서버 개발</li>
-                                            <li>핵심 정산 처리 로직 80% 수정 & 고도화</li>
-                                            <li>점주들 요구사항에 맞게 6개 이상 기능 수정<br/>
-                                            → 이후 실시한 고객 만족도 평가에서 <b>만족도 상승</b>
-                                            </li>
-                                        </ul>
-                                    </BlogAboutUl>
-                                </BlogAboutTxtContentBlock>
-                            </BlogAboutRightSide>
-                        </BlogAboutSideBlock>
-
-                        <BlogAboutSideBlock>
-                            <BlogAboutLeftSide>
-                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
-                                    투비스마트 사내 긴급지원업무 서비스[PL]
-                                </BlogAboutHighlightTitle>
-                                <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
-                                    2022.09 ~ 2022.12 (총 4개월) / 1명
-                                </BlogAboutTextBlock>
-                                <BlogAboutTextBlock style={{marginBottom: '10px'}}>
-                                    <BlogLink href="https://juneberrydiary.com/blog/tourist0302/14" target="_blank" rel="noopener noreferrer">https://juneberrydiary.com/blog/tourist0302/14</BlogLink>
-                                </BlogAboutTextBlock>
-                                <BlogAboutSmTag>(주)투비스마트</BlogAboutSmTag>
-                            </BlogAboutLeftSide>
-                            <BlogAboutRightSide>
-                                <BlogAboutTxtContentBlock>
-                                    <BlogAboutUl>
-                                        <li>투비스마트 고객들이 자주 찾는 질문(FAQ)들에 대한 해답을 모아 놓은 서비스</li>
-                                        <ul>
-                                            <li style={{fontWeight: "400"}}>사내 긴급지원업무 서비스 개발</li>
-                                            <ul>
-                                                <li>제목/내용/태그/카테고리 별 검색 기능 개발</li>
-                                            </ul>
-                                            <li style={{fontWeight: "400"}}>사내 긴급지원업무 서비스를 관리하는 서비스 개발</li>
-                                            <ul>
-                                                <li>운영팀이 자주 찾는 질문과 답변을 등록할 수 있는 블로그 에디터 개발</li>
-                                                <li>실시간 FAQ 조회 지표를 모니터링할 수 있는 그래프 개발</li>
-                                            </ul>
-                                        </ul>
-                                    </BlogAboutUl>
-                                </BlogAboutTxtContentBlock>
-                            </BlogAboutRightSide>
-                        </BlogAboutSideBlock>
-
-                        {/*<BlogAboutSideBlock>
-                            <BlogAboutLeftSide>
-                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
-                                    소우주
-                                </BlogAboutHighlightTitle>
-                                <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
-                                    2021.12 ~ 2022.02 (총 1개월) / 2명
-                                </BlogAboutTextBlock>
-                                <BlogAboutSmTag>(주)파크웨이브</BlogAboutSmTag>
-                            </BlogAboutLeftSide>
-                            <BlogAboutRightSide>
-                                <BlogAboutTxtContentBlock>
-                                    <BlogAboutUl>
-                                        <li>소우주 사이트 유지보수</li>
-                                        <ul>
-                                            <li>
-                                                잘못된 세션 기반 인증 방식을 JWT 기반 방식으로 변경해 불필요하게 적재되는 세션 데이터 양 <b>100%</b> 감소
-                                            </li>
-                                            <li>HTTPS 프로토콜 기반으로 서비스 변경</li>
-                                            <li>Scrum 방식 agile 개발</li>
-                                        </ul>
-                                    </BlogAboutUl>
-                                </BlogAboutTxtContentBlock>
-                            </BlogAboutRightSide>
-                        </BlogAboutSideBlock>*/}
-
-                        <BlogAboutSemiTitle>
                             <span>Personal Experience & Projects</span>
                         </BlogAboutSemiTitle>
 
@@ -667,6 +460,213 @@ const BlogAbout = () => {
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
                         </BlogAboutSideBlock>
+
+                        <BlogAboutSemiTitle>
+                            <span>Work Experience & Projects</span>
+                            <BlogAboutTag>총 경력 2년</BlogAboutTag>
+                        </BlogAboutSemiTitle>
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
+                                    퍼스널 모빌리티(PM) 안전사고 다발지역 안내 서비스[PL]
+                                </BlogAboutHighlightTitle>
+                                <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
+                                    2023.04 ~ 2023.10 (총 7개월) / 2명
+                                </BlogAboutTextBlock>
+                                <BlogAboutTextBlock style={{marginBottom: '10px'}}>
+                                    <BlogLink href="https://juneberrydiary.com/blog/tourist0302/16" target="_blank" rel="noopener noreferrer">https://juneberrydiary.com/blog/tourist0302/16</BlogLink>
+                                </BlogAboutTextBlock>
+                                <BlogAboutSmTag>(주)진우소프트이노베이션</BlogAboutSmTag>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>퍼스널 모빌리티의 실시간 이용, 사고 데이터 모니터링 기능을 제공하여 도청 공무원들의 의사결정을 도와주는 서비스</li>
+                                        <ul>
+                                            <li>PM 불법 주차 판단 알고리즘을 개발하여 PM 불법 주차 여부를 실시간으로 판단하는 과정 자동화</li>
+                                            <li>제주도 PM 이용 정보/사고 정보를 그래프, 지도 표출로 시각화</li>
+                                            <li>여러 유형의 사고 다발지역 표출 기능 구현</li>
+                                            <li>데이터마트 DB를 서비스 DB가 항상 동기화하도록 개발<br/>
+                                                → DB 운영 효율 개선 및 서비스 안정성 향상</li>
+                                            <li>
+                                                중간 감리, 최종 감리, 시큐리티 코딩 테스트 대응<br/>
+                                                → <b>1억 4천 만원</b> 규모의 회사 매출 창출
+                                            </li>
+                                        </ul>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
+                                    지능형 디지털 트윈 연합 프로젝트
+                                </BlogAboutHighlightTitle>
+                                <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
+                                    2024.04 ~ 2024.07 (총 4개월) / 2명
+                                </BlogAboutTextBlock>
+                                <BlogAboutSmTag>(주)진우소프트이노베이션</BlogAboutSmTag>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>제주도 내 데이터들(미세먼지, 교통 상황)을 활용한 디지털 데이터 트윈 서비스</li>
+                                        <ul>
+                                            <li style={{fontWeight: "400"}}>데이터 수집기 개발</li>
+                                            <ul>
+                                                <li>Spring으로 개발된 데이터 수집기를 node.js 기반 데이터 수집기로 변경<br/>
+                                                    → 수집기 서버 평균 메모리 점유율 <b>83.13%</b> 절감 경험 (652 MiB → 110 MiB) <br />
+                                                    <span style={{marginLeft: "20px"}}>- <span style={{fontWeight: "400", marginLeft: "10px"}}>Spring 데이터 수집기</span> 메모리 점유율 : 200MiB 후반 ~ 1GiB</span> <br />
+                                                    <span style={{marginLeft: "20px"}}>- <span style={{fontWeight: "400", marginLeft: "10px"}}>node.js 데이터 수집기</span> 메모리 점유율 : 90MiB ~ 130MiB</span>
+                                                </li>
+                                                <li>가변 데이터 처리 가능하도록 NoSQL인 couch DB + 스프링 기반 데이터 수집기 개발</li>
+                                            </ul>
+                                            <li style={{fontWeight: "400"}}>데이터 포털 사이트 개발</li>
+                                            <ul>
+                                                <li>휴대폰 본인확인 서비스 개발</li>
+                                                <li>실시간 데이터 변화를 data activity graph로 시각화</li>
+                                            </ul>
+                                        </ul>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
+                                    투비스마트 사내 긴급지원업무 서비스[PL]
+                                </BlogAboutHighlightTitle>
+                                <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
+                                    2022.09 ~ 2022.12 (총 4개월) / 1명
+                                </BlogAboutTextBlock>
+                                <BlogAboutTextBlock style={{marginBottom: '10px'}}>
+                                    <BlogLink href="https://juneberrydiary.com/blog/tourist0302/14" target="_blank" rel="noopener noreferrer">https://juneberrydiary.com/blog/tourist0302/14</BlogLink>
+                                </BlogAboutTextBlock>
+                                <BlogAboutSmTag>(주)투비스마트</BlogAboutSmTag>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>투비스마트 고객들이 자주 찾는 질문(FAQ)들에 대한 해답을 모아 놓은 서비스</li>
+                                        <ul>
+                                            <li style={{fontWeight: "400"}}>사내 긴급지원업무 서비스 개발</li>
+                                            <ul>
+                                                <li>제목/내용/태그/카테고리 별 검색 기능 개발</li>
+                                            </ul>
+                                            <li style={{fontWeight: "400"}}>사내 긴급지원업무 서비스를 관리하는 서비스 개발</li>
+                                            <ul>
+                                                <li>운영팀이 자주 찾는 질문과 답변을 등록할 수 있는 블로그 에디터 개발</li>
+                                                <li>실시간 FAQ 조회 지표를 모니터링할 수 있는 그래프 개발</li>
+                                            </ul>
+                                        </ul>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
+                                    슈슈댕(셀프 펫 목욕탕 업체) 키오스크 관리 서비스
+                                </BlogAboutHighlightTitle>
+                                <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
+                                    2022.12 ~ 2023.03 (총 4개월) / 3명
+                                </BlogAboutTextBlock>
+                                <BlogAboutTextBlock style={{marginBottom: '10px'}}>
+                                    <BlogLink href="https://juneberrydiary.com/blog/tourist0302/15" target="_blank" rel="noopener noreferrer">https://juneberrydiary.com/blog/tourist0302/15</BlogLink>
+                                </BlogAboutTextBlock>
+                                <BlogAboutSmTag>(주)투비스마트</BlogAboutSmTag>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>슈슈댕 키오스크 사용 현황 및 슈슈댕 지점별 실시간 정산을 관리하는 서비스</li>
+                                        <ul>
+                                            <li>문자 요청시 메시지 정보 이력을 저장하는 미들웨어 서버 개발</li>
+                                            <li>핵심 정산 처리 로직 80% 수정 & 고도화</li>
+                                            <li>점주들 요구사항에 맞게 6개 이상 기능 수정<br/>
+                                            → 이후 실시한 고객 만족도 평가에서 <b>만족도 상승</b>
+                                            </li>
+                                        </ul>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
+                                    JCMS 프로젝트[Frontend PL]
+                                </BlogAboutHighlightTitle>
+                                <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
+                                    2024.01 ~ 2024.07 (총 7개월) / 2명
+                                </BlogAboutTextBlock>
+                                <BlogAboutSmTag>(주)진우소프트이노베이션</BlogAboutSmTag>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>(주)진우소프트이노베이션 사내 CMS 솔루션 프로젝트</li>
+                                        <ul>
+                                            <li>공통적으로 사용되는 Sass, js 코드를 라이브러리로 만들어 개발 업무 효율성 증대</li>
+                                            <li>라이트 / 다크 모드 개발</li>
+                                            <li>JCMS 라이브러리 사용법 매뉴얼 제작 및 전 개발자 대상 <b>사내 교육 담당</b></li>
+                                        </ul>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+                        
+                        {/*<BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
+                                    평광건설 출퇴근 관리 키오스크
+                                </BlogAboutHighlightTitle>
+                                <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
+                                    2023.03 ~ 2023.03 (총 1개월) / 2명
+                                </BlogAboutTextBlock>
+                                <BlogAboutSmTag>(주)투비스마트</BlogAboutSmTag>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>평광건설 출퇴근 관리 키오스크 개발</li>
+                                        <ul>
+                                            <li>QR 코드 기반 출퇴근 처리 기능 개발</li>
+                                            <li>일기예보 안내 기능을 포함한 키오스크 DID 개발</li>
+                                        </ul>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>*/}
+
+                        {/*<BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
+                                    소우주
+                                </BlogAboutHighlightTitle>
+                                <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
+                                    2021.12 ~ 2022.02 (총 1개월) / 2명
+                                </BlogAboutTextBlock>
+                                <BlogAboutSmTag>(주)파크웨이브</BlogAboutSmTag>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>소우주 사이트 유지보수</li>
+                                        <ul>
+                                            <li>
+                                                잘못된 세션 기반 인증 방식을 JWT 기반 방식으로 변경해 불필요하게 적재되는 세션 데이터 양 <b>100%</b> 감소
+                                            </li>
+                                            <li>HTTPS 프로토콜 기반으로 서비스 변경</li>
+                                            <li>Scrum 방식 agile 개발</li>
+                                        </ul>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>*/}
 
                         <BlogAboutSemiTitle>
                             Presentation & Article
