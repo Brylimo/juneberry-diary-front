@@ -232,7 +232,7 @@ const BlogAbout = () => {
                                 <BlogAboutTxtContentBlock>
                                     <BlogAboutUl>
                                         <li>안녕하세요! 주니어 백엔드 개발자 임채진 입니다.</li>
-                                        <li>Cloudflare 모니터링 기준 한달 고유 방문자 1.02k명의 자체 서비스를 운영중입니다.</li>
+                                        <li>한달 고유 방문자 1.02k명의 자체 서비스 "준베리다이어리"를 운영중입니다.</li>
                                         <li>Spring/Spring Boot 기반 10개 이상의 프로젝트에 참여하였습니다.</li>
                                         <li>감리가 필요한 1억원대 규모 프로젝트 포함 3번의 프로젝트 리딩을 경험했습니다.</li>
                                         <li>redis, jpa 최적화 및 sql 튜닝 등 다수의 성능 최적화를 경험했습니다.</li>
@@ -253,7 +253,7 @@ const BlogAbout = () => {
                                     <BlogAboutUl>
                                         <li>🔗<BlogLink href="https://juneberrydiary.com/blog/tourist0302" target="_blank" rel="noopener noreferrer">https://juneberrydiary.com/blog/tourist0302</BlogLink></li>
                                         <li>react + spring boot로 자체 개발한 블로그를 이용하고 있습니다.</li>
-                                        <li>같은 실수를 반복하지 않기 위해 시작했습니다.</li>
+                                        <li>43개의 기술 포스트를 작성했습니다.</li>
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
@@ -289,7 +289,80 @@ const BlogAbout = () => {
                         <BlogAboutSemiTitle>
                             Skills
                         </BlogAboutSemiTitle>
-                        <BlogSmInfoDiv>※ (1) - Novice, (2) - Developing, (3) - Proficient, (4) - Advanced</BlogSmInfoDiv>
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
+                                    <span style={{backgroundColor: "rgb(251, 243, 219)"}}>Spring/Spring Boot</span>
+                                </BlogAboutHighlightTitle>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>2년 4개월 이상 11개 프로젝트에서 사용 (현재 운영 중인 프로젝트 1개 보유)</li>
+                                        <li>JWT + redis + email 인증 및 세션 기반 인증/인가 프로세스 개발 경험</li>
+                                        <li>S3 + 이미지 압축 기술을 활용한 이미지 업로드 프로세스 개발 경험</li>
+                                        <li>redis 기반 성능 개선 경험 보유</li>
+                                        <li>CompletableFuture 기반 성능 개선 경험 보유</li>
+                                        <li>RDBMS, NoSQL 데이터베이스 기반 프로젝트 개발 경험 보유</li>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
+                                    <span style={{backgroundColor: "rgb(251, 243, 219)"}}>JPA</span>
+                                </BlogAboutHighlightTitle>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>1년 이상 2개의 프로젝트에서 사용</li>
+                                        <li>JPA fetch join을 활용한 쿼리 성능 개선 경험</li>
+                                        <li>QueryDSL을 사용한 동적 쿼리 개발 경험</li>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
+                                    <span style={{backgroundColor: "rgb(251, 243, 219)"}}>DevOps</span>
+                                </BlogAboutHighlightTitle>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>젠킨스 기반 CI/CD 파이프라인 구축 경험</li>
+                                        <li>Prometheus + Grafana 기반 모니터링 서버 구축 및 운영 경험</li>
+                                        <li>기존 http 프로젝트에 https 도입 경험</li>
+                                        <li>신규 환경에서 Spring 서버 설치 및 서비스 배포 경험</li>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
+                                    <span style={{backgroundColor: "rgb(251, 243, 219)"}}>React.js</span>
+                                </BlogAboutHighlightTitle>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>1년 이상 2개의 프로젝트에서 사용 (현재 운영 중인 프로젝트 1개 보유)</li>
+                                        <li>React + CodeMirror + Cloudflare R2를 이용해 자체 블로그 에디터 개발 경험</li>
+                                        <li>Redux를 이용한 상태 관리 경험</li>
+                                        <li>React Query를 사용한 성능 개선 경험</li>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+
+                        {/*<BlogSmInfoDiv>※ (1) - Novice, (2) - Developing, (3) - Proficient, (4) - Advanced</BlogSmInfoDiv>
                         <BlogAboutSideBlock>
                             <BlogAboutLeftSide>
                                 <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
@@ -359,11 +432,12 @@ const BlogAbout = () => {
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
-                        </BlogAboutSideBlock>
+                        </BlogAboutSideBlock>*/}
                         
                         <BlogAboutSemiTitle>
                             <span>Personal Experience & Projects</span>
                         </BlogAboutSemiTitle>
+                        <BlogSmInfoDiv>※ 제가 직접 담당했던 부분만 작성했습니다.</BlogSmInfoDiv>
 
                         <BlogAboutSideBlock>
                             <BlogAboutLeftSide>
@@ -375,9 +449,9 @@ const BlogAbout = () => {
                                     <a href="https://github.com/Brylimo/juneberry-diary-front" target="_blank" rel="noopener noreferrer"><GitHubIconCustom style={{color: 'rgb(25, 118, 210)'}} /></a>
                                     <a href="https://github.com/Brylimo/juneberry-diary-back" target="_blank" rel="noopener noreferrer"><GitHubIconCustom /></a>
                                 </BlogAboutTextBlock>
-                                <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
+                                {/*<BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
                                     임시 ID : jbdtest, 임시 PWD : test99
-                                </BlogAboutTextBlock>
+                                </BlogAboutTextBlock>*/}
                                 <BlogAboutTextBlock style={{marginBottom: '10px'}}>
                                     <BlogLink href="https://juneberrydiary.com/blog/tourist0302/28" target="_blank" rel="noopener noreferrer">https://juneberrydiary.com/blog/tourist0302/28</BlogLink>
                                 </BlogAboutTextBlock>
@@ -400,6 +474,9 @@ const BlogAbout = () => {
                                         <li>🚀 <b>Service  </b> 
                                             <BlogLink href="https://juneberrydiary.com" target="_blank" rel="noopener noreferrer">https://juneberrydiary.com</BlogLink>
                                         </li>
+                                        <li>기술</li>
+                                        Spring Boot, Redis, PostgreSQL, Spring Security, Spring Data JPA, Querydsl, Docker, Grafana, Prometheus, Nginx, Jenkins, Swagger, Java, 
+                                        React.js, Redux, TanStack Query, styled-components, CodeMirror
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
@@ -431,6 +508,8 @@ const BlogAbout = () => {
                                             - <b>1.4초</b> → <b>1초</b> 개선한 경험
                                             <li>지도 확대시 현재 위치 기준 주변 건물들을 모두 표출하는 기능 개발</li>
                                         </ul>
+                                        <li>기술</li>
+                                        Spring Boot, PostgreSQL, Spring Security, Docker, Java, Thymeleaf, Jquery, V-WORLD, HTML, CSS
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
@@ -452,10 +531,12 @@ const BlogAbout = () => {
                                     <BlogAboutUl>
                                         <li>OX 게임과 공부를 접목시킨 공부 게임 서비스</li>
                                         <ul>
-                                            <li>node.js Socket.IO를 이용한 O, X 게임 기능 개발</li>
+                                            <li>Node.js Socket.IO를 이용한 O, X 게임 백엔드 기능 개발</li>
                                             <li>AWS 기반 서버 인프라 구축</li>
                                             <li>16여 개 이상의 Mocha.js 기반 테스트 코드 작성</li>
                                         </ul>
+                                        <li>기술</li>
+                                        Express.js, Node.js, Mocha.js, MySQL, TypeScript, Docker, Pug, Prisma, Socket.IO
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
@@ -465,6 +546,8 @@ const BlogAbout = () => {
                             <span>Work Experience & Projects</span>
                             <BlogAboutTag>총 경력 2년</BlogAboutTag>
                         </BlogAboutSemiTitle>
+                        <BlogSmInfoDiv>※ 제가 직접 담당했던 부분만 작성했습니다.</BlogSmInfoDiv>
+
                         <BlogAboutSideBlock>
                             <BlogAboutLeftSide>
                                 <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
@@ -493,6 +576,8 @@ const BlogAbout = () => {
                                                 → <b>1억 4천 만원</b> 규모의 회사 매출 창출
                                             </li>
                                         </ul>
+                                        <li>기술</li>
+                                        Java, Spring Framework, PostgreSQL, MyBatis, MariaDB, JSP, jQuery, Docker
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
@@ -528,6 +613,8 @@ const BlogAbout = () => {
                                                 <li>실시간 데이터 변화를 data activity graph로 시각화</li>
                                             </ul>
                                         </ul>
+                                        <li>기술</li>
+                                        Spring Boot, React.js, TypeScript, Express.js, Prisma, CouchDB, Java, Docker, Swagger, Prometheus, Grafana
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
@@ -561,6 +648,8 @@ const BlogAbout = () => {
                                                 <li>실시간 FAQ 조회 지표를 모니터링할 수 있는 그래프 개발</li>
                                             </ul>
                                         </ul>
+                                        <li>기술</li>
+                                        Java, Spring Framework, JSP, jQuery, MyBatis, CKEditor4, Bootstrap, jqPlot
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
@@ -590,6 +679,8 @@ const BlogAbout = () => {
                                             → 이후 실시한 고객 만족도 평가에서 <b>만족도 상승</b>
                                             </li>
                                         </ul>
+                                        <li>기술</li>
+                                        Java, Spring Boot, JSP, jQuery, Swagger, Node.js, AWS Lambda
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
@@ -614,6 +705,8 @@ const BlogAbout = () => {
                                             <li>라이트 / 다크 모드 개발</li>
                                             <li>JCMS 라이브러리 사용법 매뉴얼 제작 및 전 개발자 대상 <b>사내 교육 담당</b></li>
                                         </ul>
+                                        <li>기술</li>
+                                        Thymeleaf, Sass, jQuery, BootStrap, Spring Boot, Java
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
@@ -686,7 +779,7 @@ const BlogAbout = () => {
                                     <BlogAboutUl>
                                         <li>준베리다이어리의 달력 성능 개선 과정을 블로그 포스팅으로 정리</li>
                                         <ul>
-                                            <li>레디스 및 react query에 대한 이해</li>
+                                            <li>레디스 및 React Query에 대한 이해</li>
                                             <li>성능 개선 경험 기록</li>
                                         </ul>
                                     </BlogAboutUl>

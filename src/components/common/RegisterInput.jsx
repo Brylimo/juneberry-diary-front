@@ -1,5 +1,7 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react';
 import styled, { css } from 'styled-components';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const RegisterInputBlock = styled.div`
     display: flex;
@@ -17,21 +19,22 @@ const StyledInputLabel = styled.div`
     justify-content: space-between;
 `
 
+const SubText = styled.div`
+    color: white;
+    font-size: 14px;
+    margin-top: 5px;
+`
+
 const TimerSpan = styled.span`
     color: #ed2c3f;
 `
 
-const StyledInput = styled.input`
-    font-size: 1.6rem;
-    background: transparent;
-    color: white;
+const StyledInputBlock = styled.div`
     margin-top: 8px;
-    padding: 1rem;
-    padding-block-start: 8px;
-    outline: none;
     border-radius: 8px;
     box-shadow: inset 0 0 0 1px #7c7c7c;
-    border: none;
+    display: flex;
+    align-items: center;
 
     ${props => props.isError &&
         css`
@@ -39,9 +42,24 @@ const StyledInput = styled.input`
         `
     }
 
-    &:focus {
-        box-shadow: inset 0 0 0 1.5px #fff;
+    ${props => props.isFocus &&
+        css`
+            box-shadow: inset 0 0 0 1.5px #fff;
+        `
     }
+`
+
+const StyledInput = styled.input`
+    font-size: 1.6rem;
+    background: transparent;
+    color: white;
+    padding: 1rem 0 1rem 1rem;
+    padding-block-start: 8px;
+    outline: none;
+    border-radius: 8px;
+    border: none;
+    flex: 1;
+
     & + & {
         margin-top: 1rem;
     }
@@ -53,8 +71,28 @@ const ErrorTip = styled.div`
     color: #f3727f;
 `
 
-const RegisterInput = ({ inputLabel = "", purpose, validate, isSubmit, submitSuccess, submitFailed, timerFailed, ...inputProps }) => {
+const StyledIcon = styled.div`
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+
+const VisibilityOffIconCustom = styled(VisibilityOffIcon)`
+    color: white;
+    cursor: pointer;
+`
+
+const VisibilityIconCustom = styled(VisibilityIcon)`
+    color: white;
+    cursor: pointer;
+`
+
+const RegisterInput = ({ inputLabel = "", subText, purpose, validate, isSubmit, submitSuccess, submitFailed, timerFailed, ...inputProps }) => {
     const [ inputTxt, setInputTxt ] = useState('')
+    const [ isFocus, setIsFocus ] = useState(false)
+    const [ hidePassword, setHidePassword ] = useState(true)
     const [ error, setError ] = useState('')
 
     const [ min, setMin ] = useState(5)
@@ -86,6 +124,14 @@ const RegisterInput = ({ inputLabel = "", purpose, validate, isSubmit, submitSuc
 
     const onInputChange = useCallback(e => {
         setInputTxt(e.target.value)
+    }, [])
+
+    const onClickVisibilityOffIcon = useCallback(e => {
+        setHidePassword(false)
+    }, [])
+
+    const onClickVisibilityIcon = useCallback(e => {
+        setHidePassword(true)
     }, [])
 
     const handleBlur = useCallback(() => { // 검증 작업
@@ -272,14 +318,24 @@ const RegisterInput = ({ inputLabel = "", purpose, validate, isSubmit, submitSuc
                 <span>{inputLabel}{inputProps?.required ? "*" : null}</span>
                 {purpose === "code" && (<TimerSpan>{min}:{String(sec).padStart(2, '0')}</TimerSpan>)}
             </StyledInputLabel>
-            <StyledInput
-                value={inputTxt} 
-                onChange={onInputChange} 
-                onFocus={handleFocus} 
-                onBlur={handleBlur} 
-                isError={!!error} 
-                {...inputProps} 
-            />
+            {subText && 
+            (<SubText>
+                {subText}    
+            </SubText>)}
+            <StyledInputBlock isError={!!error} isFocus={isFocus} onFocus={() => setIsFocus(true)} onBlur= {() => setIsFocus(false)}>
+                <StyledInput
+                    type={(purpose === "password" && hidePassword) ? "password" : "text"}
+                    value={inputTxt} 
+                    onChange={onInputChange} 
+                    onFocus={handleFocus} 
+                    onBlur={handleBlur} 
+                    {...inputProps} 
+                />
+                {purpose === "password" && 
+                (<StyledIcon>
+                    {hidePassword ? <VisibilityOffIconCustom onClick={onClickVisibilityOffIcon}/> : <VisibilityIconCustom onClick={onClickVisibilityIcon}/>}
+                </StyledIcon>)}
+            </StyledInputBlock>
             {error && (
                 <ErrorTip>
                     <span>{error}</span>        

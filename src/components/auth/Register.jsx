@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSendCodeMutation } from '../../hooks/mutations/email/useSendCodeMutation';
 import { useVerifyCodeMutation } from '../../hooks/mutations/user/useVerifyCodeMutation';
+import { useRegisterMutation } from '../../hooks/mutations/user/useRegisterMutation';
 import * as userAPI from "../../lib/api/userAPI";
 import Button from '../common/Button';
 import RegisterInput from '../common/RegisterInput';
@@ -77,6 +78,9 @@ const StepHeader = styled.div`
     font-size: 16px;
     color: white;
     display: flex;
+    position: relative;
+    left: -38px;
+    margin-bottom: 25px;
 `
 
 const StepHeaderContent = styled.div`
@@ -84,8 +88,36 @@ const StepHeaderContent = styled.div`
     flex-direction: column;
 `
 
+const StepSpan = styled.span`
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #dbd4d4;
+`
+
+const PasswordNotiBlock = styled.div`
+    font-size: 15px;
+    color: #fff;
+    margin-top: 10px;
+    font-weight: 400;
+`
+
+const PasswordNotiUl = styled.ul`
+    margin-top: 10px;
+`
+
+const PasswordNotiLi = styled.li`
+    margin-bottom: 10px;
+`
+
 const KeyboardArrowLeftIconCustom = styled(KeyboardArrowLeftIcon)`
-    height: 100%;
+    height: 38px;
+    width: 38px;
+    cursor: pointer;
+    color: #7c7c7c;
+
+    &:hover {
+        color: #fff;
+    }
 `
 
 const Register = ({ type, form, onChange, onSubmit }) => {
@@ -96,18 +128,37 @@ const Register = ({ type, form, onChange, onSubmit }) => {
     const [ initialSubmit, setInitialSubmit ] = useState(false);
     const [ initialNextSubmit, setInitialNextSubmit ] = useState(false);
     const [ firstSubmit, setFirstSubmit ] = useState(false);
+    const [ secondSubmit, setSecondSubmit ] = useState(false);
 
     const [ initialNext, setInitialNext ] = useState(false);
     const [ firstStep, setFirstStep ] = useState(false);
+    const [ secondStep, setSecondStep ] = useState(false);
+    
     const [ initialStates, setInitialStates ]  = useState({
         email: ''
     })
     const [ initialNextStates, setInitialNextStates ] = useState({
         code: ''
     })
+    const [ firstStates, setFirstStates ] = useState({
+        password: ''
+    })
+    const [ secondStates, setSecondStates ] = useState({
+        name: '',
+        username: ''
+    })
 
     const { mutate: sendCodeMutate } = useSendCodeMutation()
     const { mutate: verifyCodeMutate } = useVerifyCodeMutation()
+    const { mutate: registerMutate } = useRegisterMutation()
+
+    const onClickFirstGoBack = useCallback(() => {
+        navigate(`${location.pathname}`)
+    }, [navigate, location])
+
+    const onClickSecondGoBack = useCallback(() => {
+        navigate(`${location.pathname}#step=1`)
+    }, [navigate, location])
 
     const onSubmitAuthRequest = useCallback(() => {
         setInitialSubmit(true)
@@ -115,6 +166,14 @@ const Register = ({ type, form, onChange, onSubmit }) => {
 
     const onSubmitAuthVerify = useCallback(() => {
         setInitialNextSubmit(true)
+    }, [])
+
+    const onSubmitPassword = useCallback(() => {
+        setFirstSubmit(true)
+    }, [])
+
+    const onSubmitInfo = useCallback(() => {
+        setSecondSubmit(true)
     }, [])
 
     // custom submit success function
@@ -126,9 +185,25 @@ const Register = ({ type, form, onChange, onSubmit }) => {
         setInitialNextStates(prev => ({...prev, code: inputTxt}))
     }
 
+    const passwordSubmitSuccessCallback = (inputTxt) => {
+        setFirstStates(prev => ({...prev, password: inputTxt}))
+    }
+
+    const nameSubmitSuccessCallback = (inputTxt) => {
+        setSecondStates(prev => ({...prev, name: inputTxt}))
+    }
+
+    const usernameSubmitSuccessCallback = (inputTxt) => {
+        setSecondStates(prev => ({...prev, username: inputTxt}))
+    }
+
     // custom submit failed function
     const emailSubmitFailedCallback = () => {
         setInitialSubmit(false)
+    }
+
+    const passwordSubmitFailedCallback = () => {
+        setFirstSubmit(false)
     }
 
     // custom timer failed function
@@ -173,6 +248,29 @@ const Register = ({ type, form, onChange, onSubmit }) => {
         }
     }
 
+    const PasswordValidate = (password) => {
+        // 조건 1: 문자 (영어 알파벳) 1개 이상
+        const hasLetter = /[a-zA-Z]/.test(password);
+        // 조건 2: 숫자 또는 특수 문자 1개 이상
+        const hasNumberOrSpecialChar = /[0-9!@#$%^&*(),.?":{}|<>]/.test(password);
+        // 조건 3: 10자 이상
+        const isAtLeast10Chars = password.length >= 10;
+
+        if (hasLetter && hasNumberOrSpecialChar && isAtLeast10Chars) {
+            return ""
+        } else {
+            return "비밀번호 생성 조건을 만족하지 않습니다."
+        }
+    }
+
+    const NameValidate = (name) => {
+        if (name.length > 30) {
+            return "30자 이내로 입력해주세요."
+        } else {
+            return ""
+        }
+    }
+
     useEffect(() => {
         if (location.hash && location.hash.startsWith("#step=")) {
             const step = location.hash.match(/#step=(\d+)/)?.[1] || null;
@@ -191,7 +289,30 @@ const Register = ({ type, form, onChange, onSubmit }) => {
                 });
 
                 if (isOkay) {
-                    setFirstStep(1)
+                    setFirstStep(true)
+                } else {
+                    navigate(`${location.pathname}`)
+                }
+            } else if (step == 2) {
+                let isOkay = true;
+                Object.values(initialStates).forEach(state => { // initialStates 존재 여부 확인
+                    if (!state) {
+                        isOkay = false
+                    }
+                });
+                Object.values(initialNextStates).forEach(state => { // initialNextStates 존재 여부 확인
+                    if (!state) {
+                        isOkay = false
+                    }
+                });
+                Object.values(firstStates).forEach(state => { // initialNextStates 존재 여부 확인
+                    if (!state) {
+                        isOkay = false
+                    }
+                });
+
+                if (isOkay) {
+                    setSecondStep(true)
                 } else {
                     navigate(`${location.pathname}`)
                 }
@@ -267,6 +388,64 @@ const Register = ({ type, form, onChange, onSubmit }) => {
         }
     }, [initialNextStates, initialStates, verifyCodeMutate])
 
+    useEffect(() => { // first step submit monitoring
+        if (firstStates && firstSubmit) { // 현재 제출을 한 상태
+            let isOkay = true;
+            Object.values(firstStates).forEach(state => {
+                if (!state) {
+                    isOkay = false
+                }
+            });
+
+            setFirstSubmit(false)
+            setFirstStep(false)
+
+            if (isOkay) { // success
+                navigate(`${location.pathname}#step=2`)
+            } else {
+                alert("비밀번호 생성 조건을 만족하지 않습니다.")
+            }
+        }
+    }, [firstStates])
+
+    useEffect(() => { // second step submit monitoring
+        if (secondStates && secondSubmit) { // 현재 제출을 한 상태
+            let isOkay = true;
+            Object.values(secondStates).forEach(state => {
+                if (!state) {
+                    isOkay = false
+                }
+            });
+
+            setSecondSubmit(false)
+
+            if (isOkay) { // success
+                registerMutate(
+                    {
+                        name: secondStates.name,
+                        email: initialStates.email,
+                        username: secondStates.username,
+                        password: firstStates.password
+                    },
+                    {
+                        onError: (error) => {
+                            if (error.response.status === 409) {
+                                alert("이미 존재하는 계정명입니다.");
+                                return;
+                            }
+                            alert("회원가입 실패");
+                            return;
+                        },
+                        onSuccess: () => {
+                            alert("가입이 완료되었습니다!");
+                            navigate("/login");
+                        }
+                    }
+                )
+            }
+        }
+    }, [secondStates, registerMutate, navigate])
+
     return (
         <RegisterTemplateBlock>
             <RegisterWrapper>
@@ -275,14 +454,14 @@ const Register = ({ type, form, onChange, onSubmit }) => {
                         <img src="/logo.svg" style={{width:'40px', height:'40px'}} alt="logo" />
                     </Logo>
                 </LogoBlock>
-                {!firstStep && 
+                {(!firstStep && !secondStep) && 
                 (<TextBlock>
                     가입하고<br/>
                     나만의 기록을<br/> 
                     공유하세요
                 </TextBlock>)}
                 
-                {!firstStep && 
+                {(!firstStep && !secondStep) &&
                 (<RegisterBlock>
                     <RegisterInput
                         purpose="email" 
@@ -317,67 +496,69 @@ const Register = ({ type, form, onChange, onSubmit }) => {
                 {firstStep && 
                 (<>
                     <StepHeader>
-                        <KeyboardArrowLeftIconCustom />
+                        <KeyboardArrowLeftIconCustom onClick={onClickFirstGoBack} />
                         <StepHeaderContent>
-                            <span>1/2 단계</span>
+                            <StepSpan>1/2 단계</StepSpan>
                             <span>비밀번호를 만드세요.</span>
                         </StepHeaderContent>
                     </StepHeader>
                     <RegisterBlock>
                         <RegisterInput
                             purpose="password" 
-                            validate={null}
+                            validate={PasswordValidate}
                             isSubmit={firstSubmit}
-                            submitSuccess={null}
-                            submitFailed={null}
+                            submitSuccess={passwordSubmitSuccessCallback}
+                            submitFailed={passwordSubmitFailedCallback}
                             inputLabel="비밀번호" 
                             name="password" 
                             required
                         />
+                        <PasswordNotiBlock>
+                            비밀번호에는 다음 문자가 반드시 포함되어야 합니다.
+                            <PasswordNotiUl>
+                                <PasswordNotiLi>◦ 문자 1개</PasswordNotiLi>
+                                <PasswordNotiLi>◦ 숫자 또는 특수 문자 1개</PasswordNotiLi>
+                                <PasswordNotiLi>◦ 10자 이상</PasswordNotiLi>
+                            </PasswordNotiUl>
+                        </PasswordNotiBlock>
+
+                        <Button cyan fullWidth style={{ marginTop: "20px" }} onClick={onSubmitPassword}>다음</Button>
                     </RegisterBlock>
                 </>)}
-                {/*<RegisterBlock>
-                    <form onSubmit={onSubmit}>
-                        <StyledInput 
+                {secondStep && 
+                (<>
+                    <StepHeader>
+                        <KeyboardArrowLeftIconCustom onClick={onClickSecondGoBack} />
+                        <StepHeaderContent>
+                            <StepSpan>2/2 단계</StepSpan>
+                            <span>자신을 소개해주세요.</span>
+                        </StepHeaderContent>
+                    </StepHeader>
+                    <RegisterBlock>
+                        <RegisterInput 
+                            validate={NameValidate}
+                            isSubmit={secondSubmit}
+                            submitSuccess={nameSubmitSuccessCallback}
+                            submitFailed={null}
+                            inputLabel="이름" 
+                            subText="실제 이름을 입력해주세요."
                             name="name" 
-                            placeholder='성명' 
-                            onChange={onChange}
-                            value={form.name}
-                            required 
+                            required
                         />
-                        <StyledInput 
-                            name="email" 
-                            placeholder='이메일'
-                            onChange={onChange}
-                            value={form.email} 
-                            required 
-                        />
-                        <StyledInput 
+                        <RegisterInput 
+                            validate={NameValidate}
+                            isSubmit={secondSubmit}
+                            submitSuccess={usernameSubmitSuccessCallback}
+                            submitFailed={null}
+                            inputLabel="사용자 이름" 
+                            subText="이 이름이 프로필에 표시됩니다."
                             name="username" 
-                            placeholder='사용자 이름'
-                            onChange={onChange}
-                            value={form.username} 
-                            required 
+                            required
                         />
-                        <StyledInput 
-                            type="password" 
-                            name="password" 
-                            placeholder='비밀번호'
-                            onChange={onChange}
-                            value={form.password}
-                            required 
-                        />
-                        <StyledInput 
-                            type="password" 
-                            name="passwordConfirm" 
-                            placeholder='비밀번호 확인'
-                            onChange={onChange}
-                            value={form.passwordConfirm} 
-                            required 
-                        />
-                        <Button cyan fullWidth>가입하기</Button>
-                    </form>
-                </RegisterBlock>*/}
+
+                        <Button cyan fullWidth style={{ marginTop: "20px" }} onClick={onSubmitInfo}>가입하기</Button>
+                    </RegisterBlock>
+                </>)}
             </RegisterWrapper>
         </RegisterTemplateBlock>
     )

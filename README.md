@@ -26,10 +26,17 @@ juneberry diary frontend project
 
 포트: 3000
 
+## 아키텍처
+![](https://cdn.juneberrydiary.com/6f846603-3d40-4ba2-8dc7-e35d52abab48.jpg)
+
 ## 화면 구성
 ### 로그인 및 회원가입
 ![](https://cdn.juneberrydiary.com/5d3b1a67-51cb-42d2-ae2e-718d56f8968f.png)
-![](https://cdn.juneberrydiary.com/6ff4572b-1201-4d8f-895f-05d04beedf71.png)
+![](https://cdn.juneberrydiary.com/dd54d50a-b597-45e2-953b-3d4c7ecbc756.jpg)
+![](https://cdn.juneberrydiary.com/079656c3-66e3-4bba-a686-8d7f91d1464b.jpg)
+![](https://cdn.juneberrydiary.com/70efe8b1-f5c4-4234-b2ec-fc7f91555b26.jpg)
+![](https://cdn.juneberrydiary.com/4eca48f0-d397-4d88-8cdc-7b7e5afd9f54.jpg)
+![](https://cdn.juneberrydiary.com/36af3b03-5249-4887-953c-73721ababaae.jpg)
 
 ### 지도
 (※ 지도 관련 기능은 merci 프로젝트를 이용해주세요.)
@@ -81,6 +88,3 @@ juneberry diary frontend project
 
 ### not found 페이지
 ![](https://cdn.juneberrydiary.com/a2eb2266-c96b-41de-a671-8f596eb57cba.png)
-
-## 아키텍처
-![](https://cdn.juneberrydiary.com/6f846603-3d40-4ba2-8dc7-e35d52abab48.jpg)
