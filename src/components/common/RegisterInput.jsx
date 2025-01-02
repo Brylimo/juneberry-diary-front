@@ -89,8 +89,8 @@ const VisibilityIconCustom = styled(VisibilityIcon)`
     cursor: pointer;
 `
 
-const RegisterInput = ({ inputLabel = "", subText, purpose, validate, isSubmit, submitSuccess, submitFailed, timerFailed, ...inputProps }) => {
-    const [ inputTxt, setInputTxt ] = useState('')
+const RegisterInput = ({ inputLabel = "", subText, state, purpose, validate, isSubmit, submitSuccess, submitFailed, timerFailed, ...inputProps }) => {
+    const [ inputTxt, setInputTxt ] = useState(state || '')
     const [ isFocus, setIsFocus ] = useState(false)
     const [ hidePassword, setHidePassword ] = useState(true)
     const [ error, setError ] = useState('')

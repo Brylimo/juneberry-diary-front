@@ -153,10 +153,12 @@ const Register = ({ type, form, onChange, onSubmit }) => {
     const { mutate: registerMutate } = useRegisterMutation()
 
     const onClickFirstGoBack = useCallback(() => {
+        setFirstStep(false)
         navigate(`${location.pathname}`)
     }, [navigate, location])
 
     const onClickSecondGoBack = useCallback(() => {
+        setSecondStep(false)
         navigate(`${location.pathname}#step=1`)
     }, [navigate, location])
 
@@ -206,6 +208,10 @@ const Register = ({ type, form, onChange, onSubmit }) => {
         setFirstSubmit(false)
     }
 
+    const nameSubmitFailedCallback = () => {
+        setSecondSubmit(false)
+    }
+
     // custom timer failed function
     const codeTimerFailedCallback = () => {
         setInitialNext(false)
@@ -248,7 +254,7 @@ const Register = ({ type, form, onChange, onSubmit }) => {
         }
     }
 
-    const PasswordValidate = (password) => {
+    const passwordValidate = (password) => {
         // 조건 1: 문자 (영어 알파벳) 1개 이상
         const hasLetter = /[a-zA-Z]/.test(password);
         // 조건 2: 숫자 또는 특수 문자 1개 이상
@@ -263,11 +269,51 @@ const Register = ({ type, form, onChange, onSubmit }) => {
         }
     }
 
-    const NameValidate = (name) => {
+    const nameValidate = (name) => {
         if (name.length > 30) {
             return "30자 이내로 입력해주세요."
         } else {
             return ""
+        }
+    }
+
+    const usernameValidate = async (username) => {
+        if (username.length > 30) {
+            return "30자 이내로 입력해주세요."
+        } else {
+            try {
+                const data = await queryClient.fetchQuery({
+                    queryKey: ["getUserByUsername", { username }],
+                    queryFn: async () => {
+                        try {
+                            const response = await userAPI.getUserByUsername({ username });
+        
+                            // 상태 코드와 데이터를 반환
+                            if (response?.state) {
+                                return {
+                                    status: response.state,
+                                    data: response.data
+                                };
+                            } else {
+                                throw new Error("No status in response");
+                            }
+                        } catch (error) {
+                            return { status: error.response?.status || 500, data: null };
+                        }
+                    },
+                    retry: 0
+                });
+    
+                if (200 <= data.status && data.status < 300) { // 반환 성공
+                    return "사용자 이름이 이미 존재합니다."
+                } else if (data.status === 404) { // not found
+                    return ""
+                } else {
+                    return "오류가 발생하였습니다. 관리자에게 문의해주세요."
+                }
+            } catch (error) {
+                return '오류가 발생하였습니다. 관리자에게 문의해주세요.';
+            }
         }
     }
 
@@ -276,6 +322,13 @@ const Register = ({ type, form, onChange, onSubmit }) => {
             const step = location.hash.match(/#step=(\d+)/)?.[1] || null;
             
             if (step == 1) {
+                if (initialNext === true) {
+                    setInitialNext(false)
+                }
+                if (secondStep === true) {
+                    setSecondStep(false)
+                }
+
                 let isOkay = true;
                 Object.values(initialStates).forEach(state => { // initialStates 존재 여부 확인
                     if (!state) {
@@ -294,6 +347,13 @@ const Register = ({ type, form, onChange, onSubmit }) => {
                     navigate(`${location.pathname}`)
                 }
             } else if (step == 2) {
+                if (initialNext === true) {
+                    setInitialNext(false)
+                }
+                if (firstStep === true) {
+                    setFirstStep(false)
+                }
+
                 let isOkay = true;
                 Object.values(initialStates).forEach(state => { // initialStates 존재 여부 확인
                     if (!state) {
@@ -372,6 +432,7 @@ const Register = ({ type, form, onChange, onSubmit }) => {
                     },
                     {
                         onSuccess: (res) => {
+                            setInitialNext(false)
                             navigate(`${location.pathname}#step=1`)
                         },
                         onError: (error) => {
@@ -401,6 +462,7 @@ const Register = ({ type, form, onChange, onSubmit }) => {
             setFirstStep(false)
 
             if (isOkay) { // success
+                setFirstStep(false)
                 navigate(`${location.pathname}#step=2`)
             } else {
                 alert("비밀번호 생성 조건을 만족하지 않습니다.")
@@ -429,15 +491,12 @@ const Register = ({ type, form, onChange, onSubmit }) => {
                     },
                     {
                         onError: (error) => {
-                            if (error.response.status === 409) {
-                                alert("이미 존재하는 계정명입니다.");
-                                return;
-                            }
                             alert("회원가입 실패");
                             return;
                         },
                         onSuccess: () => {
                             alert("가입이 완료되었습니다!");
+                            setSecondStep(false)
                             navigate("/login");
                         }
                     }
@@ -464,6 +523,7 @@ const Register = ({ type, form, onChange, onSubmit }) => {
                 {(!firstStep && !secondStep) &&
                 (<RegisterBlock>
                     <RegisterInput
+                        state={initialStates?.email}
                         purpose="email" 
                         validate={emailValidate}
                         isSubmit={initialSubmit}
@@ -504,8 +564,9 @@ const Register = ({ type, form, onChange, onSubmit }) => {
                     </StepHeader>
                     <RegisterBlock>
                         <RegisterInput
+                            state={firstStates?.password}
                             purpose="password" 
-                            validate={PasswordValidate}
+                            validate={passwordValidate}
                             isSubmit={firstSubmit}
                             submitSuccess={passwordSubmitSuccessCallback}
                             submitFailed={passwordSubmitFailedCallback}
@@ -536,20 +597,22 @@ const Register = ({ type, form, onChange, onSubmit }) => {
                     </StepHeader>
                     <RegisterBlock>
                         <RegisterInput 
-                            validate={NameValidate}
+                            state={firstStates?.name}
+                            validate={nameValidate}
                             isSubmit={secondSubmit}
                             submitSuccess={nameSubmitSuccessCallback}
-                            submitFailed={null}
+                            submitFailed={nameSubmitFailedCallback}
                             inputLabel="이름" 
                             subText="실제 이름을 입력해주세요."
                             name="name" 
                             required
                         />
                         <RegisterInput 
-                            validate={NameValidate}
+                            state={firstStates?.username}
+                            validate={usernameValidate}
                             isSubmit={secondSubmit}
                             submitSuccess={usernameSubmitSuccessCallback}
-                            submitFailed={null}
+                            submitFailed={nameSubmitFailedCallback}
                             inputLabel="사용자 이름" 
                             subText="이 이름이 프로필에 표시됩니다."
                             name="username" 
