@@ -18,7 +18,7 @@ juneberry diary frontend project
 준베리다이어리는 블로그/다이어리 기능과 캘린더 기록 기능, 지도 기록 기능이 모두 포함된 종합 다이어리 서비스입니다. 일상에서 경험하는 모든 종류의 기록을 준베리다이어리 서비스 하나만으로 해결할 수 있습니다. 또한 여러 종류의 서로 다른 기록을 서로 연동하고 이러한 기록을 통해 유저에게 새로운 인사이트를 제공하기 위해 노력합니다.
 
 ## 기술 스택
-- react.js, redux, react query, font awesome, vworld, html, styled-components, CodeMirror
+- React.js, Redux, React Query, font awesome, V-WORLD, HTML, styled-components, CodeMirror
 
 ## 로컬 실행 방법
 1. yarn install
@@ -27,7 +27,7 @@ juneberry diary frontend project
 포트: 3000
 
 ## 아키텍처
-![](https://cdn.juneberrydiary.com/6f846603-3d40-4ba2-8dc7-e35d52abab48.jpg)
+![](https://velog.velcdn.com/images/brylimo/post/b109be88-0269-4567-8553-aa0b4ce24760/image.jpg)
 
 ## 화면 구성
 ### 로그인 및 회원가입
