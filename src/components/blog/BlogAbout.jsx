@@ -304,6 +304,7 @@ const BlogAbout = () => {
                                         <li>redis 기반 성능 개선 경험 보유</li>
                                         <li>CompletableFuture 기반 성능 개선 경험 보유</li>
                                         <li>RDBMS, NoSQL 데이터베이스 기반 프로젝트 개발 경험 보유</li>
+                                        <li>JUnit5 테스트 코드 작성 경험</li>
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
@@ -469,13 +470,14 @@ const BlogAbout = () => {
                                             <li>JPA, QueryDSL을 사용한 다수의 쿼리 튜닝 경험</li>
                                             <li>Jenkins 기반 CI/CD 파이프라인 구축</li>
                                             <li>Prometheus, Grafana를 이용한 모니터링 시스템 구축</li>
+                                            <li>JUnit5 + H2 Database 기반 테스트 코드 작성</li>
                                             <li>https 프로토콜 기반 서비스 <b>운영중</b></li>
                                         </ul>
                                         <li>🚀 <b>Service  </b> 
                                             <BlogLink href="https://juneberrydiary.com" target="_blank" rel="noopener noreferrer">https://juneberrydiary.com</BlogLink>
                                         </li>
                                         <li>기술</li>
-                                        Spring Boot, Redis, PostgreSQL, Spring Security, Spring Data JPA, Querydsl, Docker, Grafana, Prometheus, Nginx, Jenkins, Swagger, Java, 
+                                        Spring Boot, Redis, PostgreSQL, Spring Security, Spring Data JPA, Querydsl, Docker, Grafana, Prometheus, Nginx, Jenkins, JUnit5, H2 Database, Swagger, Java, 
                                         React.js, Redux, TanStack Query, styled-components, CodeMirror
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
