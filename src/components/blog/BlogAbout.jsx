@@ -843,6 +843,27 @@ const BlogAbout = () => {
                         <BlogAboutSideBlock>
                             <BlogAboutLeftSide>
                                 <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
+                                    삼성 청년 SW 아카데미 13기
+                                </BlogAboutHighlightTitle>
+                                <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
+                                    2025.01 ~ 현재
+                                </BlogAboutTextBlock>
+                                <BlogAboutSmTag>부트캠프</BlogAboutSmTag>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>
+                                            삼성 청년 SW 아카데미(SSAFY) 13기 교육 과정 진행중
+                                        </li>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
                                     University of North Dakota<br/> 
                                     Computer Science
                                 </BlogAboutHighlightTitle>
