@@ -856,6 +856,10 @@ const BlogAbout = () => {
                                         <li>
                                             삼성 청년 SW 아카데미(SSAFY) 13기 교육 과정 진행중
                                         </li>
+                                        <ul>
+                                            <li>자바 알고리즘 스터디(YaoongTudy) 조장 경험</li>
+                                            <li>RedBrick Engine을 이용한 드라마 오징어 게임 모티브 게임 구현</li>
+                                        </ul>
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
@@ -927,6 +931,16 @@ const BlogAbout = () => {
                         </BlogAboutHighlightTitle>
                         <BlogAboutTextBlock style={{marginTop: '10px'}}>
                             매주마다 코딩테스트 문제 하나를 풀고 서로의 풀이법을 공유
+                        </BlogAboutTextBlock>
+
+                        <BlogAboutHighlightTitle style={{marginTop: '10px', display: 'flex', gap: '7px'}}>
+                            자바 알고리즘 스터디(YaoongTudy) / 2025.01 ~ 현재
+                            <a href="https://github.com/YaoongTudy/Coding-Test-Study" target="_blank" rel="noopener noreferrer">
+                                <GitHubIconCustom style={{ width: '22px', height: '22px' }}/>
+                            </a>
+                        </BlogAboutHighlightTitle>
+                        <BlogAboutTextBlock style={{marginTop: '10px'}}>
+                            매주 두번 코딩테스트 실전 문제를 풀고 서로의 풀이법을 공유
                         </BlogAboutTextBlock>
                     </BlogAboutContent>
                 </BlogAboutBlock>
