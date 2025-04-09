@@ -236,6 +236,7 @@ const BlogAbout = () => {
                                         <li>Spring/Spring Boot 기반 10개 이상의 프로젝트에 참여하였습니다.</li>
                                         <li>감리가 필요한 1억원대 규모 프로젝트 포함 3번의 프로젝트 리딩을 경험했습니다.</li>
                                         <li>redis, jpa 최적화 및 sql 튜닝 등 다수의 성능 최적화를 경험했습니다.</li>
+                                        <li>백준 기준 알고리즘 티어는 플래티넘으로, 문제 해결력 또한 자신 있습니다.</li>
                                         <li>미국에 9개월 가량 거주하여 영어로 편하게 의사소통 가능합니다.</li>
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
@@ -857,8 +858,9 @@ const BlogAbout = () => {
                                             삼성 청년 SW 아카데미(SSAFY) 13기 교육 과정 진행중
                                         </li>
                                         <ul>
-                                            <li>자바 알고리즘 스터디(YaoongTudy) 조장 경험</li>
-                                            <li>RedBrick Engine을 이용한 드라마 오징어 게임 모티브 게임 구현</li>
+                                            <li>여행지 소개 백엔드 프로젝트 개발 (EnjoyTrip)</li>
+                                            <li>웹 개발 전반(Frontend + Backend) 집중 교육</li>
+                                            <li>알고리즘 집중 교육</li>
                                         </ul>
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
