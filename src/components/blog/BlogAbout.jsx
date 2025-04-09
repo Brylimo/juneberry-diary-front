@@ -547,7 +547,7 @@ const BlogAbout = () => {
 
                         <BlogAboutSemiTitle>
                             <span>Work Experience & Projects</span>
-                            <BlogAboutTag>총 경력 2년</BlogAboutTag>
+                            <BlogAboutTag>총 경력 23개월</BlogAboutTag>
                         </BlogAboutSemiTitle>
                         <BlogSmInfoDiv>※ 제가 직접 담당했던 부분만 작성했습니다.</BlogSmInfoDiv>
 
