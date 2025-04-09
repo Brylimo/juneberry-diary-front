@@ -859,6 +859,7 @@ const BlogAbout = () => {
                                         </li>
                                         <ul>
                                             <li>여행지 소개 백엔드 프로젝트 개발 (EnjoyTrip)</li>
+                                            <li>삼성 소프트웨어 역량 평가 A형 취득</li>
                                             <li>웹 개발 전반(Frontend + Backend) 집중 교육</li>
                                             <li>알고리즘 집중 교육</li>
                                         </ul>
