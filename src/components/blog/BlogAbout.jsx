@@ -376,6 +376,7 @@ const BlogAbout = () => {
                                 <BlogAboutTxtContentBlock>
                                     <BlogAboutUl>
                                         <li>6개월 이상 1개의 프로젝트에서 사용</li>
+                                        <li>Vue Query를 사용한 성능 개선 경험</li>
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
@@ -536,6 +537,35 @@ const BlogAbout = () => {
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
                         </BlogAboutSideBlock> */}
+
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
+                                    Mapick<br/>
+                                </BlogAboutHighlightTitle>
+                                <BlogAboutTextBlock style={{marginBottom: '10px'}} type={"text"}>
+                                    2025.04 ~ 2025.06 / 2명
+                                    <a href="https://github.com/Brylimo/mapick" target="_blank" rel="noopener noreferrer"><GitHubIconCustom /></a>
+                                </BlogAboutTextBlock>
+                                <BlogAboutSmTag>삼성 청년 SW 아카데미 관통 프로젝트</BlogAboutSmTag>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>지도 커뮤니티 기반 여행지 추천 서비스</li>
+                                        <ul>
+                                            <li>Spring AI 기반 여행지 추천 챗봇 개발</li>
+                                            <li>KMP 알고리즘 기반 키워드 검색 기능 개발</li>
+                                            <li>Delay Queue 기반 알림 예약 기능 개발</li>
+                                            <li>소셜 로그인 기능 개발</li>
+                                            <li>Vue.js 프론트엔드 개발</li>
+                                        </ul>
+                                        <li>기술</li>
+                                        Spring Boot, Redis, Spring Security, Spring Data JPA, MySQL, Spring AI, MyBatis, Thymeleaf, Swagger, Vue.js, Vite
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
 
                         <BlogAboutSideBlock>
                             <BlogAboutLeftSide>
