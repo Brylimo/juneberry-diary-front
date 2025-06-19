@@ -232,10 +232,10 @@ const BlogAbout = () => {
                                 <BlogAboutTxtContentBlock>
                                     <BlogAboutUl>
                                         <li>안녕하세요! 주니어 백엔드 개발자 임채진 입니다.</li>
-                                        <li>한달 고유 방문자 1.02k명의 자체 서비스 "준베리다이어리"를 운영중입니다.</li>
+                                        <li>한달 고유 방문자 1020명의 자체 서비스 "준베리다이어리"를 운영중입니다.</li>
                                         <li>Spring/Spring Boot 기반 10개 이상의 프로젝트에 참여하였습니다.</li>
                                         <li>감리가 필요한 1억원대 규모 프로젝트 포함 3번의 프로젝트 리딩을 경험했습니다.</li>
-                                        <li>redis, jpa 최적화 및 sql 튜닝 등 다수의 성능 최적화를 경험했습니다.</li>
+                                        <li>Redis, JPA 최적화 및 SQL 튜닝 등 다수의 성능 최적화를 경험했습니다.</li>
                                         <li>백준 기준 알고리즘 티어는 플래티넘으로, 문제 해결력 또한 자신 있습니다.</li>
                                         <li>미국에 9개월 가량 거주하여 영어로 편하게 의사소통 가능합니다.</li>
                                     </BlogAboutUl>
@@ -253,7 +253,7 @@ const BlogAbout = () => {
                                 <BlogAboutTxtContentBlock>
                                     <BlogAboutUl>
                                         <li>🔗<BlogLink href="https://juneberrydiary.com/blog/tourist0302" target="_blank" rel="noopener noreferrer">https://juneberrydiary.com/blog/tourist0302</BlogLink></li>
-                                        <li>react + spring boot로 자체 개발한 블로그를 이용하고 있습니다.</li>
+                                        <li>React + Spring Boot로 자체 개발한 블로그를 이용하고 있습니다.</li>
                                         <li>43개의 기술 포스트를 작성했습니다.</li>
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
@@ -299,12 +299,14 @@ const BlogAbout = () => {
                             <BlogAboutRightSide>
                                 <BlogAboutTxtContentBlock>
                                     <BlogAboutUl>
-                                        <li>2년 4개월 이상 11개 프로젝트에서 사용 (현재 운영 중인 프로젝트 1개 보유)</li>
+                                        <li>2년 8개월 이상 12개 프로젝트에서 사용 (현재 운영 중인 프로젝트 1개 보유)</li>
                                         <li>JWT + redis + email 인증 및 세션 기반 인증/인가 프로세스 개발 경험</li>
                                         <li>S3 + 이미지 압축 기술을 활용한 이미지 업로드 프로세스 개발 경험</li>
-                                        <li>redis 기반 성능 개선 경험 보유</li>
+                                        <li>Redis 기반 성능 개선 경험 보유</li>
+                                        <li>Spring AI를 이용한 챗봇 개발 경험 보유</li>
                                         <li>CompletableFuture 기반 성능 개선 경험 보유</li>
                                         <li>RDBMS, NoSQL 데이터베이스 기반 프로젝트 개발 경험 보유</li>
+                                        <li>소셜 OAuth 2.0 로그인(Kakao) 개발 경험 보유</li>
                                         <li>JUnit5 테스트 코드 작성 경험</li>
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
@@ -359,6 +361,21 @@ const BlogAbout = () => {
                                         <li>React + CodeMirror + Cloudflare R2를 이용해 자체 블로그 에디터 개발 경험</li>
                                         <li>Redux를 이용한 상태 관리 경험</li>
                                         <li>React Query를 사용한 성능 개선 경험</li>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
+                                    <span style={{backgroundColor: "rgb(251, 243, 219)"}}>Vue.js</span>
+                                </BlogAboutHighlightTitle>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>6개월 이상 1개의 프로젝트에서 사용</li>
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
@@ -464,10 +481,12 @@ const BlogAbout = () => {
                                         <li>캘린더, 블로그를 통해 일상과 기록을 공유하는 종합 다이어리 서비스</li>
                                         <ul>
                                             <li>
-                                                redis, 휴리스틱 캐시를 이용해 달력 태그 렌더링 성능 개선<br/>
+                                                Redis, 휴리스틱 캐시를 이용해 달력 태그 렌더링 성능 개선<br/>
                                                 - <b>5초</b> → <b>0.5초</b> 개선한 경험
                                             </li>
                                             <li>React + CodeMirror + R2를 이용해 블로그 에디터 자체 개발</li>
+                                            <li>Java8 CompletableFuture 기반 시설물 지도 표출 기능 성능 개선</li>
+                                            - <b>1.4초</b> → <b>1초</b> 개선한 경험
                                             <li>JPA, QueryDSL을 사용한 다수의 쿼리 튜닝 경험</li>
                                             <li>Jenkins 기반 CI/CD 파이프라인 구축</li>
                                             <li>Prometheus, Grafana를 이용한 모니터링 시스템 구축</li>
@@ -485,7 +504,7 @@ const BlogAbout = () => {
                             </BlogAboutRightSide>
                         </BlogAboutSideBlock>
 
-                        <BlogAboutSideBlock>
+                        {/* <BlogAboutSideBlock>
                             <BlogAboutLeftSide>
                                 <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
                                     MERCI[PL]
@@ -516,7 +535,7 @@ const BlogAbout = () => {
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
-                        </BlogAboutSideBlock>
+                        </BlogAboutSideBlock> */}
 
                         <BlogAboutSideBlock>
                             <BlogAboutLeftSide>
@@ -658,7 +677,7 @@ const BlogAbout = () => {
                             </BlogAboutRightSide>
                         </BlogAboutSideBlock>
 
-                        <BlogAboutSideBlock>
+                        {/* <BlogAboutSideBlock>
                             <BlogAboutLeftSide>
                                 <BlogAboutHighlightTitle style={{fontSize: '27px'}}>
                                     슈슈댕(셀프 펫 목욕탕 업체) 키오스크 관리 서비스
@@ -687,7 +706,7 @@ const BlogAbout = () => {
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
-                        </BlogAboutSideBlock>
+                        </BlogAboutSideBlock> */}
 
                         <BlogAboutSideBlock>
                             <BlogAboutLeftSide>
@@ -839,6 +858,42 @@ const BlogAbout = () => {
                         </BlogAboutSideBlock>
 
                         <BlogAboutSemiTitle>
+                            Certifications & Language Skills
+                        </BlogAboutSemiTitle>
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{ fontSize: '27px' }}>
+                                    Certifications
+                                </BlogAboutHighlightTitle>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>정보처리기사 취득 (2023.11.15)</li>
+                                        <li>데이터분석준전문가(ADsP) 취득 (2025.06.13)</li>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{ fontSize: '27px' }}>
+                                    Language
+                                </BlogAboutHighlightTitle>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>OPic IH (영어)</li>
+                                        <li>미국 교환학생 프로그램(University of North Dakota) 9개월 경험</li>
+                                        <li>기초 회의 및 협업에 있어 영어 의사소통 가능</li>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+
+                        <BlogAboutSemiTitle>
                             Education
                         </BlogAboutSemiTitle>
                         <BlogAboutSideBlock>
@@ -858,9 +913,9 @@ const BlogAbout = () => {
                                             삼성 청년 SW 아카데미(SSAFY) 13기 교육 과정 진행중
                                         </li>
                                         <ul>
-                                            <li>여행지 소개 백엔드 프로젝트 개발 (EnjoyTrip)</li>
-                                            <li>삼성 소프트웨어 역량 평가 A형 취득</li>
-                                            <li>웹 개발 전반(Frontend + Backend) 집중 교육</li>
+                                            <li>커뮤니티 중심 여행 플랫폼 Mapick 개발</li>
+                                            <li>삼성 소프트웨어 역량 평가 A형 취득 (A+ 등급)</li>
+                                            <li>웹 개발 전반(Vue.js + Spring Boot) 집중 교육</li>
                                             <li>알고리즘 집중 교육</li>
                                         </ul>
                                     </BlogAboutUl>
@@ -883,12 +938,13 @@ const BlogAbout = () => {
                                 <BlogAboutTxtContentBlock>
                                     <BlogAboutUl>
                                         <li>
-                                            2019 데이터베이스 수업 프로젝트 평가 5팀 중 1위
+                                            2019 데이터베이스 수업 프로젝트 (OURS) 5팀 중 1위
                                             <a href="https://github.com/bstafford2017/OURS" target="_blank" rel="noopener noreferrer"><GitHubIconCustom style={{width: '20px', height: '20px', marginLeft: '7px', position: 'relative', top: '2.5px'}}/></a> 
                                         </li>
                                         <ul>
+                                            <li>University of North Dakota 수강신청 서비스 개발 (PHP, JavaScript, HTML, CSS)</li>
+                                            <li>프론트엔드 개발 담당</li>
                                             <li>미국 학생들과 협업 경험</li>
-                                            <li>프론트엔드 개발</li>
                                         </ul>
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
@@ -916,8 +972,67 @@ const BlogAbout = () => {
                                         <ul>
                                             <li>팀의 조장으로 대회 참가</li>
                                             <li>XGBoost 지도 학습 알고리즘 사용</li>
-                                            <li>13개 팀 중 7위</li>
                                         </ul>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+
+                        <BlogAboutSemiTitle>
+                            Military Service
+                        </BlogAboutSemiTitle>
+
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{ fontSize: '27px' }}>
+                                    병역사항
+                                </BlogAboutHighlightTitle>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>산업기능요원(보충역) 복무 완료</li>
+                                        <li>복무기간 : 2022.08 ~ 2024.07</li>
+                                        <li>복무기관 : 방위산업체 (<b>투비스마트</b>, <b>진우소프트이노베이션</b>)</li>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{ fontSize: '27px' }}>
+                                    복무 이력
+                                </BlogAboutHighlightTitle>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>(주) 진우소프트이노베이션 / 백엔드 개발자 (2023.04 ~ 2024.07)</li>
+                                        <li>(주) 투비스마트 / 키오스크 서비스 백엔드 개발자 (2022.08 ~ 2023.03)</li>
+                                    </BlogAboutUl>
+                                </BlogAboutTxtContentBlock>
+                            </BlogAboutRightSide>
+                        </BlogAboutSideBlock>
+
+                        <BlogAboutSideBlock>
+                            <BlogAboutLeftSide>
+                                <BlogAboutHighlightTitle style={{ fontSize: '27px' }}>
+                                    주요 업무
+                                </BlogAboutHighlightTitle>
+                            </BlogAboutLeftSide>
+                            <BlogAboutRightSide>
+                                <BlogAboutTxtContentBlock>
+                                    <BlogAboutUl>
+                                        <li>실시간 교통/센서 데이터를 분석해 주정차 여부를 자동 판별하는 알고리즘 개발 및 관제 시스템 적용</li>
+                                        <li>Spring과 Node.js 기반 디지털 트윈 데이터 수집기 개발 및 서버 메모리 최적화 수행</li>
+                                        <li>NoSQL(CouchDB) 기반 디지털 트윈 수집기 개발</li>
+                                        <li>SI 프로젝트의 중간/최종 감리 대응 및 시큐어 코딩 기반 보안 취약점 검토·보완</li>
+                                        <li>DB 이중화 및 실시간 동기화 설계로 DB 운영 안정성 확보</li>
+                                        <li>공공기관 지도 시각화 서비스에서 DB-지도 연동 기능 개발 및 운영</li>
+                                        <li>사내 CMS 시스템 신규 개발 및 공통 라이브러리/모듈 설계 및 구현</li>
+                                        <li>개발자 대상 사내 프론트엔드 교육 진행</li>
+                                        <li>Spring Boot 기반 백엔드 API 설계 및 개발</li>
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
