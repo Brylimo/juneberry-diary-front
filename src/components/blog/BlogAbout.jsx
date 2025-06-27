@@ -901,6 +901,7 @@ const BlogAbout = () => {
                                     <BlogAboutUl>
                                         <li>정보처리기사 취득 (2023.11.15)</li>
                                         <li>데이터분석준전문가(ADsP) 취득 (2025.06.13)</li>
+                                        <li>SQL개발자(SQLD) 취득 (2025.06.27)</li>
                                     </BlogAboutUl>
                                 </BlogAboutTxtContentBlock>
                             </BlogAboutRightSide>
